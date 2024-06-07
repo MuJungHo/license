@@ -1,66 +1,119 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-import { Table, Paper } from "../components/common";
+import { AuthContext } from "../contexts/AuthContext";
+import {
+  Table,
+  Text,
+  Paper,
+  Button,
+  DialogContent,
+  DialogActions,
+  TextField
+} from "../components/common";
 
 import {
   BorderColorSharp,
   Delete,
   AddBox,
-  CloudDownload
 } from '@material-ui/icons';
+
+import {
+  License
+} from "../images/icons";
+
 const rows = [
   {
-    _id: "ABC",
-    name: "ABC",
-    identity: "staff",
-    company: "Delta",
-    department: "BASBD",
-    email: "ABC@deltaww.com"
+    _id: "Admin",
+    name: "Admin",
+    products: "",
+    license: {
+      "EnOL Enterprise 1k": 10,
+      "EnOL Enterprise 5k": 10,
+      "SMARTPASS-Trial": 20,
+      "SMARTPASS-Pro": 20,
+    }
   },
   {
-    _id: "DEF",
-    name: "DEF",
-    identity: "staff",
-    company: "Delta",
-    department: "BASBD",
-    email: "DEF@deltaww.com"
+    _id: "UserA",
+    name: "UserA",
+    products: "ENOL, SMARTPASS",
+    license: {
+      "EnOL Enterprise 1k": 10,
+      "EnOL Enterprise 5k": 10,
+      "SMARTPASS-Trial": 20,
+      "SMARTPASS-Pro": 20,
+    }
   },
   {
-    _id: "GHI",
-    name: "GHI",
-    identity: "staff",
-    company: "Delta",
-    department: "BASBD",
-    email: "GHI@deltaww.com"
+    _id: "UserB",
+    name: "UserB",
+    products: "SMARTPASS",
+    license: {
+      "SMARTPASS-Trial": 20,
+      "SMARTPASS-Pro": 20,
+    }
   },
   {
-    _id: "Jay Ciou",
-    name: "Jay Ciou",
-    identity: "VIP",
-    company: "Delta",
-    department: "BASBD",
-    email: "Jay.Ciou@deltaww.com"
-  },
-  {
-    _id: "Uno Lee",
-    name: "Uno Lee",
-    identity: "Guset",
-    company: "",
-    department: "",
-    email: ""
-  },
-  {
-    _id: "UNKNOWN",
-    name: "UNKNOWN",
-    identity: "Stranger",
-    company: "",
-    department: "",
-    email: ""
-  },
+    _id: "UserC",
+    name: "UserC",
+    products: "ENOL",
+    license: {
+      "EnOL Enterprise 1k": 10,
+      "EnOL Enterprise 5k": 10,
+    }
+  }
 ]
 
+const DialogSection = ({
+  onConfirm = () => { },
+  license = {}
+}) => {
+  const [state, setState] = React.useState({ ...license })
+  const { closeDialog } = useContext(GlobalContext);
+  return (
+    <>
+      <DialogContent
+        dividers
+        style={{
+          width: 500
+        }}>
+        {
+          Object.keys(state).map(key =>
+            <TextField
+              key={key}
+              fullWidth
+              type="number"
+              margin="dense"
+              label={key}
+              value={state[key]}
+              onChange={e => setState({
+                ...state,
+                [key]: e.target.value
+              })} />)
+        }
+
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog}>
+          Cancel
+        </Button>
+        <Button onClick={() => onConfirm(state)}>
+          Confirm
+        </Button>
+      </DialogActions>
+    </>)
+}
 const User = () => {
-  const { t } = useContext(GlobalContext);
+  const { t, openDialog } = useContext(GlobalContext);
+  const { role } = useContext(AuthContext);
+
+  const handleSetDialog = (row) => {
+    openDialog({
+      title: `${row.name}'s License`,
+      section: <DialogSection onConfirm={state => console.log(state)} license={row.license} />
+    })
+  }
+
   return (
     <Paper>
       <Table
@@ -68,26 +121,24 @@ const User = () => {
         rows={rows}
         columns={[
           { key: 'name', label: t('name') },
-          { key: 'identity', label: t('identity') },
-          { key: 'company', label: t('company') },
-          { key: 'department', label: t('department') },
-          { key: 'email', label: t('email') },
+          { key: 'products', label: t('product') },
         ]}
+        checkable={role === 1}
         order="asc"
         orderBy="name"
         onPageChange={(event, page) => console.log(page)}
         onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
         onSortChange={(isAsc, property) => console.log(isAsc, property)}
         onKeywordSearch={(event) => console.log(event.target.value)}
-        toolbarActions={[
+        toolbarActions={role === 1 ? [
           { name: t('add'), onClick: () => { }, icon: <AddBox /> },
-          { name: t('export'), onClick: () => { }, icon: <CloudDownload /> },
-        ]}
-        rowActions={[
+        ] : []}
+        rowActions={role === 1 ? [
+          { name: t('license'), onClick: (e, row) => handleSetDialog(row), icon: <License /> },
           { name: t('edit'), onClick: (e, row) => console.log(row), icon: <BorderColorSharp /> },
           { name: t('delete'), onClick: (e, row) => console.log(row), icon: <Delete /> }
-        ]}
-        dense
+        ] : []}
+      // dense
       />
     </Paper>
   );

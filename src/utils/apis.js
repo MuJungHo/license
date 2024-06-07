@@ -1,9 +1,13 @@
-export const getToken = ({ account = "", password = "" } = {}) => new Promise((resolve, reject) => {
+export const getAccountInfo = ({ account = "", password = "" } = {}) => new Promise((resolve, reject) => {
   setTimeout(() => {
     if (account === "Admin" && password === "123456") {
-      resolve("666666666");
+      resolve({ token: "Admin", role: 1 });
+    } if (account === "Operator" && password === "123456") {
+      resolve({ token: "Operator", role: 2 });
+    } if ((account === "UserA" || account === "UserB" || account === "UserC") && password === "123456") {
+      resolve({ token: "User", role: 3 });
     } else {
       reject("帳號或密碼錯誤")
     }
-  }, 1000);
+  }, 500);
 });

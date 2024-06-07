@@ -32,7 +32,8 @@ function EnhancedTableHead(props) {
     rowCount,
     rowActions,
     onRequestSort,
-    columns
+    columns,
+    checkable
   } = props;
 
   const { t } = useContext(GlobalContext);
@@ -44,14 +45,14 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        {checkable && <TableCell padding="checkbox">
           <Checkbox
             color="secondary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
           />
-        </TableCell>
+        </TableCell>}
         {columns.map((column) => (
           <TableCell
             key={column.key}
@@ -177,6 +178,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({
   dense = false,
+  checkable = true,
   page = 0,
   rowsPerPage = 5,
   onRowsPerPageChange = () => { },
@@ -209,6 +211,7 @@ export default ({
   };
 
   const handleClick = (event, _id) => {
+    if (!checkable) return;
     const selectedIndex = selected.indexOf(_id);
     let newSelected = [];
 
@@ -255,6 +258,7 @@ export default ({
             rowCount={rows.length}
             rowActions={rowActions}
             columns={columns}
+            checkable={checkable}
           />
           <TableBody>
             {rows.map((row, index) => {
@@ -265,19 +269,17 @@ export default ({
                 <TableRow
                   hover
                   onClick={(event) => handleClick(event, row._id)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
                   tabIndex={-1}
                   key={row._id}
                   selected={isItemSelected}
                 >
-                  <TableCell padding="checkbox">
+                  {checkable && <TableCell padding="checkbox">
                     <Checkbox
                       color="secondary"
                       checked={isItemSelected}
                       inputProps={{ 'aria-labelledby': labelId }}
                     />
-                  </TableCell>
+                  </TableCell>}
                   {columns.map((column) => (
                     <TableCell
                       key={column.key}

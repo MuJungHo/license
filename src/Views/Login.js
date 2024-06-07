@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { Redirect } from "react-router-dom";
-import { getToken } from '../utils/apis';
+import { getAccountInfo } from '../utils/apis';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
@@ -74,13 +74,13 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const token = await getToken({ account, password }).catch((message) => setSnackBar({
+    const { token, role } = await getAccountInfo({ account, password }).catch((message) => setSnackBar({
       open: true,
       message,
       severity: "error"
     }))
 
-    if (token) login(token)
+    if (token) login(token, role, account)
   };
 
   if (token) {

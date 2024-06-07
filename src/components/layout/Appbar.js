@@ -115,7 +115,7 @@ const Appbar = ({ open }) => {
         <Logo style={{ cursor: 'pointer', height: 32, width: 106 }} />
 
         <div style={{ backgroundColor: '#243F61', margin: '0 36px', width: 3, height: 32 }} ></div>
-        <span style={{ color: '#0087DC', fontSize: 24 }}>ACM Boilerplate</span>
+        <span style={{ color: '#0087DC', fontSize: 24 }}>License Management</span>
         <div style={{ flex: 1 }} />
         <Button className={classes.button} size="small" onClick={e => setAnchor(e.currentTarget)}>
           <LanguageSharpIcon style={{ marginRight: 10 }} />

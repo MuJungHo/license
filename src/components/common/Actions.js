@@ -2,7 +2,7 @@ import React from "react";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from './IconButton';
 import Button from "./Button";
 import Tooltip from '@material-ui/core/Tooltip';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -60,7 +60,8 @@ export default ({ actions = [], row = {} }) => {
 
   if (actions.length === 1) {
     return <Tooltip title={actions[0].name}>
-      <IconButton onClick={(event) => actions[0].onClick(event, row)}>
+      <IconButton
+        disabled={actions[0].disabled} onClick={(event) => actions[0].onClick(event, row)}>
         {actions[0].icon}
       </IconButton>
     </Tooltip>
@@ -91,6 +92,7 @@ export default ({ actions = [], row = {} }) => {
                 key={action.name}
                 onClick={(event) => handleItemClick(event, action)}
                 className={classes.item}
+                disabled={action.disabled}
               >
                 {action.icon}
                 <Typography color="textSecondary" variant="caption">{action.name}</Typography>
