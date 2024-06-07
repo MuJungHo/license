@@ -25,6 +25,7 @@ const rows = [
   {
     _id: "Admin",
     name: "Admin",
+    role: "Admin",
     products: "",
     license: {
       "EnOL Enterprise 1k": 10,
@@ -36,6 +37,7 @@ const rows = [
   {
     _id: "UserA",
     name: "UserA",
+    role: "User",
     products: "ENOL, SMARTPASS",
     license: {
       "EnOL Enterprise 1k": 10,
@@ -47,6 +49,7 @@ const rows = [
   {
     _id: "UserB",
     name: "UserB",
+    role: "User",
     products: "SMARTPASS",
     license: {
       "SMARTPASS-Trial": 20,
@@ -56,6 +59,7 @@ const rows = [
   {
     _id: "UserC",
     name: "UserC",
+    role: "User",
     products: "ENOL",
     license: {
       "EnOL Enterprise 1k": 10,
@@ -121,6 +125,7 @@ const User = () => {
         rows={rows}
         columns={[
           { key: 'name', label: t('name') },
+          { key: 'role', label: t('role') },
           { key: 'products', label: t('product') },
         ]}
         checkable={role === 1}
