@@ -23,8 +23,8 @@ const users = [
     }
   },
   {
-    _id: "UserA",
-    name: "UserA",
+    _id: "Operator",
+    name: "Operator",
     products: "ENOL, SMARTPASS",
     license: {
       "EnOL Enterprise 1k": 10,
@@ -34,8 +34,8 @@ const users = [
     }
   },
   {
-    _id: "UserB",
-    name: "UserB",
+    _id: "UserA",
+    name: "UserA",
     products: "SMARTPASS",
     license: {
       "SMARTPASS-Trial": 20,
@@ -43,8 +43,8 @@ const users = [
     }
   },
   {
-    _id: "UserC",
-    name: "UserC",
+    _id: "UserB",
+    name: "UserB",
     products: "ENOL",
     license: {
       "EnOL Enterprise 1k": 10,

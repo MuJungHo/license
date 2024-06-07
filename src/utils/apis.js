@@ -4,7 +4,7 @@ export const getAccountInfo = ({ account = "", password = "" } = {}) => new Prom
       resolve({ token: "Admin", role: 1 });
     } if (account === "Operator" && password === "123456") {
       resolve({ token: "Operator", role: 2 });
-    } if ((account === "UserA" || account === "UserB" || account === "UserC") && password === "123456") {
+    } if ((account === "UserA" || account === "UserB") && password === "123456") {
       resolve({ token: "User", role: 3 });
     } else {
       reject("帳號或密碼錯誤")

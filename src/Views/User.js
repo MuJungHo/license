@@ -35,15 +35,25 @@ const rows = [
     }
   },
   {
-    _id: "UserA",
-    name: "UserA",
-    role: "User",
+    _id: "Operator",
+    name: "Operator",
+    role: "Operator",
     products: "ENOL, SMARTPASS",
     license: {
       "EnOL Enterprise 1k": 10,
       "EnOL Enterprise 5k": 10,
       "SMARTPASS-Trial": 20,
       "SMARTPASS-Pro": 20,
+    }
+  },
+  {
+    _id: "UserA",
+    name: "UserA",
+    role: "User",
+    products: "SMARTPASS",
+    license: {
+      "EnOL Enterprise 1k": 10,
+      "EnOL Enterprise 5k": 10,
     }
   },
   {
@@ -54,16 +64,6 @@ const rows = [
     license: {
       "SMARTPASS-Trial": 20,
       "SMARTPASS-Pro": 20,
-    }
-  },
-  {
-    _id: "UserC",
-    name: "UserC",
-    role: "User",
-    products: "ENOL",
-    license: {
-      "EnOL Enterprise 1k": 10,
-      "EnOL Enterprise 5k": 10,
     }
   }
 ]
