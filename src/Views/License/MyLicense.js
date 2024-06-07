@@ -8,6 +8,7 @@ import {
   Table
 } from "../../components/common";
 import GetAppIcon from '@material-ui/icons/GetApp';
+import Generator from "./Generator";
 
 const users = [
   {
@@ -54,9 +55,17 @@ const users = [
 
 const MyLicense = () => {
   const { account, role } = useContext(AuthContext);
-  const { t } = useContext(GlobalContext);
+  const { t, openDialog } = useContext(GlobalContext);
   const me = users.find(user => user._id === account) || { license: {} }
   const rows = Object.keys(me.license).map(key => ({ _id: key, name: key, amount: role === 1 ? "--" : me.license[key] })) || [];
+
+  const handleSetDialog = (row) => {
+    openDialog({
+      title: `${row.name}'s Generator`,
+      section: <Generator onConfirm={state => console.log(state)} license={row.license} />
+    })
+  }
+
   return (
     <Paper>
       <Table
@@ -76,7 +85,7 @@ const MyLicense = () => {
         toolbarActions={[
         ]}
         rowActions={[
-          { name: t('download'), onClick: (e, row) => console.log(row), icon: <GetAppIcon /> },
+          { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon /> },
         ]}
         dense
       />

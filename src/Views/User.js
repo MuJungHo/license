@@ -3,7 +3,7 @@ import { GlobalContext } from "../contexts/GlobalContext";
 import { AuthContext } from "../contexts/AuthContext";
 import {
   Table,
-  Text,
+  // Text,
   Paper,
   Button,
   DialogContent,
@@ -68,7 +68,7 @@ const DialogSection = ({
   onConfirm = () => { },
   license = {}
 }) => {
-  const [state, setState] = React.useState({ ...license })
+  const [state, setState] = React.useState({ ...license });
   const { closeDialog } = useContext(GlobalContext);
   return (
     <>
@@ -117,7 +117,7 @@ const User = () => {
   return (
     <Paper>
       <Table
-        title={t("user")}
+        title={t("thing-management", { thing: t("account") })}
         rows={rows}
         columns={[
           { key: 'name', label: t('name') },

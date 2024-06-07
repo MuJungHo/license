@@ -69,7 +69,7 @@ const LicenseTypeList = () => {
   return (
     <Paper>
       <Table
-        title="License"
+        title={t("thing-list", { thing: t("license") })}
         rows={rows}
         columns={[
           { key: 'name', label: t('name') },

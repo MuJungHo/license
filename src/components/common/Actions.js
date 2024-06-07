@@ -59,12 +59,10 @@ export default ({ actions = [], row = {} }) => {
   }
 
   if (actions.length === 1) {
-    return <Tooltip title={actions[0].name}>
-      <IconButton
-        disabled={actions[0].disabled} onClick={(event) => actions[0].onClick(event, row)}>
-        {actions[0].icon}
-      </IconButton>
-    </Tooltip>
+    return <IconButton
+      disabled={actions[0].disabled} onClick={(event) => actions[0].onClick(event, row)}>
+      {actions[0].icon}
+    </IconButton>
   }
   return (
     <div onClick={e => e.stopPropagation()}>

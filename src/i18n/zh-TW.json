@@ -20,11 +20,17 @@
     "license": "授權",
     "login": "登入",
     "logout": "登出",
+    "myLicense": "我的授權",
     "name": "名稱",
     "navigation": "導航",
     "password": "密碼",
     "product": "產品",
+    "thing-list": "{{thing}}列表",
+    "thing-management": "{{thing}}管理",
     "user": "使用者",
     "user-profile": "使用者資料",
-    "welcome": "歡迎"
+    "welcome": "歡迎",
+    "_account": "帳號管理",
+    "_license": "授權管理",
+    "_licenselist": "授權列表"
 }

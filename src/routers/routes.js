@@ -22,19 +22,19 @@ const routes = [
   },
   {
     path: "/user",
-    name: "user",
+    name: "_account",
     component: User,
     icon: ManageAccount,
     sider: true
   },
   {
     path: "/license",
-    name: "license",
+    name: "_license",
     icon: LicenseIcon,
     sider: true,
     children: [
-      { name: "授權列表", path: "/licenselist" },
-      { name: "我的授權", path: "/licenseme" }
+      { name: "_licenselist", path: "/licenselist" },
+      { name: "myLicense", path: "/licenseme" }
     ]
   },
   {

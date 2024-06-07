@@ -20,11 +20,17 @@
     "license": "License",
     "login": "Login",
     "logout": "Logout",
+    "myLicense": "My License",
     "name": "Name",
     "navigation": "Navigation",
     "password": "Password",
     "product": "Product",
+    "thing-list": "{{thing}} List",
+    "thing-management": "{{thing}} Management",
     "user": "User",
     "user-profile": "User Profile",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "_account": "Account",
+    "_license": "License",
+    "_licenselist": "License List"
 }
