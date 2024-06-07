@@ -25,6 +25,7 @@
     "navigation": "Navigation",
     "password": "Password",
     "product": "Product",
+    "role": "Role",
     "thing-list": "{{thing}} List",
     "thing-management": "{{thing}} Management",
     "user": "User",

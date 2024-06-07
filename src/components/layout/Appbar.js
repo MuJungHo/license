@@ -12,7 +12,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import { ReactComponent as Logo } from '../../images/delta.svg';
-import { Button } from "../common";
+import {
+  Button,
+  DialogContent,
+  DialogActions,
+  Text
+} from "../common";
 
 import { DarkMode, LightMode } from "../../images/icons";
 
@@ -86,11 +91,34 @@ const useStyles = makeStyles((theme) => {
   })
 }
 );
+const Profile = ({
+  onConfirm = () => { },
+}) => {
+  const { closeDialog, t } = useContext(GlobalContext);
+  const { role, account } = useContext(AuthContext);
+  return (
+    <>
+      <DialogContent dividers style={{ width: 250 }}>
+        <Text>{`${t("account")}: ${account}`}</Text>
+        <Text>{`${t("role")}: ${{
+          1: "Admin",
+          2: "Operator",
+          3: "User"
+        }[role]}`}</Text>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog}>
+          Confirm
+        </Button>
+      </DialogActions>
+    </>)
+}
+
 
 const Appbar = ({ open }) => {
   const classes = useStyles();
   const { logout } = useContext(AuthContext);
-  const { locale, changeLocale, t, changeTheme, theme } = useContext(GlobalContext);
+  const { locale, changeLocale, t, changeTheme, theme, openDialog } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -103,6 +131,14 @@ const Appbar = ({ open }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleSetDialog = () => {
+    handleClose()
+    openDialog({
+      title: t("user-profile"),
+      section: <Profile />
+    })
+  }
 
   return (
     <AppBar
@@ -140,7 +176,7 @@ const Appbar = ({ open }) => {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-          <MenuItem >{t("user-profile")}</MenuItem>
+          <MenuItem onClick={handleSetDialog}>{t("user-profile")}</MenuItem>
           <MenuItem onClick={logout}>{t('logout')}</MenuItem>
         </Menu>
         <Menu

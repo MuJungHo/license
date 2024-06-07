@@ -4,11 +4,11 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { GlobalProvider } from "./contexts/GlobalContext";
 
 const App = () => (
-  <GlobalProvider>
-    <AuthProvider >
+  <AuthProvider >
+    <GlobalProvider>
       <AppRouter />
-    </AuthProvider>
-  </GlobalProvider>
+    </GlobalProvider>
+  </AuthProvider>
 )
 
 export default App
