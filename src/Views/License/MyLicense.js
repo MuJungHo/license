@@ -5,64 +5,85 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import {
   Paper,
-  Table
+  Table,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField
 } from "../../components/common";
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Generator from "./Generator";
 
-const users = [
-  {
-    _id: "Admin",
-    name: "Admin",
-    products: "",
-    license: {
-      "EnOL Enterprise 1k": 10,
-      "EnOL Enterprise 5k": 10,
-      "SMARTPASS-Trial": 20,
-      "SMARTPASS-Pro": 20,
-    }
-  },
-  {
-    _id: "Operator",
-    name: "Operator",
-    products: "ENOL, SMARTPASS",
-    license: {
-      "EnOL Enterprise 1k": 10,
-      "EnOL Enterprise 5k": 10,
-      "SMARTPASS-Trial": 20,
-      "SMARTPASS-Pro": 20,
-    }
-  },
-  {
-    _id: "UserA",
-    name: "UserA",
-    products: "SMARTPASS",
-    license: {
-      "SMARTPASS-Trial": 20,
-      "SMARTPASS-Pro": 20,
-    }
-  },
-  {
-    _id: "UserB",
-    name: "UserB",
-    products: "ENOL",
-    license: {
-      "EnOL Enterprise 1k": 10,
-      "EnOL Enterprise 5k": 10,
-    }
-  }
-]
+import {
+  Select,
+  MenuItem
+} from '@material-ui/core';
+
+import {
+  License
+} from "../../images/icons";
+
+import { userlist } from "../../utils/constant";
+
+const DialogSection = ({
+  onConfirm = () => { },
+}) => {
+  const [state, setState] = React.useState({ user: "", amount: 0 });
+  const { closeDialog } = useContext(GlobalContext);
+  return (
+    <>
+      <DialogContent
+        dividers
+        style={{
+          width: 500
+        }}>
+        <Select
+          value={state.user}
+          displayEmpty
+          onChange={e => setState({ ...state, user: e.target.value })}
+        >
+          <MenuItem value="">轉移對象</MenuItem>
+          {userlist.map(user => <MenuItem key={user._id}>{user.name}</MenuItem>)}
+        </Select>
+        <div
+          style={{ marginTop: 20 }}
+        >
+          <TextField
+            label="轉移數量"
+            type="number"
+            value={state.amount}
+            onChange={e => setState({ ...state, amount: e.target.value })}
+          />
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog}>
+          Cancel
+        </Button>
+        <Button onClick={() => onConfirm(state)}>
+          Confirm
+        </Button>
+      </DialogActions>
+    </>)
+}
 
 const MyLicense = () => {
   const { account, role } = useContext(AuthContext);
   const { t, openDialog } = useContext(GlobalContext);
-  const me = users.find(user => user._id === account) || { license: {} }
+  const me = userlist.find(user => user._id === account) || { license: {} }
   const rows = Object.keys(me.license).map(key => ({ _id: key, name: key, amount: role === 1 ? "--" : me.license[key] })) || [];
 
   const handleSetDialog = (row) => {
     openDialog({
       title: `${row.name}'s Generator`,
       section: <Generator onConfirm={state => console.log(state)} license={row.license} />
+    })
+  }
+
+  const handleSetTransferDialog = (row) => {
+    openDialog({
+      title: `Transfer ${row.name}'`,
+      section: <DialogSection onConfirm={state => console.log(state)} />
     })
   }
 
@@ -84,10 +105,13 @@ const MyLicense = () => {
         onKeywordSearch={(event) => console.log(event.target.value)}
         toolbarActions={[
         ]}
-        rowActions={[
+        rowActions={role === 3 ? [
           { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon /> },
+        ] : [
+          { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon /> },
+          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License /> },
         ]}
-        dense
+      // dense
       />
 
     </Paper>

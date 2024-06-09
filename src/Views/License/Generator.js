@@ -64,7 +64,7 @@ const Parameter = ({ parameter, state, setState }) => {
         [name]: [...state[name], key]
       })
     } else {
-      let arr = [...state[name]].filter(i => i != key)
+      let arr = [...state[name]].filter(i => i !== key)
       setState({
         ...state,
         [name]: [...arr]
@@ -135,7 +135,6 @@ export default ({
   onConfirm = () => { }
 }) => {
   // const { t } = useContext(GlobalContext);
-  const [state, setState] = React.useState({})
   const { closeDialog } = useContext(GlobalContext);
 
   const license = {
@@ -150,13 +149,12 @@ export default ({
     ]
   }
 
-  React.useEffect(() => {
-    const _state = license.parameters
-      .reduce((obj, cur) => ({
-        ...obj, [cur.name]: cur.type === "const" ? cur.text : ""
-      }), {})
-    setState(_state)
-  }, [])
+  const _state = license.parameters
+  .reduce((obj, cur) => ({
+    ...obj, [cur.name]: cur.type === "const" ? cur.text : ""
+  }), {})
+  const [state, setState] = React.useState(_state)
+
   return (
     <>
       <DialogContent

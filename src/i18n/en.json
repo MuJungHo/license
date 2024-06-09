@@ -1,14 +1,18 @@
 {
     "account": "Account",
     "action": "Action",
+    "amount": "Amount",
     "close": "Close",
     "company": "Company",
     "component": "Component",
     "confirm": "Confirm",
     "current-location": "The current location is {{page}}.",
+    "datetime": "Datetime",
     "delete": "Delete",
+    "description": "Description",
     "department": "Department",
     "display": "Display",
+    "download": "Download",
     "edit": "Edit",
     "email": "EMail",
     "feedback": "Feedback",
@@ -28,10 +32,12 @@
     "role": "Role",
     "thing-list": "{{thing}} List",
     "thing-management": "{{thing}} Management",
+    "transfer": "Transfer",
     "user": "User",
     "user-profile": "User Profile",
     "welcome": "Welcome",
     "_account": "Account",
     "_license": "License",
-    "_licenselist": "License List"
+    "_licenselist": "License List",
+    "_log": "Log"
 }

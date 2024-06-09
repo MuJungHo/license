@@ -3,13 +3,15 @@ import User from '../Views/User';
 import LicenseList from '../Views/License/LicenseList';
 import License from '../Views/License/License';
 import MyLicense from '../Views/License/MyLicense';
+import Log from '../Views/Log';
 
 
 import {
   Home as HomeIcon,
   ManageAccount,
   License as LicenseIcon
-} from "../images/icons"
+} from "../images/icons";
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const routes = [
   {
@@ -36,6 +38,13 @@ const routes = [
       { name: "_licenselist", path: "/licenselist" },
       { name: "myLicense", path: "/licenseme" }
     ]
+  },
+  {
+    path: "/log",
+    name: "_log",
+    component: Log,
+    icon: AssignmentIcon,
+    sider: true
   },
   {
     path: '/licenselist',
