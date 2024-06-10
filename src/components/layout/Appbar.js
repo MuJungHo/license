@@ -91,9 +91,7 @@ const useStyles = makeStyles((theme) => {
   })
 }
 );
-const Profile = ({
-  // onConfirm = () => { },
-}) => {
+const Profile = () => {
   const { closeDialog, t } = useContext(GlobalContext);
   const { role, account } = useContext(AuthContext);
   return (
@@ -117,7 +115,7 @@ const Profile = ({
 
 const Appbar = ({ open }) => {
   const classes = useStyles();
-  const { logout, account } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
   const { locale, changeLocale, t, changeTheme, theme, openDialog } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
