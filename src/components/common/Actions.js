@@ -54,6 +54,12 @@ export default ({ actions = [], row = {} }) => {
     setAnchorEl(null)
     action.onClick(event, row)
   }
+
+  actions = actions
+    .filter(action => typeof action.showMenuItem === "function"
+      ? action.showMenuItem(row)
+      : true)
+
   if (actions.length === 0) {
     return '--'
   }
@@ -85,13 +91,13 @@ export default ({ actions = [], row = {} }) => {
         {
           actions
             .map(action => {
-              // console.log(action)
               return <MenuItem
                 key={action.name}
                 onClick={(event) => handleItemClick(event, action)}
                 className={classes.item}
                 disabled={action.disabled}
               >
+
                 {action.icon}
                 <Typography color="textSecondary" variant="caption">{action.name}</Typography>
               </MenuItem>

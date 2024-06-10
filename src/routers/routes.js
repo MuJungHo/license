@@ -20,14 +20,8 @@ const routes = [
     component: Home,
     icon: HomeIcon,
     sider: true,
-    exact: true
-  },
-  {
-    path: "/user",
-    name: "_account",
-    component: User,
-    icon: ManageAccount,
-    sider: true
+    exact: true,
+    roles: [1, 2, 3]
   },
   {
     path: "/license",
@@ -35,28 +29,41 @@ const routes = [
     icon: LicenseIcon,
     sider: true,
     children: [
-      { name: "_licenselist", path: "/licenselist" },
-      { name: "myLicense", path: "/licenseme" }
-    ]
+      { name: "_licenselist", path: "/licenselist", roles: [1, 2] },
+      { name: "myLicense", path: "/licenseme", roles: [1, 2, 3] }
+    ],
+    roles: [1, 2, 3]
+  },
+  {
+    path: "/user",
+    name: "_account",
+    component: User,
+    icon: ManageAccount,
+    sider: true,
+    roles: [1, 2]
   },
   {
     path: "/log",
     name: "_log",
     component: Log,
     icon: AssignmentIcon,
-    sider: true
+    sider: true,
+    roles: [1, 2]
   },
   {
     path: '/licenselist',
     component: LicenseList,
+    roles: [1, 2]
   },
   {
     path: '/licenseitem/:licenseid',
     component: License,
+    roles: [1, 2]
   },
   {
     path: '/licenseme',
     component: MyLicense,
+    roles: [1, 2, 3]
   }
 ]
 

@@ -5,7 +5,7 @@ const AuthContext = createContext();
 function AuthProvider(props) {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [role, setRole] = useState(Number(localStorage.getItem('role')));
-  const [account, setAccount] = useState(localStorage.getItem('account'));
+  const [account, setAccount] = useState(localStorage.getItem('account') || "");
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
 
   const login = async (jwtToken, role, account) => {

@@ -22,7 +22,8 @@ export const userlist = [
         name: "UserA",
         role: "User",
         license: {
-            "SMARTPASS-Trial": 10,
+            "SMARTPASS-Pro": 0,
+            "SMARTPASS-Trial": 10
         }
     },
     {
@@ -30,7 +31,7 @@ export const userlist = [
         name: "UserB",
         role: "User",
         license: {
-            "SMARTPASS-Pro": 10,
+            "SMARTPASS-Pro": 10
         }
     }
 ]
@@ -87,20 +88,6 @@ export const licenselist = [
 
 export const loglist = [
     {
-        _id: "l-1",
-        account: "Admin",
-        name: "新增/刪除 使用者",
-        description: "新增 UserA",
-        datetime: "2024-06-06 09:30"
-    },
-    {
-        _id: "l-2",
-        account: "Admin",
-        name: "新增/刪除 使用者",
-        description: "新增 UserB",
-        datetime: "2024-06-06 09:40"
-    },
-    {
         _id: "l-3",
         account: "Admin",
         name: "新增/刪除 使用者",
@@ -120,6 +107,20 @@ export const loglist = [
         name: "轉移/下載 授權",
         description: "轉移 SMARTPASS Pro 至 Operator, 400",
         datetime: "2024-06-06 10:00"
+    },
+    {
+        _id: "l-1",
+        account: "Operator",
+        name: "新增/刪除 使用者",
+        description: "新增 UserA",
+        datetime: "2024-06-06 09:30"
+    },
+    {
+        _id: "l-2",
+        account: "Operator",
+        name: "新增/刪除 使用者",
+        description: "新增 UserB",
+        datetime: "2024-06-06 09:40"
     },
     {
         _id: "l-4",

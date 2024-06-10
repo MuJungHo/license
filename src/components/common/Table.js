@@ -74,7 +74,9 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
-        {rowActions.length > 0 && <TableCell align="center">{t('action')}</TableCell>}
+        {rowActions.length > 0 && <TableCell align="center">
+          {t('action')}
+        </TableCell>}
       </TableRow>
     </TableHead>
   );
@@ -122,7 +124,7 @@ const EnhancedTableToolbar = (props) => {
         style={{ marginRight: 20 }}
         type="search"
         size="small"
-        value="keyword"
+        value=""
         onChange={onKeywordSearch} />}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -151,6 +153,12 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.table.color
     },
     '& .MuiTableSortLabel-root:hover': {
+      color: theme.palette.table.color
+    },
+    '& .MuiTableSortLabel-root.MuiTableSortLabel-active': {
+      color: theme.palette.table.color
+    },
+    '& .MuiTableSortLabel-root.MuiTableSortLabel-active.MuiTableSortLabel-root.MuiTableSortLabel-active .MuiTableSortLabel-icon': {
       color: theme.palette.table.color
     }
   },

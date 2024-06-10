@@ -105,11 +105,9 @@ const MyLicense = () => {
         onKeywordSearch={(event) => console.log(event.target.value)}
         toolbarActions={[
         ]}
-        rowActions={role === 3 ? [
-          { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon /> },
-        ] : [
-          { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon /> },
-          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License /> },
+        rowActions={[
+          { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon />, showMenuItem: (row) => role === 1 || row.amount > 0 },
+          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => (role === 1 || role === 2) && row.amount },
         ]}
       // dense
       />
