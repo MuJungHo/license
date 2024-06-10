@@ -1,6 +1,6 @@
-import Home from '../Views/Home';
 import User from '../Views/User';
 import LicenseList from '../Views/License/LicenseList';
+import ApplyList from '../Views/License/ApplyList';
 import License from '../Views/License/License';
 import MyLicense from '../Views/License/MyLicense';
 import Log from '../Views/Log';
@@ -15,22 +15,14 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    component: Home,
-    icon: HomeIcon,
-    sider: true,
-    exact: true,
-    roles: [1, 2, 3]
-  },
-  {
     path: "/license",
     name: "_license",
     icon: LicenseIcon,
     sider: true,
     children: [
-      { name: "_licenselist", path: "/licenselist", roles: [1, 2] },
-      { name: "myLicense", path: "/licenseme", roles: [1, 2, 3] }
+      { name: "_licenselist", path: "/licenselist", roles: [1, 2, 3] },
+      { name: "_applylist", path: "/applylist", roles: [1, 2] },
+      { name: "myLicense", path: "/licenseme", roles: [1, 2, 3] },
     ],
     roles: [1, 2, 3]
   },
@@ -53,6 +45,11 @@ const routes = [
   {
     path: '/licenselist',
     component: LicenseList,
+    roles: [1, 2, 3]
+  },
+  {
+    path: '/applylist',
+    component: ApplyList,
     roles: [1, 2]
   },
   {

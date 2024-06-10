@@ -6,6 +6,7 @@ export const userlist = [
         license: {
             "SMARTPASS-Trial": "",
             "SMARTPASS-Pro": "",
+            // "EnOL Enterprise 1k": "",
         }
     },
     {
@@ -40,7 +41,9 @@ export const licenselist = [
     {
         _id: "SMARTPASS_trial",
         name: "SMARTPASS Trial",
-        product: "SMARTPASS",
+        description: "SMARTPASS Trial",
+        duration: 30,
+        cost: 0,
         parameters: [
             { _id: "amount", name: "amount", type: "text", options: [], text: "" },
             { _id: "expiredays", name: "expiredays", type: "text", options: [], text: "" },
@@ -53,7 +56,9 @@ export const licenselist = [
     {
         _id: "SMARTPASS_pro",
         name: "SMARTPASS Pro",
-        product: "SMARTPASS",
+        description: "SMARTPASS Pro",
+        duration: 0,
+        cost: 100,
         parameters: [
             { _id: "count", name: "count", type: "text", options: [], text: "" },
             { _id: "expiredays", name: "expiredays", type: "text", options: [], text: "" },
@@ -64,7 +69,9 @@ export const licenselist = [
     // {
     //     _id: "ENOL_1k",
     //     name: "EnOL Enterprise 1k",
-    //     product: "ENOL",
+    //     description: "EnOL Enterprise 1k",
+     //    duration: 0,
+     //    cost: 0,
     //     parameters: [
     //         { _id: "hostname", name: "hostname", type: "textarea", options: [], text: "" },
     //         { _id: "hostip", name: "hostip", type: "textarea", options: [], text: "" },
@@ -79,7 +86,9 @@ export const licenselist = [
     // {
     //     _id: "ENOL_5k",
     //     name: "EnOL Enterprise 5k",
-    //     product: "ENOL",
+    //     description: "EnOL Enterprise 5k",
+     //    duration: 0,
+     //    cost: 0,
     //     parameters: [
     //         { _id: "amount", name: "amount", type: "const", options: [], text: "1000" },
     //     ]
@@ -97,14 +106,14 @@ export const loglist = [
     {
         _id: "l-3",
         account: "Admin",
-        name: "轉移/下載 授權",
+        name: "轉移/下載/申請 授權",
         description: "轉移 SMARTPASS Trial 至 Operator, 400",
         datetime: "2024-06-06 10:00"
     },
     {
         _id: "l-6",
         account: "Admin",
-        name: "轉移/下載 授權",
+        name: "轉移/下載/申請 授權",
         description: "轉移 SMARTPASS Pro 至 Operator, 400",
         datetime: "2024-06-06 10:00"
     },
@@ -125,22 +134,62 @@ export const loglist = [
     {
         _id: "l-4",
         account: "Operator",
-        name: "轉移/下載 授權",
+        name: "轉移/下載/申請 授權",
         description: "轉移 SMARTPASS Trial 至 UserA, 10",
         datetime: "2024-06-06 10:10"
     },
     {
         _id: "l-5",
         account: "Operator",
-        name: "轉移/下載 授權",
+        name: "轉移/下載/申請 授權",
         description: "轉移 SMARTPASS Pro 至 UserB, 10",
         datetime: "2024-06-06 10:20"
     },
     {
+        _id: "l-8",
+        account: "UserA",
+        name: "轉移/下載/申請 授權",
+        description: "下載 SMARTPASS Trial, 10",
+        datetime: "2024-06-06 10:30"
+    },
+    {
         _id: "l-7",
         account: "UserA",
-        name: "轉移/下載 授權",
-        description: "下載 SMARTPASS Pro, 10",
-        datetime: "2024-06-06 10:30"
+        name: "轉移/下載/申請 授權",
+        description: "申請 SMARTPASS Pro, 10",
+        datetime: "2024-06-06 10:40"
+    },
+]
+
+export const applylist = [
+    {
+        _id: "a-1",
+        applicant: "UserA",
+        target: "Operator",
+        license: "SMARTPASS-Pro",
+        count: 50,
+        status: "Under Approval",
+        description: "The applicant must provide all necessary documentation.",
+        datetime: "2024-06-06 08:0"
+    },
+    {
+        _id: "a-2",
+        applicant: "UserA",
+        target: "Operator",
+        license: "SMARTPASS-Pro",
+        count: 50,
+        status: "Rejected",
+        description: "We have identified potential threats and would like to implement effective anti-coercion strategies to safeguard our personnel and assets.",
+        datetime: "2024-06-06 08:0"
+    },
+    {
+        _id: "a-3",
+        applicant: "UserA",
+        target: "Operator",
+        license: "SMARTPASS-Pro",
+        count: 50,
+        status: "Approved",
+        description: "Your expertise and prompt response to these matters would be invaluable.",
+        datetime: "2024-06-06 08:0"
     },
 ]

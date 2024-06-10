@@ -20,12 +20,13 @@ import {
 } from '@material-ui/core';
 
 import {
-  License
+  License,
+  PostAdd
 } from "../../images/icons";
 
 import { userlist } from "../../utils/constant";
 
-const DialogSection = ({
+const TransferSection = ({
   onConfirm = () => { },
 }) => {
   const [state, setState] = React.useState({ user: "", amount: 0 });
@@ -67,6 +68,48 @@ const DialogSection = ({
     </>)
 }
 
+const ApplySection = ({
+  onConfirm = () => { },
+}) => {
+  const [state, setState] = React.useState({ user: "", amount: 0 });
+  const { closeDialog } = useContext(GlobalContext);
+  return (
+    <>
+      <DialogContent
+        dividers
+        style={{
+          width: 500
+        }}>
+        <Select
+          value={state.user}
+          displayEmpty
+          onChange={e => setState({ ...state, user: e.target.value })}
+        >
+          <MenuItem value="">申請對象</MenuItem>
+          {userlist.map(user => <MenuItem key={user._id}>{user.name}</MenuItem>)}
+        </Select>
+        <div
+          style={{ marginTop: 20 }}
+        >
+          <TextField
+            label="申請數量"
+            type="number"
+            value={state.amount}
+            onChange={e => setState({ ...state, amount: e.target.value })}
+          />
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog}>
+          Cancel
+        </Button>
+        <Button onClick={() => onConfirm(state)}>
+          Confirm
+        </Button>
+      </DialogActions>
+    </>)
+}
+
 const MyLicense = () => {
   const { account, role } = useContext(AuthContext);
   const { t, openDialog } = useContext(GlobalContext);
@@ -75,17 +118,25 @@ const MyLicense = () => {
 
   const handleSetDialog = (row) => {
     openDialog({
-      title: `${row.name}'s Generator`,
+      title: `Download ${row.name}`,
       section: <Generator onConfirm={state => console.log(state)} license={row.license} />
     })
   }
 
   const handleSetTransferDialog = (row) => {
     openDialog({
-      title: `Transfer ${row.name}'`,
-      section: <DialogSection onConfirm={state => console.log(state)} />
+      title: `Transfer ${row.name}`,
+      section: <TransferSection onConfirm={state => console.log(state)} />
     })
   }
+
+  const handleSetApplyDialog = (row) => {
+    openDialog({
+      title: `Apply ${row.name}`,
+      section: <ApplySection onConfirm={state => console.log(state)} />
+    })
+  }
+
 
   return (
     <Paper>
@@ -108,6 +159,7 @@ const MyLicense = () => {
         rowActions={[
           { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon />, showMenuItem: (row) => role === 1 || row.amount > 0 },
           { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => (role === 1 || role === 2) && row.amount },
+          { name: t('apply'), onClick: (e, row) => handleSetApplyDialog(row), icon: <PostAdd />, showMenuItem: () => (role === 2 || role === 3) },
         ]}
       // dense
       />
