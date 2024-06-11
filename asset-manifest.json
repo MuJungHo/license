@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.853b41c6.chunk.css",
-    "main.js": "/static/js/main.8cc1403d.chunk.js",
-    "main.js.map": "/static/js/main.8cc1403d.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.007aa73a.js",
-    "runtime-main.js.map": "/static/js/runtime-main.007aa73a.js.map",
-    "static/css/2.378129c6.chunk.css": "/static/css/2.378129c6.chunk.css",
-    "static/js/2.c0dfb6cd.chunk.js": "/static/js/2.c0dfb6cd.chunk.js",
-    "static/js/2.c0dfb6cd.chunk.js.map": "/static/js/2.c0dfb6cd.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.5ef50d1932a8211b63fa0960dc666663.js": "/precache-manifest.5ef50d1932a8211b63fa0960dc666663.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.378129c6.chunk.css.map": "/static/css/2.378129c6.chunk.css.map",
-    "static/css/main.853b41c6.chunk.css.map": "/static/css/main.853b41c6.chunk.css.map",
-    "static/js/2.c0dfb6cd.chunk.js.LICENSE.txt": "/static/js/2.c0dfb6cd.chunk.js.LICENSE.txt",
-    "static/js/main.8cc1403d.chunk.js.LICENSE.txt": "/static/js/main.8cc1403d.chunk.js.LICENSE.txt",
-    "static/media/delta.daf67dd1.svg": "/static/media/delta.daf67dd1.svg"
+    "main.css": "/delta-license/static/css/main.853b41c6.chunk.css",
+    "main.js": "/delta-license/static/js/main.2e244c1d.chunk.js",
+    "main.js.map": "/delta-license/static/js/main.2e244c1d.chunk.js.map",
+    "runtime-main.js": "/delta-license/static/js/runtime-main.1423d3ad.js",
+    "runtime-main.js.map": "/delta-license/static/js/runtime-main.1423d3ad.js.map",
+    "static/css/2.378129c6.chunk.css": "/delta-license/static/css/2.378129c6.chunk.css",
+    "static/js/2.c0dfb6cd.chunk.js": "/delta-license/static/js/2.c0dfb6cd.chunk.js",
+    "static/js/2.c0dfb6cd.chunk.js.map": "/delta-license/static/js/2.c0dfb6cd.chunk.js.map",
+    "index.html": "/delta-license/index.html",
+    "precache-manifest.96477e914fd687f04f0454a16a158cb5.js": "/delta-license/precache-manifest.96477e914fd687f04f0454a16a158cb5.js",
+    "service-worker.js": "/delta-license/service-worker.js",
+    "static/css/2.378129c6.chunk.css.map": "/delta-license/static/css/2.378129c6.chunk.css.map",
+    "static/css/main.853b41c6.chunk.css.map": "/delta-license/static/css/main.853b41c6.chunk.css.map",
+    "static/js/2.c0dfb6cd.chunk.js.LICENSE.txt": "/delta-license/static/js/2.c0dfb6cd.chunk.js.LICENSE.txt",
+    "static/js/main.2e244c1d.chunk.js.LICENSE.txt": "/delta-license/static/js/main.2e244c1d.chunk.js.LICENSE.txt",
+    "static/media/delta.daf67dd1.svg": "/delta-license/static/media/delta.daf67dd1.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.007aa73a.js",
+    "static/js/runtime-main.1423d3ad.js",
     "static/css/2.378129c6.chunk.css",
     "static/js/2.c0dfb6cd.chunk.js",
     "static/css/main.853b41c6.chunk.css",
-    "static/js/main.8cc1403d.chunk.js"
+    "static/js/main.2e244c1d.chunk.js"
   ]
 }
