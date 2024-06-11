@@ -70,8 +70,8 @@ export const licenselist = [
     //     _id: "ENOL_1k",
     //     name: "EnOL Enterprise 1k",
     //     description: "EnOL Enterprise 1k",
-     //    duration: 0,
-     //    cost: 0,
+    //    duration: 0,
+    //    cost: 0,
     //     parameters: [
     //         { _id: "hostname", name: "hostname", type: "textarea", options: [], text: "" },
     //         { _id: "hostip", name: "hostip", type: "textarea", options: [], text: "" },
@@ -87,8 +87,8 @@ export const licenselist = [
     //     _id: "ENOL_5k",
     //     name: "EnOL Enterprise 5k",
     //     description: "EnOL Enterprise 5k",
-     //    duration: 0,
-     //    cost: 0,
+    //    duration: 0,
+    //    cost: 0,
     //     parameters: [
     //         { _id: "amount", name: "amount", type: "const", options: [], text: "1000" },
     //     ]
@@ -99,64 +99,64 @@ export const loglist = [
     {
         _id: "l-3",
         account: "Admin",
-        name: "新增/刪除 使用者",
-        description: "新增 Operator",
+        name: "使用者",
+        description: "新增,名稱=Operator",
         datetime: "2024-06-06 09:50"
     },
     {
         _id: "l-3",
         account: "Admin",
-        name: "轉移/下載/申請 授權",
-        description: "轉移 SMARTPASS Trial 至 Operator, 400",
+        name: "授權",
+        description: "轉移,授權=SMARTPASS Trial,對象=Operator,數量=400",
         datetime: "2024-06-06 10:00"
     },
     {
         _id: "l-6",
         account: "Admin",
-        name: "轉移/下載/申請 授權",
-        description: "轉移 SMARTPASS Pro 至 Operator, 400",
+        name: "授權",
+        description: "轉移,授權=SMARTPASS Pro,對象=Operator,數量=400",
         datetime: "2024-06-06 10:00"
     },
     {
         _id: "l-1",
         account: "Operator",
-        name: "新增/刪除 使用者",
-        description: "新增 UserA",
+        name: "使用者",
+        description: "新增,名稱=UserA",
         datetime: "2024-06-06 09:30"
     },
     {
         _id: "l-2",
         account: "Operator",
-        name: "新增/刪除 使用者",
-        description: "新增 UserB",
+        name: "使用者",
+        description: "新增,名稱=UserB",
         datetime: "2024-06-06 09:40"
     },
     {
         _id: "l-4",
         account: "Operator",
-        name: "轉移/下載/申請 授權",
-        description: "轉移 SMARTPASS Trial 至 UserA, 10",
+        name: "授權",
+        description: "轉移,授權=SMARTPASS Trial,對象=UserA,數量=10",
         datetime: "2024-06-06 10:10"
     },
     {
         _id: "l-5",
         account: "Operator",
-        name: "轉移/下載/申請 授權",
-        description: "轉移 SMARTPASS Pro 至 UserB, 10",
+        name: "授權",
+        description: "轉移,授權=SMARTPASS Pro,對象=UserB,數量=10",
         datetime: "2024-06-06 10:20"
     },
     {
         _id: "l-8",
         account: "UserA",
-        name: "轉移/下載/申請 授權",
-        description: "下載 SMARTPASS Trial, 10",
+        name: "授權",
+        description: "下載,授權=SMARTPASS Trial,數量=10",
         datetime: "2024-06-06 10:30"
     },
     {
         _id: "l-7",
         account: "UserA",
-        name: "轉移/下載/申請 授權",
-        description: "申請 SMARTPASS Pro, 10",
+        name: "授權",
+        description: "申請,授權=SMARTPASS Pro,數量=10",
         datetime: "2024-06-06 10:40"
     },
 ]
@@ -179,7 +179,7 @@ export const applylist = [
         license: "SMARTPASS-Pro",
         count: 50,
         status: "Rejected",
-        description: "We have identified potential threats and would like to implement effective anti-coercion strategies to safeguard our personnel and assets.",
+        description: "We would like to implement effective anti-coercion strategies to safeguard our personnel and assets.",
         datetime: "2024-06-06 08:0"
     },
     {

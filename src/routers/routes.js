@@ -7,7 +7,6 @@ import Log from '../Views/Log';
 
 
 import {
-  Home as HomeIcon,
   ManageAccount,
   License as LicenseIcon
 } from "../images/icons";
