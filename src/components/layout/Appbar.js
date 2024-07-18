@@ -115,7 +115,7 @@ const Profile = () => {
 
 const Appbar = ({ open }) => {
   const classes = useStyles();
-  const { logout } = useContext(AuthContext);
+  const { logout, authedApi } = useContext(AuthContext);
   const { locale, changeLocale, t, changeTheme, theme, openDialog } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -136,6 +136,11 @@ const Appbar = ({ open }) => {
       title: t("user-profile"),
       section: <Profile />
     })
+  }
+
+  const handleLogout = async () => {
+    await authedApi.tokenLogout()
+    logout()
   }
 
   return (
@@ -175,7 +180,7 @@ const Appbar = ({ open }) => {
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
           <MenuItem onClick={handleSetDialog}>{t("user-profile")}</MenuItem>
-          <MenuItem onClick={logout}>{t('logout')}</MenuItem>
+          <MenuItem onClick={handleLogout}>{t('logout')}</MenuItem>
         </Menu>
         <Menu
           open={languageMenuOpen}

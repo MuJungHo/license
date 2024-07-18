@@ -8,6 +8,7 @@ import {
 
 // import { useHistory } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import {
   TextField, Checkbox, Radio, Button,
@@ -53,6 +54,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+const toBase64 = file => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = reject;
+});
 
 const Parameter = ({ parameter, state, setState }) => {
   const classes = useStyles();
@@ -72,6 +79,16 @@ const Parameter = ({ parameter, state, setState }) => {
     }
   }
 
+  const handleUploadFile = async (e, key) => {
+    let base64String = await toBase64(e.target.files[0]);
+    const file = base64String.split(",")[1];
+    setState({
+      ...state,
+      [key]: file
+    })
+    // e.target.value = null
+  }
+
   return (<div className={classes.info}>
     <span>{parameter.name}:</span> {{
       "text": <TextField
@@ -80,6 +97,14 @@ const Parameter = ({ parameter, state, setState }) => {
         onChange={e => setState({
           ...state,
           [parameter.name]: e.target.value
+        })}
+      />,
+      "number": <TextField
+        type="number"
+        value={state[parameter.name] || ""}
+        onChange={e => setState({
+          ...state,
+          [parameter.name]: Number(e.target.value)
         })}
       />,
       "date": <TextField
@@ -127,33 +152,35 @@ const Parameter = ({ parameter, state, setState }) => {
           label={option}
         />)}
       </RadioGroup>,
-      "upload": <input type="file" />
+      "upload": <input type="file"
+        onChange={e => handleUploadFile(e, parameter.name)}
+      />
     }[parameter.type]}</div>)
 }
 
 export default ({
-  onConfirm = () => { }
+  onConfirm = () => { },
+  productid
 }) => {
   // const { t } = useContext(GlobalContext);
   const { closeDialog } = useContext(GlobalContext);
+  const { authedApi } = useContext(AuthContext);
+  const [product, setProduct] = React.useState([])
 
-  const license = {
-    id: "SMARTPASS_pro",
-    name: "SMARTPASS Pro",
-    product: "SMARTPASS",
-    parameters: [
-      { _id: "count", name: "count", type: "text", options: [], text: "" },
-      { _id: "expiredays", name: "expiredays", type: "text", options: [], text: "" },
-      { _id: "upload", name: "upload", type: "upload", options: [], text: "" },
-      { _id: "purpose", name: "purpose", type: "text", options: [], text: "" },
-    ]
+  React.useEffect(() => {
+    getProduct()
+  }, [])
+
+  const getProduct = async () => {
+    const _product = await authedApi.getProduct({ productid })
+    _product.parameters = [];
+    if (_product.fields) {
+      _product.parameters = JSON.parse(_product.fields);
+    }
+    setProduct(_product)
   }
 
-  const _state = license.parameters
-  .reduce((obj, cur) => ({
-    ...obj, [cur.name]: cur.type === "const" ? cur.text : ""
-  }), {})
-  const [state, setState] = React.useState(_state)
+  const [state, setState] = React.useState({})
 
   return (
     <>
@@ -162,7 +189,7 @@ export default ({
         style={{
           width: 500
         }}>
-        {license.parameters.map(parameter => <Parameter
+        {product.parameters?.map(parameter => <Parameter
           key={parameter._id}
           state={state}
           setState={setState}

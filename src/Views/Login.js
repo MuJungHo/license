@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { Redirect } from "react-router-dom";
-import { getAccountInfo } from '../utils/apis';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   TextField,
@@ -15,6 +14,7 @@ import {
   Card
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../images/delta.svg';
+import { getKey, tokenlogin } from '../utils/apis';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -65,24 +65,39 @@ const useStyles = makeStyles(theme => ({
 
 const Login = () => {
   const classes = useStyles();
-  const [account, setAccount] = useState("");
-  const [password, setPassword] = useState("");
+  const md5 = require("md5");
+  const [email, setEmail] = useState("admin@bb.cc");
+  const [password, setPassword] = useState("Aa123456");
 
-  const { login, token, setKeep, keep } = useContext(AuthContext);
+  const { login, token, setKeep, keep, authedApi } = useContext(AuthContext);
   const { t, changeLocale, locale, openSnackbar } = useContext(GlobalContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const result = await getAccountInfo({ account, password }).catch((message) => openSnackbar({
-      message,
-      severity: "error"
-    }))
+    const timestamp = Date.now();
+    const key = await getKey({ timestamp })
+    const secretkey = key?.secretkey || ""
 
-    let token = result?.token;
-    let role = result?.role;
+    const timeemail = md5(
+      timestamp + '#' + md5(secretkey + '#' + email.toLowerCase()),
+    );
 
-    if (token) login(token, role, account)
+    const timepassword = md5(
+      timestamp + '#' + md5(secretkey + '#' + password),
+    );
+
+    const credentials = Buffer.from(
+      timeemail + ':' + timepassword,
+    ).toString('base64');
+
+    // const credentials = CryptoJS.enc.Base64.stringify(word);
+    const result = await tokenlogin({ credentials, timestamp })
+    const Token = result?.Token;
+    const Accountid = result?.Accountid;
+    const Roleid = result?.Roleid;
+
+    if (Token && Accountid) login(Token, Accountid, Roleid);
   };
 
   if (token) {
@@ -109,9 +124,9 @@ const Login = () => {
               variant="outlined"
               required
               fullWidth
-              value={account}
-              onChange={e => setAccount(e.target.value)}
-              label={t("account")}
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              label={t("email")}
               style={{ marginBottom: 20 }}
             />
           </FormControl>
@@ -121,6 +136,7 @@ const Login = () => {
               variant="outlined"
               required
               fullWidth
+              value={password}
               onChange={e => setPassword(e.target.value)}
               name="password"
               label={t("password")}

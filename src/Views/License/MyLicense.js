@@ -111,16 +111,28 @@ const ApplySection = ({
 }
 
 const MyLicense = () => {
-  const { account, role } = useContext(AuthContext);
+  const { account, role, authedApi, accountid } = useContext(AuthContext);
   const { t, openDialog } = useContext(GlobalContext);
-  const me = userlist.find(user => user._id === account) || { license: {} }
-  const rows = Object.keys(me.license).map(key => ({ _id: key, name: key, amount: role === 1 ? "--" : me.license[key] })) || [];
+  const [rows, setRows] = React.useState([]);
+  // console.log(role)
+  React.useEffect(() => {
+    getMyAccount()
+  }, [])
+
+  const getMyAccount = async () => {
+    const { products } = await authedApi.getAccountInfo({ accountid })
+    let _products = products.map(p => ({ ...p, _id: p.productid }))
+    setRows(_products)
+  }
 
   const handleSetDialog = (row) => {
     openDialog({
-      title: `Download ${row.name}`,
-      section: <Generator onConfirm={state => console.log(state)} license={row.license} />
+      title: `Download ${row.product_name}`,
+      section: <Generator onConfirm={params => handleGenerateLicense(params, row.productid)} productid={row.productid} />
     })
+  }
+
+  const handleGenerateLicense = async (params, productid) => {
   }
 
   const handleSetTransferDialog = (row) => {
@@ -144,8 +156,8 @@ const MyLicense = () => {
         title={`Hi ${account}. 以下是您所擁有的授權`}
         rows={rows}
         columns={[
-          { key: 'name', label: t('name') },
-          { key: 'amount', label: t('amount') },
+          { key: 'product_name', label: t('name') },
+          { key: 'number', label: t('amount') },
         ]}
         checkable={false}
         order="asc"
@@ -158,7 +170,7 @@ const MyLicense = () => {
         ]}
         rowActions={[
           { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon />, showMenuItem: (row) => role === 1 || row.amount > 0 },
-          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => (role === 1 || role === 2) && row.amount },
+          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => role === 1 || (row.amount > 0 && role === 2) },
           { name: t('apply'), onClick: (e, row) => handleSetApplyDialog(row), icon: <PostAdd />, showMenuItem: () => (role === 2 || role === 3) },
         ]}
       // dense

@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
 import { makeStyles } from '@material-ui/core/styles';
+import { useParams } from 'react-router-dom';
 
 import {
   AddBox,
   Delete,
-  ArrowBack
+  ArrowBack,
+  Save
 } from '@material-ui/icons';
 
 import {
@@ -15,7 +17,9 @@ import {
 import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { TextField, Paper, Button } from "../../components/common";
+import { AuthContext } from "../../contexts/AuthContext";
+import { TextField, Paper, Button, IconButton } from "../../components/common";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%'
@@ -55,24 +59,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Parameter = ({ parameter }) => {
+const Parameter = ({ parameter, onParameterChange }) => {
   const classes = useStyles();
   return (<React.Fragment>
     <div>
       <div style={{ display: 'flex' }}>
-        <div className={classes.info}><span>Key:</span> <TextField value={parameter.name} /></div>
+        <div className={classes.info}><span>Key:</span> <TextField
+          onChange={e => onParameterChange(parameter, 'name', e.target.value)}
+          value={parameter.name} /></div>
         <div className={classes.info}><span>Type:</span> <Select
+          onChange={e => onParameterChange(parameter, 'type', e.target.value)}
           value={parameter.type} >
           {
             [
               { label: "text", value: "text" },
-              { label: "textarea", value: "textarea" },
-              { label: "const", value: "const" },
-              { label: "dropdown", value: "dropdown" },
-              { label: "checkboxes", value: "checkboxes" },
-              { label: "checkbox", value: "checkbox" },
-              { label: "radio", value: "radio" },
-              { label: "date", value: "date" },
+              { label: "number", value: "number" },
+              // { label: "textarea", value: "textarea" },
+              // { label: "const", value: "const" },
+              // { label: "dropdown", value: "dropdown" },
+              // { label: "checkboxes", value: "checkboxes" },
+              // { label: "checkbox", value: "checkbox" },
+              // { label: "radio", value: "radio" },
+              // { label: "date", value: "date" },
               { label: "upload", value: "upload" },
             ].map(option => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)
           }
@@ -114,17 +122,47 @@ export default () => {
   const classes = useStyles();
   const history = useHistory();
   const { t } = useContext(GlobalContext);
-  // const { licenseid } = useParams();
-  const license = {
-    id: "SMARTPASS_pro",
-    name: "SMARTPASS Pro",
-    product: "SMARTPASS",
-    parameters: [
-      { _id: "count", name: "count", type: "text", options: [], text: "" },
-      { _id: "expiredays", name: "expiredays", type: "text", options: [], text: "" },
-      { _id: "upload", name: "upload", type: "upload", options: [], text: "" },
-      { _id: "purpose", name: "purpose", type: "text", options: [], text: "" },
-    ]
+  const { licenseid } = useParams();
+
+  const { authedApi } = useContext(AuthContext);
+  const [product, setProduct] = React.useState({
+    name: "",
+    description: "",
+    parameters: []
+  })
+
+  React.useEffect(() => {
+    getProduct()
+  }, [])
+
+  const getProduct = async () => {
+    const _product = await authedApi.getProduct({ productid: licenseid });
+    _product.parameters = [];
+    if (_product.fields) {
+      _product.parameters = JSON.parse(_product.fields);
+    }
+    setProduct(_product)
+  }
+
+  const handleAddParamter = () => {
+    const _id = Date.now();
+    let _parameters = [...product.parameters, { _id, name: "", type: "text", options: [], text: "" }];
+    let _product = { ...product, parameters: _parameters, fields: JSON.stringify(_parameters) }
+    setProduct(_product)
+  }
+
+  const handleSaveProduct = async () => {
+    await authedApi.editProduct({
+      data: {
+        ...product
+      }
+    })
+  }
+
+  const onParameterChange = (parameter, key, value) => {
+    let _parameters = [...product.parameters].map(p => p._id === parameter._id ? { ...parameter, [key]: value } : p)
+    let _product = { ...product, parameters: _parameters, fields: JSON.stringify(_parameters) }
+    setProduct(_product)
   }
 
   return (
@@ -134,22 +172,29 @@ export default () => {
         onClick={() => history.push('/licenselist')}>
         <ArrowBack />
       </Button>
+      <Button
+        onClick={handleSaveProduct}
+        style={{ marginBottom: 20 }}>
+        <Save />
+      </Button>
       <Paper style={{ marginBottom: 20 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', padding: 8 }}>
           <div className={classes.info}>
             <span>{t("name")}</span>
-            <TextField value={license.name} />
+            <TextField value={product.name} />
           </div>
           <div className={classes.info}>
-            <span>{t("product")}</span>
-            <TextField value={license.product} />
+            <span>{t("description")}</span>
+            <TextField value={product.description} />
           </div>
         </div>
       </Paper>
       <Paper>
-        {license.parameters?.map(parameter => <Parameter
+        <IconButton onClick={handleAddParamter}><AddBox /></IconButton>
+        {product.parameters.map(parameter => <Parameter
           key={parameter._id}
           parameter={parameter}
+          onParameterChange={onParameterChange}
         />)}
       </Paper>
     </div>

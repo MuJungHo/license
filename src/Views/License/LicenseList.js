@@ -13,18 +13,33 @@ import { licenselist } from "../../utils/constant";
 
 const LicenseList = () => {
   const { t } = useContext(GlobalContext);
-  const { role } = useContext(AuthContext);
+  const { role, authedApi } = useContext(AuthContext);
   const history = useHistory();
+  const [products, setProducts] = React.useState([])
+
+  React.useEffect(() => {
+    getProductList()
+  }, [])
+
+  const getProductList = async () => {
+    const { result } = await authedApi.getProductList({
+      data: {
+      },
+      limit: 50,
+      page: 1
+    })
+    let _products = result.map(p => ({ ...p, _id: p.productid }))
+    setProducts(_products)
+  }
+  
   return (
     <Paper>
       <Table
         title={t("thing-list", { thing: t("license") })}
-        rows={licenselist}
+        rows={products}
         columns={[
           { key: 'name', label: t('name') },
           { key: 'description', label: t('description') },
-          { key: 'duration', label: t('duration') },
-          { key: 'cost', label: t('cost') },
         ]}
         checkable={role === 1}
         order="asc"

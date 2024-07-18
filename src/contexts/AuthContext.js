@@ -1,23 +1,24 @@
 import React, { createContext, useState } from "react";
+import { api } from '../utils/apis';
 
 const AuthContext = createContext();
 
 function AuthProvider(props) {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [role, setRole] = useState(Number(localStorage.getItem('role')));
-  const [account, setAccount] = useState(localStorage.getItem('account') || "");
+  const [accountid, setAccountId] = useState(localStorage.getItem('accountid') || "");
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
 
-  const login = async (jwtToken, role, account) => {
-    setToken(jwtToken);
+  const login = async (jwtToken, accountid, role) => {
     setRole(role)
-    setAccount(account)
+    setToken(jwtToken);
+    setAccountId(accountid)
     localStorage.setItem('keep', keep ? 1 : 0)
 
     if (keep) {
-      localStorage.setItem('token', jwtToken)
       localStorage.setItem('role', role)
-      localStorage.setItem('account', account)
+      localStorage.setItem('token', jwtToken)
+      localStorage.setItem('accountid', accountid)
     }
   };
 
@@ -29,10 +30,11 @@ function AuthProvider(props) {
   const value = {
     token,
     role,
-    account,
+    accountid,
     login,
     logout,
     setKeep,
+    authedApi: api(token, logout)
   };
 
   return <AuthContext.Provider value={value} {...props} />;
