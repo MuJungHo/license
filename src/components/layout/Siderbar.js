@@ -192,7 +192,7 @@ const SingleLevel = ({ route, open }) => {
 const Siderbar = ({ open, setOpen }) => {
   const classes = useStyles();
   const { role } = useContext(AuthContext);
-
+  
   return (
     <Drawer
       variant="permanent"

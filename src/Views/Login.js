@@ -63,11 +63,12 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 const ron = "ron.ho@deltaww.com";
+const mmm = "mmm";
 const admin = "admin@bb.cc"
 const Login = () => {
   const classes = useStyles();
   const md5 = require("md5");
-  const [email, setEmail] = useState(ron);
+  const [email, setEmail] = useState(mmm);
   const [password, setPassword] = useState("Aa123456");
 
   const { login, token, setKeep, keep, authedApi } = useContext(AuthContext);
@@ -98,7 +99,7 @@ const Login = () => {
     const Accountid = result?.Accountid;
     const Roleid = result?.Roleid;
 
-    if (Token && Accountid) login(Token, Accountid, Roleid);
+    if (Token && Accountid) login(Token, Accountid, Roleid, email);
   };
 
   if (token) {

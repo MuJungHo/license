@@ -6,24 +6,30 @@ const AuthContext = createContext();
 function AuthProvider(props) {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [role, setRole] = useState(Number(localStorage.getItem('role')));
+  const [account, setAccount] = useState(localStorage.getItem('account') || "");
   const [accountid, setAccountId] = useState(localStorage.getItem('accountid') || "");
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
 
-  const login = async (jwtToken, accountid, role) => {
-    setRole(role)
+  const login = async (jwtToken, accountid, role, account) => {
+    setRole(role);
     setToken(jwtToken);
-    setAccountId(accountid)
-    localStorage.setItem('keep', keep ? 1 : 0)
+    setAccount(account);
+    setAccountId(accountid);
+    localStorage.setItem('keep', keep ? 1 : 0);
 
     if (keep) {
-      localStorage.setItem('role', role)
-      localStorage.setItem('token', jwtToken)
-      localStorage.setItem('accountid', accountid)
+      localStorage.setItem('role', role);
+      localStorage.setItem('token', jwtToken);
+      localStorage.setItem('account', account);
+      localStorage.setItem('accountid', accountid);
     }
   };
 
   const logout = () => {
+    setRole(null);
     setToken(null);
+    setAccount(null);
+    setAccountId(null);
     localStorage.clear()
   };
 
@@ -31,6 +37,7 @@ function AuthProvider(props) {
     token,
     role,
     accountid,
+    account,
     login,
     logout,
     setKeep,

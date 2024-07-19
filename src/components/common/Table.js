@@ -121,7 +121,6 @@ const EnhancedTableToolbar = (props) => {
       </Typography>)}
 
       {numSelected === 0 && <TextField
-        style={{ marginRight: 20 }}
         type="search"
         size="small"
         value=""

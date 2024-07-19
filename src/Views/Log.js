@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-// import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
 import {
   Table,
   Paper,
@@ -19,14 +19,30 @@ import {
 // import {
 //   License
 // } from "../images/icons";
-// import moment from "moment/moment";
-
-import { loglist } from "../utils/constant";
+import moment from "moment/moment";
 
 const User = () => {
   const { t } = useContext(GlobalContext);
-  // const { role } = useContext(AuthContext);
+  const { authedApi } = useContext(AuthContext);
+  const [loglist, setLoglist] = React.useState([])
 
+  React.useEffect(() => {
+    getLogList()
+  }, [])
+
+  const getLogList = async () => {
+    const { result } = await authedApi.getLogList({
+      data: {
+      },
+      limit: 10,
+      page: 1,
+      start: moment().startOf('date').valueOf(),
+      end: moment().endOf('date').valueOf(),
+
+    });
+    let _logs = result.map(l => ({ ...l, _id: l.logid }))
+    setLoglist(_logs)
+  }
 
   return (
     <Paper>
@@ -35,9 +51,9 @@ const User = () => {
         rows={loglist}
         columns={[
           { key: 'datetime', label: t('datetime') },
-          { key: 'account', label: t('account') },
-          { key: 'name', label: t('name') },
-          { key: 'description', label: t('description') },
+          { key: 'accountname', label: t('account') },
+          { key: 'condition', label: t('condition') },
+          { key: 'detail', label: t('detail') },
         ]}
         checkable={false}
         order="asc"

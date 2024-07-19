@@ -97,7 +97,7 @@ const Profile = () => {
   return (
     <>
       <DialogContent dividers style={{ width: 250 }}>
-        <Text>{`${t("account")}: ${account}`}</Text>
+        <Text>{`${t("email")}: ${account}`}</Text>
         <Text>{`${t("role")}: ${{
           1: "Admin",
           2: "Operator",

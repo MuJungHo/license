@@ -1,8 +1,8 @@
 import User from '../Views/User';
+import ProductList from '../Views/License/ProductList';
 import LicenseList from '../Views/License/LicenseList';
-import ApplyList from '../Views/License/ApplyList';
-import License from '../Views/License/License';
-import MyLicense from '../Views/License/MyLicense';
+import Product from '../Views/License/Product';
+import MyProduct from '../Views/License/MyProduct';
 import Log from '../Views/Log';
 
 
@@ -14,14 +14,14 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const routes = [
   {
-    path: "/license",
+    path: "",
     name: "_license",
     icon: LicenseIcon,
     sider: true,
     children: [
-      { name: "_licenselist", path: "/licenselist", roles: [1, 2, 3] },
-      { name: "_applylist", path: "/applylist", roles: [1, 2] },
-      { name: "myLicense", path: "/licenseme", roles: [1, 2, 3] },
+      { name: "_license-list", path: "/license-list", roles: [1, 2, 3] },
+      { name: "_product-list", path: "/product-list", roles: [1] },
+      { name: "_product-me", path: "/product-me", roles: [1, 2, 3] },
     ],
     roles: [1, 2, 3]
   },
@@ -42,23 +42,23 @@ const routes = [
     roles: [1, 2]
   },
   {
-    path: '/licenselist',
-    component: LicenseList,
+    path: '/product-list',
+    component: ProductList,
     roles: [1, 2, 3]
   },
   {
-    path: '/applylist',
-    component: ApplyList,
+    path: '/license-list',
+    component: LicenseList,
     roles: [1, 2]
   },
   {
-    path: '/licenseitem/:licenseid',
-    component: License,
+    path: '/product/:productid',
+    component: Product,
     roles: [1, 2]
   },
   {
-    path: '/licenseme',
-    component: MyLicense,
+    path: '/product-me',
+    component: MyProduct,
     roles: [1, 2, 3]
   }
 ]

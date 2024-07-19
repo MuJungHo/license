@@ -122,7 +122,7 @@ export default () => {
   const classes = useStyles();
   const history = useHistory();
   const { t } = useContext(GlobalContext);
-  const { licenseid } = useParams();
+  const { productid } = useParams();
 
   const { authedApi } = useContext(AuthContext);
   const [product, setProduct] = React.useState({
@@ -136,7 +136,7 @@ export default () => {
   }, [])
 
   const getProduct = async () => {
-    const _product = await authedApi.getProduct({ productid: licenseid });
+    const _product = await authedApi.getProduct({ productid });
     _product.parameters = [];
     if (_product.fields) {
       _product.parameters = JSON.parse(_product.fields);
@@ -169,7 +169,7 @@ export default () => {
     <div className={classes.root}>
       <Button
         style={{ marginBottom: 20 }}
-        onClick={() => history.push('/licenselist')}>
+        onClick={() => history.push('/product-list')}>
         <ArrowBack />
       </Button>
       <Button
@@ -181,11 +181,17 @@ export default () => {
         <div style={{ display: 'flex', flexWrap: 'wrap', padding: 8 }}>
           <div className={classes.info}>
             <span>{t("name")}</span>
-            <TextField value={product.name} />
+            <TextField value={product.name} onChange={e => setProduct({
+              ...product,
+              name: e.target.value
+            })} />
           </div>
           <div className={classes.info}>
             <span>{t("description")}</span>
-            <TextField value={product.description} />
+            <TextField value={product.description} onChange={e => setProduct({
+              ...product,
+              description: e.target.value
+            })} />
           </div>
         </div>
       </Paper>

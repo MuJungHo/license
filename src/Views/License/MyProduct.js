@@ -26,95 +26,9 @@ import {
   PostAdd
 } from "../../images/icons";
 
-import { userlist } from "../../utils/constant";
-
-const TransferSection = ({
-  onConfirm = () => { },
-}) => {
-  const [state, setState] = React.useState({ user: "", amount: 0 });
-  const { closeDialog } = useContext(GlobalContext);
-  return (
-    <>
-      <DialogContent
-        dividers
-        style={{
-          width: 500
-        }}>
-        <Select
-          value={state.user}
-          displayEmpty
-          onChange={e => setState({ ...state, user: e.target.value })}
-        >
-          <MenuItem value="">轉移對象</MenuItem>
-          {userlist.map(user => <MenuItem key={user._id}>{user.name}</MenuItem>)}
-        </Select>
-        <div
-          style={{ marginTop: 20 }}
-        >
-          <TextField
-            label="轉移數量"
-            type="number"
-            value={state.amount}
-            onChange={e => setState({ ...state, amount: e.target.value })}
-          />
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={closeDialog}>
-          Cancel
-        </Button>
-        <Button onClick={() => onConfirm(state)}>
-          Confirm
-        </Button>
-      </DialogActions>
-    </>)
-}
-
-const ApplySection = ({
-  onConfirm = () => { },
-}) => {
-  const [state, setState] = React.useState({ user: "", amount: 0 });
-  const { closeDialog } = useContext(GlobalContext);
-  return (
-    <>
-      <DialogContent
-        dividers
-        style={{
-          width: 500
-        }}>
-        <Select
-          value={state.user}
-          displayEmpty
-          onChange={e => setState({ ...state, user: e.target.value })}
-        >
-          <MenuItem value="">申請對象</MenuItem>
-          {userlist.map(user => <MenuItem key={user._id}>{user.name}</MenuItem>)}
-        </Select>
-        <div
-          style={{ marginTop: 20 }}
-        >
-          <TextField
-            label="申請數量"
-            type="number"
-            value={state.amount}
-            onChange={e => setState({ ...state, amount: e.target.value })}
-          />
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={closeDialog}>
-          Cancel
-        </Button>
-        <Button onClick={() => onConfirm(state)}>
-          Confirm
-        </Button>
-      </DialogActions>
-    </>)
-}
-
 const MyLicense = () => {
   const { account, role, authedApi, accountid } = useContext(AuthContext);
-  const { t, openDialog } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog } = useContext(GlobalContext);
   const [rows, setRows] = React.useState([]);
   // console.log(role)
   React.useEffect(() => {
@@ -140,34 +54,36 @@ const MyLicense = () => {
 
   const handleSetTransferDialog = (row) => {
     openDialog({
-      title: `Transfer ${row.name}`,
+      title: `Transfer ${row.product_name}`,
       section: <Transfer onConfirm={state => handleTransferLicense(state, row.productid)} />
     })
   }
 
   const handleTransferLicense = async (state, productid) => {
     await authedApi.postLicenseTransfer({ data: { ...state, productid, consumer_accountid: 17 }, })
+    closeDialog()
   }
 
   const handleSetApplyDialog = (row) => {
     openDialog({
-      title: `Apply ${row.name}`,
+      title: `Apply ${row.product_name}`,
       section: <Apply onConfirm={state => handleApplyLicense(state, row.productid)} />
     })
   }
 
   const handleApplyLicense = async (state, productid) => {
     await authedApi.postLicenseApply({ data: { ...state, productid, provider_accountid: 19 }, })
+    closeDialog()
   }
 
   return (
     <Paper>
       <Table
-        title={`Hi ${account}. 以下是您所擁有的授權`}
+        title={`Hi ${account}. 以下是您所擁有的產品`}
         rows={rows}
         columns={[
           { key: 'product_name', label: t('name') },
-          { key: 'number', label: t('amount') },
+          { key: 'number', label: t('thing-amount', { thing: t("license") }) },
         ]}
         checkable={false}
         order="asc"
@@ -179,7 +95,7 @@ const MyLicense = () => {
         toolbarActions={[
         ]}
         rowActions={[
-          { name: t('commit'), onClick: (e, row) => handleSetCommitDialog(row), icon: <GetAppIcon />, showMenuItem: (row) => role === 1 || row.amount > 0 },
+          { name: t('commit'), onClick: (e, row) => handleSetCommitDialog(row), icon: <GetAppIcon /> },
           { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => role === 1 || (row.amount > 0 && role === 2) },
           { name: t('apply'), onClick: (e, row) => handleSetApplyDialog(row), icon: <PostAdd />, showMenuItem: () => (role === 2 || role === 3) },
         ]}

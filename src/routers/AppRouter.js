@@ -9,7 +9,7 @@ import { AuthContext } from "../contexts/AuthContext";
 
 const AppRouter = () => {
   const { role } = useContext(AuthContext);
-  // console.log(role)
+  console.log(role)
   return (
     <BrowserRouter>
       <Switch>
