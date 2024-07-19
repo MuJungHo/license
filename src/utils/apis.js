@@ -62,13 +62,16 @@ export const api = (token, logout) => {
     getAccountInfo: ({ ...rest }) => promise_(instance.get('/db/account/get', { params: { timestamp, sign, ...rest } })),
     getAccountList: ({ data, ...rest }) => promise_(instance.post('/db/account/list', { ...data }, { params: { sign, timestamp, ...rest } })),
     postAddAccount: ({ data, ...rest }) => promise_(instance.post('/db/account/add', { ...data }, { params: { sign, timestamp, ...rest } })),
+    postEditAccount: ({ data, ...rest }) => promise_(instance.post('/db/account/edit', { ...data }, { params: { sign, timestamp, ...rest } })),
 
     getProductList: ({ data, ...rest }) => promise_(instance.post('/db/product/list', { ...data }, { params: { sign, timestamp, ...rest } })),
     getProduct: ({ ...rest }) => promise_(instance.get('/db/product/get', { params: { timestamp, sign, ...rest } })),
     editProduct: ({ data, ...rest }) => promise_(instance.post('/db/product/edit', { ...data }, { params: { timestamp, sign, ...rest } })),
 
     postLicenseBind: ({ data, ...rest }) => promise_(instance.post('/db/license/bind', { ...data }, { params: { sign, timestamp, ...rest } })),
-    getLicenseDownload: ({ ...rest }) => promise_(instance.get('/db/license/download', { params: { sign, timestamp, ...rest } })),
+    postLicenseCommit: ({ data, ...rest }) => promise_(instance.post('/db/license/commit', { ...data }, { params: { sign, timestamp, ...rest } })),
+    postLicenseApply: ({ data, ...rest }) => promise_(instance.post('/db/license/require', { ...data }, { params: { sign, timestamp, ...rest } })),
+    postLicenseTransfer: ({ data, ...rest }) => promise_(instance.post('/db/license/transfer', { ...data }, { params: { sign, timestamp, ...rest } })),
 
 
 

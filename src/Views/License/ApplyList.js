@@ -15,7 +15,7 @@ import {
 } from '@material-ui/icons';
 
 import { CheckCircleOutline, BlockRounded } from '@material-ui/icons';
-import Generator from "./Generator";
+import Generator from "../../components/License/Generator";
 
 const ApplyList = () => {
   const md5 = require("md5");
@@ -62,8 +62,6 @@ const ApplyList = () => {
     const url = `${host}/cgi-bin/db/license/download?timestamp=${timestamp}&sign=${sign}&ltid=${ltid}`
 
     window.open(url);
-
-    // await authedApi.getLicenseDownload({ ltid })
   }
   return (
     <Paper>

@@ -14,7 +14,7 @@ import {
   TextField, Checkbox, Radio, Button,
   DialogContent,
   DialogActions,
-} from "../../components/common";
+} from "../common";
 import { FormControlLabel } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({

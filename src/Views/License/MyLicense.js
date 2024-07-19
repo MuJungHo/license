@@ -12,7 +12,9 @@ import {
   TextField
 } from "../../components/common";
 import GetAppIcon from '@material-ui/icons/GetApp';
-import Generator from "./Generator";
+import Commit from "../../components/License/Commit";
+import Transfer from "../../components/License/Transfer";
+import Apply from "../../components/License/Apply";
 
 import {
   Select,
@@ -125,30 +127,38 @@ const MyLicense = () => {
     setRows(_products)
   }
 
-  const handleSetDialog = (row) => {
+  const handleSetCommitDialog = (row) => {
     openDialog({
       title: `Download ${row.product_name}`,
-      section: <Generator onConfirm={params => handleGenerateLicense(params, row.productid)} productid={row.productid} />
+      section: <Commit onConfirm={state => handleCommitLicense(state, row.productid)} />
     })
   }
 
-  const handleGenerateLicense = async (params, productid) => {
+  const handleCommitLicense = async (state, productid) => {
+    await authedApi.postLicenseCommit({ data: { ...state, productid }, })
   }
 
   const handleSetTransferDialog = (row) => {
     openDialog({
       title: `Transfer ${row.name}`,
-      section: <TransferSection onConfirm={state => console.log(state)} />
+      section: <Transfer onConfirm={state => handleTransferLicense(state, row.productid)} />
     })
+  }
+
+  const handleTransferLicense = async (state, productid) => {
+    await authedApi.postLicenseTransfer({ data: { ...state, productid, consumer_accountid: 17 }, })
   }
 
   const handleSetApplyDialog = (row) => {
     openDialog({
       title: `Apply ${row.name}`,
-      section: <ApplySection onConfirm={state => console.log(state)} />
+      section: <Apply onConfirm={state => handleApplyLicense(state, row.productid)} />
     })
   }
 
+  const handleApplyLicense = async (state, productid) => {
+    await authedApi.postLicenseApply({ data: { ...state, productid, provider_accountid: 19 }, })
+  }
 
   return (
     <Paper>
@@ -169,7 +179,7 @@ const MyLicense = () => {
         toolbarActions={[
         ]}
         rowActions={[
-          { name: t('download'), onClick: (e, row) => handleSetDialog(row), icon: <GetAppIcon />, showMenuItem: (row) => role === 1 || row.amount > 0 },
+          { name: t('commit'), onClick: (e, row) => handleSetCommitDialog(row), icon: <GetAppIcon />, showMenuItem: (row) => role === 1 || row.amount > 0 },
           { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => role === 1 || (row.amount > 0 && role === 2) },
           { name: t('apply'), onClick: (e, row) => handleSetApplyDialog(row), icon: <PostAdd />, showMenuItem: () => (role === 2 || role === 3) },
         ]}
