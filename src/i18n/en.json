@@ -43,6 +43,7 @@
     "thing-amount": "{{thing}} amount",
     "thing-list": "{{thing}} List",
     "thing-management": "{{thing}} Management",
+    "transaction": "Transaction",
     "transfer": "Transfer",
     "user": "User",
     "user-profile": "User Profile",

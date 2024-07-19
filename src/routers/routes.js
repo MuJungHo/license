@@ -1,6 +1,7 @@
 import User from '../Views/User';
 import ProductList from '../Views/License/ProductList';
-import LicenseList from '../Views/License/LicenseList';
+import TransactionList from '../Views/License/TransactionList';
+import CommitList from '../Views/License/CommitList';
 import Product from '../Views/License/Product';
 import MyProduct from '../Views/License/MyProduct';
 import Log from '../Views/Log';
@@ -20,6 +21,7 @@ const routes = [
     sider: true,
     children: [
       { name: "_license-list", path: "/license-list", roles: [1, 2, 3] },
+      { name: "_transaction-list", path: "/transaction-list", roles: [1, 2, 3] },
       { name: "_product-list", path: "/product-list", roles: [1] },
       { name: "_product-me", path: "/product-me", roles: [1, 2, 3] },
     ],
@@ -47,8 +49,13 @@ const routes = [
     roles: [1, 2, 3]
   },
   {
+    path: '/transaction-list',
+    component: TransactionList,
+    roles: [1, 2]
+  },
+  {
     path: '/license-list',
-    component: LicenseList,
+    component: CommitList,
     roles: [1, 2]
   },
   {

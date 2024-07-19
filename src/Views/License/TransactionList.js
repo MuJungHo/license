@@ -37,6 +37,7 @@ const LicenseList = () => {
   const getLicenseTransactionList = async () => {
     const { result } = await authedApi.getLicenseTransactionList({
       data: {
+        status: [1, 2, 3, 4]
       },
       limit: 50,
       page: 1
@@ -85,7 +86,7 @@ const LicenseList = () => {
   return (
     <Paper>
       <Table
-        title={t("thing-list", { thing: t("license") })}
+        title={t("thing-list", { thing: t("transaction") })}
         rows={transactions}
         columns={[
           { key: 'consumer_name', label: t('consumer') },

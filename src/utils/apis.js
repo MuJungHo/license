@@ -74,6 +74,7 @@ export const api = (token, logout) => {
     deleteProduct: ({ ...rest }) => promise_(instance.delete('/db/product/delete', { params: { sign, timestamp, ...rest } })),
 
     postLicenseBind: ({ data, ...rest }) => promise_(instance.post('/db/license/bind', { ...data }, { params: { sign, timestamp, ...rest } })),
+    postLicenseUnBind: ({ data, ...rest }) => promise_(instance.post('/db/license/unbind', { ...data }, { params: { sign, timestamp, ...rest } })),
     postLicenseCommit: ({ data, ...rest }) => promise_(instance.post('/db/license/commit', { ...data }, { params: { sign, timestamp, ...rest } })),
     postLicenseApply: ({ data, ...rest }) => promise_(instance.post('/db/license/require', { ...data }, { params: { sign, timestamp, ...rest } })),
     postLicenseTransfer: ({ data, ...rest }) => promise_(instance.post('/db/license/transfer', { ...data }, { params: { sign, timestamp, ...rest } })),
