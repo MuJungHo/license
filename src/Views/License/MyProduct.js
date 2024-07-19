@@ -50,6 +50,7 @@ const MyLicense = () => {
 
   const handleCommitLicense = async (state, productid) => {
     await authedApi.postLicenseCommit({ data: { ...state, productid }, })
+    closeDialog()
   }
 
   const handleSetTransferDialog = (row) => {
@@ -60,7 +61,7 @@ const MyLicense = () => {
   }
 
   const handleTransferLicense = async (state, productid) => {
-    await authedApi.postLicenseTransfer({ data: { ...state, productid, consumer_accountid: 17 }, })
+    await authedApi.postLicenseTransfer({ data: { ...state, productid, consumer_accountid: 20 }, })
     closeDialog()
   }
 
@@ -96,7 +97,7 @@ const MyLicense = () => {
         ]}
         rowActions={[
           { name: t('commit'), onClick: (e, row) => handleSetCommitDialog(row), icon: <GetAppIcon /> },
-          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => role === 1 || (row.amount > 0 && role === 2) },
+          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => role === 1 || role === 2 },
           { name: t('apply'), onClick: (e, row) => handleSetApplyDialog(row), icon: <PostAdd />, showMenuItem: () => (role === 2 || role === 3) },
         ]}
       // dense

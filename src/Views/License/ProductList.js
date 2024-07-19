@@ -41,7 +41,14 @@ const LicenseList = () => {
 
   const handleAddProduct = async (product) => {
     await authedApi.postAddProduct({ data: { ...product } })
+    getProductList()
   }
+
+  const handleDeleteProduct = async (product) => {
+    await authedApi.deleteProduct({ productid: product.productid })
+    getProductList()
+  }
+
 
 
   return (
@@ -65,7 +72,7 @@ const LicenseList = () => {
         ] : []}
         rowActions={role === 1 ? [
           { name: t('edit'), onClick: (e, row) => { history.push(`/product/${row._id}`) }, icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => console.log(row), icon: <Delete /> }
+          { name: t('delete'), onClick: (e, row) => handleDeleteProduct(row), icon: <Delete /> }
         ] : []}
       // dense
       />

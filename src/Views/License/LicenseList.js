@@ -25,7 +25,7 @@ import {
 const LicenseList = () => {
   const md5 = require("md5");
 
-  const { t, openDialog } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog } = useContext(GlobalContext);
   const { role, authedApi, token } = useContext(AuthContext);
 
   const [transactions, setTransactions] = React.useState([])
@@ -56,6 +56,7 @@ const LicenseList = () => {
   }
   const handleBindLicense = async (params, ltid) => {
     await authedApi.postLicenseBind({ data: { ...params }, ltid })
+    closeDialog()
     getLicenseTransactionList()
   }
 
@@ -75,6 +76,12 @@ const LicenseList = () => {
     getLicenseTransactionList()
   }
 
+  const handleRejectLicense = async (row) => {
+    const ltid = row.ltid;
+    await authedApi.postLicenseReject({ data: {}, ltid })
+    getLicenseTransactionList()
+  }
+
   return (
     <Paper>
       <Table
@@ -83,8 +90,9 @@ const LicenseList = () => {
         columns={[
           { key: 'consumer_name', label: t('consumer') },
           { key: 'provider_name', label: t('provider') },
-          { key: 'product_name', label: t('license') },
+          { key: 'product_name', label: t('product') },
           { key: 'number', label: t('count') },
+          { key: 'commercial', label: t('commercial') },
           { key: '_status', label: t('status') },
         ]}
         checkable={false}
@@ -98,7 +106,7 @@ const LicenseList = () => {
           { name: t('bind'), onClick: (e, row) => handleBindDialog(row), icon: <ConfirmationNumber />, showMenuItem: (row) => row.status === 5 && !row.is_bind },
           { name: t('download'), onClick: (e, row) => handleDownloadLicense(row.ltid), icon: <GetApp />, showMenuItem: (row) => row.is_bind },
           { name: t('approve'), onClick: (e, row) => handleApproveLicense(row), icon: <CheckCircleOutline />, showMenuItem: (row) => row.status === 1 && role === 1 },
-          { name: t('reject'), onClick: (e, row) => console.log(row), icon: <BlockRounded />, showMenuItem: (row) => row.status === 1 && role === 1 }
+          { name: t('reject'), onClick: (e, row) => handleRejectLicense(row), icon: <BlockRounded />, showMenuItem: (row) => row.status === 1 && role === 1 }
         ]}
       // dense
       />

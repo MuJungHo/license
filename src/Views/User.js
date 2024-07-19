@@ -105,6 +105,11 @@ const User = () => {
     closeDialog()
   }
 
+  const handleDeleteAccount = async user => {
+    await authedApi.deleteAccount({ accountid: user.accountid })
+    getAccountList()
+  }
+
   return (
     <Paper>
       <Table
@@ -127,7 +132,7 @@ const User = () => {
         ] : []}
         rowActions={role === 1 ? [
           { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => console.log(row), icon: <Delete /> }
+          { name: t('delete'), onClick: (e, row) => handleDeleteAccount(row), icon: <Delete /> }
         ] : []}
       // dense
       />

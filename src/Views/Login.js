@@ -62,13 +62,14 @@ const useStyles = makeStyles(theme => ({
   locale: {
   }
 }))
-const ron = "ron.ho@deltaww.com";
+const ronuser = "1234";
+const ron = "ron";
 const mmm = "mmm";
 const admin = "admin@bb.cc"
 const Login = () => {
   const classes = useStyles();
   const md5 = require("md5");
-  const [email, setEmail] = useState(mmm);
+  const [email, setEmail] = useState(ron);
   const [password, setPassword] = useState("Aa123456");
 
   const { login, token, setKeep, keep, authedApi } = useContext(AuthContext);
