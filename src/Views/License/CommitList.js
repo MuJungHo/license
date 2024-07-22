@@ -19,6 +19,7 @@ import Generator from "../../components/License/Generator";
 import {
   TRANSACTION_STATUS
 } from "../../utils/constant";
+import { Download, Verified, Link, LinkOff } from "../../images/icons"
 
 // Status : 1 (require) Status : 2 (approve) Status : 3 (reject) Status : 4 (transfer) Status : 5 (commit)
 
@@ -45,7 +46,8 @@ const CommitList = () => {
     let _transactions = result.map(p => ({
       ...p,
       _id: p.ltid,
-      _status: TRANSACTION_STATUS[p.status]
+      _status: TRANSACTION_STATUS[p.status],
+      _commercial: p.commercial ? <Verified /> : null
     }))
     setTransactions(_transactions)
   }
@@ -92,14 +94,14 @@ const CommitList = () => {
   return (
     <Paper>
       <Table
-        title={t("thing-list", { thing: t("license") })}
+        title={t("thing-list", { thing: t("commit") })}
         rows={transactions}
         columns={[
           { key: 'consumer_name', label: t('consumer') },
           { key: 'provider_name', label: t('provider') },
           { key: 'product_name', label: t('product') },
           { key: 'number', label: t('count') },
-          { key: 'commercial', label: t('commercial') },
+          { key: '_commercial', label: t('commercial') },
         ]}
         checkable={false}
         order="asc"
@@ -109,11 +111,9 @@ const CommitList = () => {
         onSortChange={(isAsc, property) => console.log(isAsc, property)}
         onKeywordSearch={(event) => console.log(event.target.value)}
         rowActions={[
-          { name: t('bind'), onClick: (e, row) => handleBindDialog(row), icon: <ConfirmationNumber />, showMenuItem: (row) => row.status === 5 && !row.is_bind },
-          { name: t('unbind'), onClick: (e, row) => handleUnBindLicense(row), icon: <ConfirmationNumber />, showMenuItem: (row) => row.status === 5 && row.is_bind },
-          { name: t('download'), onClick: (e, row) => handleDownloadLicense(row.ltid), icon: <GetApp />, showMenuItem: (row) => row.is_bind },
-          { name: t('approve'), onClick: (e, row) => handleApproveLicense(row), icon: <CheckCircleOutline />, showMenuItem: (row) => row.status === 1 && role === 1 },
-          { name: t('reject'), onClick: (e, row) => handleRejectLicense(row), icon: <BlockRounded />, showMenuItem: (row) => row.status === 1 && role === 1 }
+          { name: t('bind'), onClick: (e, row) => handleBindDialog(row), icon: <Link />, showMenuItem: (row) => row.status === 5 && !row.is_bind },
+          { name: t('unbind'), onClick: (e, row) => handleUnBindLicense(row), icon: <LinkOff />, showMenuItem: (row) => row.status === 5 && row.is_bind },
+          { name: t('download'), onClick: (e, row) => handleDownloadLicense(row.ltid), icon: <Download />, showMenuItem: (row) => row.is_bind },
         ]}
       // dense
       />

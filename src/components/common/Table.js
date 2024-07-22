@@ -21,13 +21,15 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import { Checkbox, Actions, TextField } from "../common";
+import { DateRangePicker, CustomProvider } from 'rsuite';
+import moment from "moment";
 
 function EnhancedTableHead(props) {
   const {
     classes,
     onSelectAllClick,
     order,
-    orderBy,
+    sort,
     numSelected,
     rowCount,
     rowActions,
@@ -58,15 +60,15 @@ function EnhancedTableHead(props) {
             key={column.key}
             align="left"
             padding="normal"
-            sortDirection={orderBy === column.key ? order : false}
+            sortDirection={sort === column.key ? order : false}
           >
             <TableSortLabel
-              active={orderBy === column.key}
-              direction={orderBy === column.key ? order : 'asc'}
+              active={sort === column.key}
+              direction={sort === column.key ? order : 'asc'}
               onClick={createSortHandler(column.key)}
             >
               {column.label}
-              {orderBy === column.key ? (
+              {sort === column.key ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
@@ -104,8 +106,17 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected, title, toolbarActions, onKeywordSearch } = props;
-
+  const { t } = useContext(GlobalContext);
+  const {
+    numSelected,
+    onDateRangeChange,
+    title, toolbarActions, onKeywordSearch, dateRangePicker } = props;
+  const nowDateTime = moment().unix() * 1000;
+  const [keyword, setKeyword] = React.useState("")
+  const onKeywordChange = (e) => {
+    setKeyword(e.target.value)
+    onKeywordSearch(e.target.value)
+  }
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -119,12 +130,19 @@ const EnhancedTableToolbar = (props) => {
       ) : (<Typography className={classes.title} variant="h6" id="tableTitle" component="div">
         {title}
       </Typography>)}
+      {dateRangePicker && <DateRangePicker
+        format="yyyy-MM-dd HH:mm:ss"
+        locale={t("daterangepicker")}
+        cleanable={false}
+        // value={[new Date(nowDateStartTime), new Date(nowDateEndTime)]}
+        defaultValue={[new Date(nowDateTime), new Date(nowDateTime)]}
+        onChange={onDateRangeChange} />}
 
       {numSelected === 0 && <TextField
         type="search"
         size="small"
-        value=""
-        onChange={onKeywordSearch} />}
+        value={keyword}
+        onChange={onKeywordChange} />}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
@@ -186,26 +204,31 @@ const useStyles = makeStyles((theme) => ({
 export default ({
   dense = false,
   checkable = true,
-  page = 0,
-  rowsPerPage = 5,
+  dateRangePicker = false,
   onRowsPerPageChange = () => { },
   onPageChange = () => { },
   onKeywordSearch = () => { },
+  onDateRangeChange = () => { },
   rows = [],
   columns = [],
   onSortChange = () => { },
   rowActions = [],
   toolbarActions = [],
-  orderBy = "",
+  sort = "",
   order = "asc",
-  title = ""
+  title = "",
+  total = 0
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState([]);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const { theme } = useContext(GlobalContext);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    onSortChange(isAsc, property)
+    const isAsc = sort === property && order === 'asc';
+    onSortChange(isAsc ? 'desc' : 'asc', property)
   };
 
   const handleSelectAllClick = (event) => {
@@ -240,86 +263,101 @@ export default ({
 
   const isSelected = (_id) => selected.indexOf(_id) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+    onPageChange(newPage + 1)
+  }
+
+  const handleChangeRowPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+    onRowsPerPageChange(parseInt(event.target.value, 10))
+  }
 
   return (
     <div className={classes.root}>
-      <EnhancedTableToolbar
-        title={title}
-        numSelected={selected.length}
-        toolbarActions={toolbarActions}
-        onKeywordSearch={onKeywordSearch}
-      />
-      <TableContainer>
-        <Table
-          className={classes.table}
-          size={dense ? 'small' : 'medium'}
-        >
-          <EnhancedTableHead
-            classes={classes}
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={rows.length}
-            rowActions={rowActions}
-            columns={columns}
-            checkable={checkable}
-          />
-          <TableBody>
-            {rows.map((row, index) => {
-              const isItemSelected = isSelected(row._id);
-              const labelId = `enhanced-table-checkbox-${index}`;
+      <CustomProvider theme={theme ? "dark" : "light"}>
+        <EnhancedTableToolbar
+          title={title}
+          numSelected={selected.length}
+          toolbarActions={toolbarActions}
+          onKeywordSearch={onKeywordSearch}
+          dateRangePicker={dateRangePicker}
+          onDateRangeChange={onDateRangeChange}
+        />
+        <TableContainer>
+          <Table
+            className={classes.table}
+            size={dense ? 'small' : 'medium'}
+          >
+            <EnhancedTableHead
+              classes={classes}
+              numSelected={selected.length}
+              order={order}
+              sort={sort}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+              rowActions={rowActions}
+              columns={columns}
+              checkable={checkable}
+            />
+            <TableBody>
+              {rows.map((row, index) => {
+                const isItemSelected = isSelected(row._id);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-              return (
-                <TableRow
-                  hover
-                  onClick={(event) => handleClick(event, row._id)}
-                  tabIndex={-1}
-                  key={row._id}
-                  selected={isItemSelected}
-                >
-                  {checkable && <TableCell padding="checkbox">
-                    <Checkbox
-                      color="secondary"
-                      checked={isItemSelected}
-                      inputProps={{ 'aria-labelledby': labelId }}
-                    />
-                  </TableCell>}
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.key}
-                      align="left"
-                    >
-                      {row[column.key] || "--"}
-                    </TableCell>
-                  ))}
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row._id)}
+                    tabIndex={-1}
+                    key={row._id}
+                    selected={isItemSelected}
+                  >
+                    {checkable && <TableCell padding="checkbox">
+                      <Checkbox
+                        color="secondary"
+                        checked={isItemSelected}
+                        inputProps={{ 'aria-labelledby': labelId }}
+                      />
+                    </TableCell>}
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.key}
+                        align="left"
+                      >
+                        {row[column.key] || "--"}
+                      </TableCell>
+                    ))}
 
-                  {rowActions.length > 0 && <TableCell align="center">
-                    <Actions actions={rowActions} row={row} />
-                  </TableCell>}
+                    {rowActions.length > 0 && <TableCell align="center">
+                      <Actions actions={rowActions} row={row} />
+                    </TableCell>}
+                  </TableRow>
+                );
+              })}
+              {/* {emptyRows > 0 && (
+                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                  <TableCell colSpan={6} />
                 </TableRow>
-              );
-            })}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        className={classes.pagination}
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-      />
+              )} */}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          className={classes.pagination}
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={total}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowPerPage}
+        />
+      </CustomProvider>
     </div>
   );
 }

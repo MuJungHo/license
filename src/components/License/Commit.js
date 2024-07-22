@@ -11,7 +11,7 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
 
 import {
-  TextField, Checkbox, Radio, Button,
+  TextField, Checkbox, Radio, Button, Switch,
   DialogContent,
   DialogActions,
 } from "../../components/common";
@@ -58,9 +58,9 @@ const useStyles = makeStyles((theme) => ({
 export default ({
   onConfirm = () => { },
 }) => {
-  const { closeDialog } = useContext(GlobalContext);
+  const { closeDialog, t } = useContext(GlobalContext);
 
-  const [state, setState] = React.useState({})
+  const [state, setState] = React.useState({ commercial: 0 })
 
   return (
     <>
@@ -74,7 +74,16 @@ export default ({
           value={state.number}
           onChange={e => setState({ ...state, number: Number(e.target.value) })}
         />
-
+        <FormControlLabel
+          control={
+            <Switch
+              checked={state.commercial === 1}
+              onChange={e => setState({ ...state, commercial: e.target.checked ? 1 : 0 })}
+              color="primary"
+            />
+          }
+          label={t("commercial")}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>

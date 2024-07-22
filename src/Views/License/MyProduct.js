@@ -6,39 +6,42 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import {
   Paper,
   Table,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField
+  // DialogContent,
+  // DialogActions,
+  // Button,
+  // TextField
 } from "../../components/common";
-import GetAppIcon from '@material-ui/icons/GetApp';
+
 import Commit from "../../components/License/Commit";
 import Transfer from "../../components/License/Transfer";
-import Apply from "../../components/License/Apply";
+import Require from "../../components/License/Require";
 
-import {
-  Select,
-  MenuItem
-} from '@material-ui/core';
+// import {
+//   Select,
+//   MenuItem
+// } from '@material-ui/core';
 
 import {
   License,
-  PostAdd
+  PostAdd,
+  Commit as CommitIcon
 } from "../../images/icons";
 
 const MyLicense = () => {
   const { account, role, accountid } = useContext(AuthContext);
   const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
   const [rows, setRows] = React.useState([]);
+  const [totalDownload, setTotalDownload] = React.useState(0)
   // console.log(role)
   React.useEffect(() => {
     getMyAccount()
   }, [])
 
   const getMyAccount = async () => {
-    const { products } = await authedApi.getAccountInfo({ accountid })
+    const { products, total_sales } = await authedApi.getAccountInfo({ accountid })
     let _products = products.map(p => ({ ...p, _id: p.productid }))
     setRows(_products)
+    setTotalDownload(total_sales)
   }
 
   const handleSetCommitDialog = (row) => {
@@ -51,6 +54,7 @@ const MyLicense = () => {
   const handleCommitLicense = async (state, productid) => {
     await authedApi.postLicenseCommit({ data: { ...state, productid }, })
     closeDialog()
+    getMyAccount()
   }
 
   const handleSetTransferDialog = (row) => {
@@ -63,24 +67,26 @@ const MyLicense = () => {
   const handleTransferLicense = async (state, productid) => {
     await authedApi.postLicenseTransfer({ data: { ...state, productid, consumer_accountid: 20 }, })
     closeDialog()
+    getMyAccount()
   }
 
-  const handleSetApplyDialog = (row) => {
+  const handleSetRequireDialog = (row) => {
     openDialog({
-      title: `Apply ${row.product_name}`,
-      section: <Apply onConfirm={state => handleApplyLicense(state, row.productid)} />
+      title: `Require ${row.product_name}`,
+      section: <Require onConfirm={state => handleApplyLicense(state, row.productid)} />
     })
   }
 
   const handleApplyLicense = async (state, productid) => {
     await authedApi.postLicenseApply({ data: { ...state, productid, provider_accountid: 19 }, })
     closeDialog()
+    getMyAccount()
   }
 
   return (
     <Paper>
       <Table
-        title={`Hi ${account}. 以下是您所擁有的產品`}
+        title={`Hi ${account}. 以下是您所擁有的產品, 總共交易 ${totalDownload} 筆。`}
         rows={rows}
         columns={[
           { key: 'product_name', label: t('name') },
@@ -96,9 +102,9 @@ const MyLicense = () => {
         toolbarActions={[
         ]}
         rowActions={[
-          { name: t('commit'), onClick: (e, row) => handleSetCommitDialog(row), icon: <GetAppIcon /> },
+          { name: t('commit'), onClick: (e, row) => handleSetCommitDialog(row), icon: <CommitIcon /> },
           { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => role === 1 || role === 2 },
-          { name: t('apply'), onClick: (e, row) => handleSetApplyDialog(row), icon: <PostAdd />, showMenuItem: () => (role === 2 || role === 3) },
+          { name: t('require'), onClick: (e, row) => handleSetRequireDialog(row), icon: <PostAdd />, showMenuItem: () => (role === 2 || role === 3) },
         ]}
       // dense
       />

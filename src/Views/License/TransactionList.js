@@ -93,7 +93,6 @@ const LicenseList = () => {
           { key: 'provider_name', label: t('provider') },
           { key: 'product_name', label: t('product') },
           { key: 'number', label: t('count') },
-          { key: 'commercial', label: t('commercial') },
           { key: '_status', label: t('status') },
         ]}
         checkable={false}
@@ -104,8 +103,6 @@ const LicenseList = () => {
         onSortChange={(isAsc, property) => console.log(isAsc, property)}
         onKeywordSearch={(event) => console.log(event.target.value)}
         rowActions={[
-          { name: t('bind'), onClick: (e, row) => handleBindDialog(row), icon: <ConfirmationNumber />, showMenuItem: (row) => row.status === 5 && !row.is_bind },
-          { name: t('download'), onClick: (e, row) => handleDownloadLicense(row.ltid), icon: <GetApp />, showMenuItem: (row) => row.is_bind },
           { name: t('approve'), onClick: (e, row) => handleApproveLicense(row), icon: <CheckCircleOutline />, showMenuItem: (row) => row.status === 1 && role === 1 },
           { name: t('reject'), onClick: (e, row) => handleRejectLicense(row), icon: <BlockRounded />, showMenuItem: (row) => row.status === 1 && role === 1 }
         ]}

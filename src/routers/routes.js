@@ -20,7 +20,7 @@ const routes = [
     icon: LicenseIcon,
     sider: true,
     children: [
-      { name: "_license-list", path: "/license-list", roles: [1, 2, 3] },
+      { name: "_commit-list", path: "/commit-list", roles: [1, 2, 3] },
       { name: "_transaction-list", path: "/transaction-list", roles: [1, 2, 3] },
       { name: "_product-list", path: "/product-list", roles: [1] },
       { name: "_product-me", path: "/product-me", roles: [1, 2, 3] },
@@ -54,7 +54,7 @@ const routes = [
     roles: [1, 2]
   },
   {
-    path: '/license-list',
+    path: '/commit-list',
     component: CommitList,
     roles: [1, 2]
   },

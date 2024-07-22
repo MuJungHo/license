@@ -23,24 +23,30 @@ import moment from "moment/moment";
 
 const User = () => {
   const { t, authedApi } = useContext(GlobalContext);
-  const [loglist, setLoglist] = React.useState([])
-
+  const [loglist, setLoglist] = React.useState([]);
+  const [total, setTotal] = React.useState(0);
+  const [filter, setFilter] = React.useState({
+    order: "asc",
+    sort: "datetime",
+    keyword: "",
+    limit: 10,
+    page: 1,
+    start: moment().startOf('date').valueOf(),
+    end: moment().endOf('date').valueOf(),
+  });
   React.useEffect(() => {
     getLogList()
-  }, [])
+  }, [filter])
 
   const getLogList = async () => {
-    const { result } = await authedApi.getLogList({
+    const { result, total } = await authedApi.getLogList({
       data: {
       },
-      limit: 10,
-      page: 1,
-      start: moment().startOf('date').valueOf(),
-      end: moment().endOf('date').valueOf(),
-
+      ...filter
     });
     let _logs = result.map(l => ({ ...l, _id: l.logid }))
     setLoglist(_logs)
+    setTotal(total)
   }
 
   return (
@@ -54,14 +60,21 @@ const User = () => {
           { key: 'condition', label: t('condition') },
           { key: 'detail', label: t('detail') },
         ]}
+        dateRangePicker
         checkable={false}
-        order="asc"
-        orderBy="datetime"
-        rowsPerPage={10}
-        onPageChange={(event, page) => console.log(page)}
-        onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
-        onSortChange={(isAsc, property) => console.log(isAsc, property)}
-        onKeywordSearch={(event) => console.log(event.target.value)}
+        order={filter.order}
+        sort={filter.sort}
+        total={total}
+        onPageChange={(page) => setFilter({ ...filter, page })}
+        onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
+        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
+        onDateRangeChange={([start, end]) => setFilter({
+          ...filter,
+          start: moment(start).valueOf(),
+          end: moment(end).valueOf()
+        })
+        }
         toolbarActions={[]}
         rowActions={[]}
       // dense
