@@ -1,11 +1,6 @@
 import React, { useContext } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 
-import {
-  FormGroup,
-  RadioGroup
-} from '@material-ui/core';
-
 // import { useHistory } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -15,7 +10,7 @@ import {
   DialogContent,
   DialogActions,
 } from "../../components/common";
-import { FormControlLabel } from '@material-ui/core';
+import { FormControlLabel, Select, MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,9 +53,26 @@ const useStyles = makeStyles((theme) => ({
 export default ({
   onConfirm = () => { },
 }) => {
-  const { closeDialog } = useContext(GlobalContext);
+  const { closeDialog, authedApi } = useContext(GlobalContext);
 
-  const [state, setState] = React.useState({})
+  const [state, setState] = React.useState({});
+  const [accountList, setAccountList] = React.useState([]);
+
+  React.useEffect(() => {
+    getAccountList()
+  }, [])
+
+  const getAccountList = async () => {
+    const { result } = await authedApi.getAccountList({
+      data: {
+        roleid: [1, 2]
+      },
+      limit: 50,
+      page: 1
+    })
+    let _accountList = result.map(p => ({ ...p, _id: p.accountid }))
+    setAccountList(_accountList)
+  }
 
   return (
     <>
@@ -74,7 +86,19 @@ export default ({
           value={state.number}
           onChange={e => setState({ ...state, number: Number(e.target.value) })}
         />
-
+        <TextField
+          type="text"
+          value={state.description}
+          onChange={e => setState({ ...state, description: e.target.value })}
+        />
+        <Select
+          value={state.provider_accountid}
+          onChange={e => setState({ ...state, provider_accountid: Number(e.target.value) })}
+        >
+          {
+            accountList.map(a => <MenuItem key={a.accountid} value={a.accountid}>{a.name}</MenuItem>)
+          }
+        </Select>
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>

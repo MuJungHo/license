@@ -26,7 +26,7 @@ const User = () => {
   const [loglist, setLoglist] = React.useState([]);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
-    order: "asc",
+    order: "desc",
     sort: "datetime",
     keyword: "",
     limit: 10,
@@ -34,6 +34,7 @@ const User = () => {
     start: moment().startOf('date').valueOf(),
     end: moment().endOf('date').valueOf(),
   });
+  
   React.useEffect(() => {
     getLogList()
   }, [filter])

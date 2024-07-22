@@ -28,20 +28,27 @@ const CommitList = () => {
 
   const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
   const { role, token } = useContext(AuthContext);
+  const [total, setTotal] = React.useState(0);
+  const [filter, setFilter] = React.useState({
+    order: "desc",
+    sort: "datetime",
+    keyword: "",
+    limit: 10,
+    page: 1,
+  });
 
   const [transactions, setTransactions] = React.useState([])
 
   React.useEffect(() => {
     getLicenseCommitList()
-  }, [])
+  }, [filter])
 
   const getLicenseCommitList = async () => {
-    const { result } = await authedApi.getLicenseTransactionList({
+    const { result, total } = await authedApi.getLicenseTransactionList({
       data: {
         status: [5]
       },
-      limit: 50,
-      page: 1
+      ...filter
     })
     let _transactions = result.map(p => ({
       ...p,
@@ -50,6 +57,7 @@ const CommitList = () => {
       _commercial: p.commercial ? <Verified /> : null
     }))
     setTransactions(_transactions)
+    setTotal(total)
   }
   const handleBindDialog = (row) => {
     openDialog({
@@ -73,18 +81,6 @@ const CommitList = () => {
     window.open(url);
   }
 
-  const handleApproveLicense = async (row) => {
-    const ltid = row.ltid;
-    await authedApi.postLicenseApprove({ data: {}, ltid })
-    getLicenseCommitList()
-  }
-
-  const handleRejectLicense = async (row) => {
-    const ltid = row.ltid;
-    await authedApi.postLicenseReject({ data: {}, ltid })
-    getLicenseCommitList()
-  }
-
   const handleUnBindLicense = async row => {
     const ltid = row.ltid;
     await authedApi.postLicenseUnBind({ ltid })
@@ -104,12 +100,13 @@ const CommitList = () => {
           { key: '_commercial', label: t('commercial') },
         ]}
         checkable={false}
-        order="asc"
-        orderBy="consumer_name"
-        onPageChange={(event, page) => console.log(page)}
-        onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
-        onSortChange={(isAsc, property) => console.log(isAsc, property)}
-        onKeywordSearch={(event) => console.log(event.target.value)}
+        order={filter.order}
+        sort={filter.sort}
+        total={total}
+        onPageChange={(page) => setFilter({ ...filter, page })}
+        onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
+        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         rowActions={[
           { name: t('bind'), onClick: (e, row) => handleBindDialog(row), icon: <Link />, showMenuItem: (row) => row.status === 5 && !row.is_bind },
           { name: t('unbind'), onClick: (e, row) => handleUnBindLicense(row), icon: <LinkOff />, showMenuItem: (row) => row.status === 5 && row.is_bind },

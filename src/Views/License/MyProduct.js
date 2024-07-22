@@ -65,7 +65,7 @@ const MyLicense = () => {
   }
 
   const handleTransferLicense = async (state, productid) => {
-    await authedApi.postLicenseTransfer({ data: { ...state, productid, consumer_accountid: 20 }, })
+    await authedApi.postLicenseTransfer({ data: { ...state, productid }, })
     closeDialog()
     getMyAccount()
   }
@@ -73,12 +73,12 @@ const MyLicense = () => {
   const handleSetRequireDialog = (row) => {
     openDialog({
       title: `Require ${row.product_name}`,
-      section: <Require onConfirm={state => handleApplyLicense(state, row.productid)} />
+      section: <Require onConfirm={state => handleRequireLicense(state, row.productid)} />
     })
   }
 
-  const handleApplyLicense = async (state, productid) => {
-    await authedApi.postLicenseApply({ data: { ...state, productid, provider_accountid: 19 }, })
+  const handleRequireLicense = async (state, productid) => {
+    await authedApi.postLicenseApply({ data: { ...state, productid }, })
     closeDialog()
     getMyAccount()
   }

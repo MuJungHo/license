@@ -27,20 +27,27 @@ const LicenseList = () => {
 
   const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
   const { role, token } = useContext(AuthContext);
+  const [total, setTotal] = React.useState(0);
+  const [filter, setFilter] = React.useState({
+    order: "desc",
+    sort: "datetime",
+    keyword: "",
+    limit: 10,
+    page: 1,
+  });
 
   const [transactions, setTransactions] = React.useState([])
 
   React.useEffect(() => {
     getLicenseTransactionList()
-  }, [])
+  }, [filter])
 
   const getLicenseTransactionList = async () => {
-    const { result } = await authedApi.getLicenseTransactionList({
+    const { result, total } = await authedApi.getLicenseTransactionList({
       data: {
         status: [1, 2, 3, 4]
       },
-      limit: 50,
-      page: 1
+      ...filter
     })
     let _transactions = result.map(p => ({
       ...p,
@@ -48,27 +55,7 @@ const LicenseList = () => {
       _status: TRANSACTION_STATUS[p.status]
     }))
     setTransactions(_transactions)
-  }
-  const handleBindDialog = (row) => {
-    openDialog({
-      title: `Bind ${row.product_name}`,
-      section: <Generator onConfirm={params => handleBindLicense(params, row.ltid)} productid={row.productid} />
-    })
-  }
-  const handleBindLicense = async (params, ltid) => {
-    await authedApi.postLicenseBind({ data: { ...params }, ltid })
-    closeDialog()
-    getLicenseTransactionList()
-  }
-
-  const handleDownloadLicense = async (ltid) => {
-
-    const host = process.env.NODE_ENV === 'production' ? "" : `http://${process.env.REACT_APP_HOST}`
-    const timestamp = Date.now()
-    const sign = md5(timestamp + '#' + token)
-    const url = `${host}/cgi-bin/db/license/download?timestamp=${timestamp}&sign=${sign}&ltid=${ltid}`
-
-    window.open(url);
+    setTotal(total)
   }
 
   const handleApproveLicense = async (row) => {
@@ -93,15 +80,17 @@ const LicenseList = () => {
           { key: 'provider_name', label: t('provider') },
           { key: 'product_name', label: t('product') },
           { key: 'number', label: t('count') },
+          { key: 'description', label: t('description') },
           { key: '_status', label: t('status') },
         ]}
         checkable={false}
-        order="asc"
-        orderBy="consumer_name"
-        onPageChange={(event, page) => console.log(page)}
-        onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
-        onSortChange={(isAsc, property) => console.log(isAsc, property)}
-        onKeywordSearch={(event) => console.log(event.target.value)}
+        order={filter.order}
+        sort={filter.sort}
+        total={total}
+        onPageChange={(page) => setFilter({ ...filter, page })}
+        onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
+        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         rowActions={[
           { name: t('approve'), onClick: (e, row) => handleApproveLicense(row), icon: <CheckCircleOutline />, showMenuItem: (row) => row.status === 1 && role === 1 },
           { name: t('reject'), onClick: (e, row) => handleRejectLicense(row), icon: <BlockRounded />, showMenuItem: (row) => row.status === 1 && role === 1 }

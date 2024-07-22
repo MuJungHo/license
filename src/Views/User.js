@@ -43,15 +43,23 @@ const getAESEncrypt = async (txt) => {
 const User = () => {
   const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
   const { role  } = useContext(AuthContext);
+  const [total, setTotal] = React.useState(0);
+  const [filter, setFilter] = React.useState({
+    order: "desc",
+    sort: "datetime",
+    keyword: "",
+    limit: 10,
+    page: 1,
+  });
 
   const [accountList, setAccountList] = React.useState([])
 
   React.useEffect(() => {
     getAccountList()
-  }, [])
+  }, [filter])
 
   const getAccountList = async () => {
-    const { result } = await authedApi.getAccountList({
+    const { result, total } = await authedApi.getAccountList({
       data: {
       },
       limit: 50,
@@ -59,6 +67,7 @@ const User = () => {
     })
     let _accountList = result.map(p => ({ ...p, _id: p.accountid }))
     setAccountList(_accountList)
+    setTotal(total)
   }
 
   const openEditUserDialog = (user) => {
@@ -121,12 +130,13 @@ const User = () => {
           { key: 'rolename', label: t('rolename') },
         ]}
         checkable={role === 1}
-        order="asc"
-        orderBy="name"
-        onPageChange={(event, page) => console.log(page)}
-        onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
-        onSortChange={(isAsc, property) => console.log(isAsc, property)}
-        onKeywordSearch={(event) => console.log(event.target.value)}
+        order={filter.order}
+        sort={filter.sort}
+        total={total}
+        onPageChange={(page) => setFilter({ ...filter, page })}
+        onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
+        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={role === 1 ? [
           { name: t('add'), onClick: openAddUserDialog, icon: <AddBox /> },
         ] : []}

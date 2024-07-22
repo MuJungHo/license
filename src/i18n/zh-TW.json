@@ -75,6 +75,7 @@
     "_commit-list": "認可列表",
     "_license": "授權管理",
     "_log": "系統紀錄",
+    "_product-list": "產品列表",
     "_product-me": "我的產品",
     "_transaction-list": "交易列表",
     "400001": "命令執行超時",

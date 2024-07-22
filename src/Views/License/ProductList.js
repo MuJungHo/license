@@ -14,22 +14,30 @@ import ProductSection from "../../components/License/ProductSection";
 const LicenseList = () => {
   const { t, openDialog, authedApi } = useContext(GlobalContext);
   const { role } = useContext(AuthContext);
+  const [total, setTotal] = React.useState(0);
+  const [filter, setFilter] = React.useState({
+    order: "desc",
+    sort: "datetime",
+    keyword: "",
+    limit: 10,
+    page: 1,
+  });
   const history = useHistory();
   const [products, setProducts] = React.useState([])
 
   React.useEffect(() => {
     getProductList()
-  }, [])
+  }, [filter])
 
   const getProductList = async () => {
-    const { result } = await authedApi.getProductList({
+    const { result, total } = await authedApi.getProductList({
       data: {
       },
-      limit: 50,
-      page: 1
+      ...filter
     })
     let _products = result.map(p => ({ ...p, _id: p.productid }))
     setProducts(_products)
+    setTotal(total)
   }
 
   const openAddProductDialog = () => {
@@ -49,8 +57,6 @@ const LicenseList = () => {
     getProductList()
   }
 
-
-
   return (
     <Paper>
       <Table
@@ -61,12 +67,13 @@ const LicenseList = () => {
           { key: 'description', label: t('description') },
         ]}
         checkable={role === 1}
-        order="asc"
-        orderBy="name"
-        onPageChange={(event, page) => console.log(page)}
-        onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
-        onSortChange={(isAsc, property) => console.log(isAsc, property)}
-        onKeywordSearch={(event) => console.log(event.target.value)}
+        order={filter.order}
+        sort={filter.sort}
+        total={total}
+        onPageChange={(page) => setFilter({ ...filter, page })}
+        onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
+        onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
+        onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
         toolbarActions={role === 1 ? [
           { name: t('add'), onClick: openAddProductDialog, icon: <AddBox /> },
         ] : []}
