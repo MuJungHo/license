@@ -12,8 +12,8 @@ import {
 import ProductSection from "../../components/License/ProductSection";
 
 const LicenseList = () => {
-  const { t, openDialog } = useContext(GlobalContext);
-  const { role, authedApi } = useContext(AuthContext);
+  const { t, openDialog, authedApi } = useContext(GlobalContext);
+  const { role } = useContext(AuthContext);
   const history = useHistory();
   const [products, setProducts] = React.useState([])
 

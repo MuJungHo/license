@@ -71,9 +71,8 @@ const UserSection = ({
   },
   onConfirm = () => { },
 }) => {
-  const { authedApi } = useContext(AuthContext);
   const [state, setState] = React.useState(user);
-  const { closeDialog, t } = useContext(GlobalContext);
+  const { closeDialog, t, authedApi } = useContext(GlobalContext);
   const [products, setProducts] = React.useState([])
 
   React.useEffect(() => {

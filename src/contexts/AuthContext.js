@@ -1,5 +1,4 @@
 import React, { createContext, useState } from "react";
-import { api } from '../utils/apis';
 
 const AuthContext = createContext();
 
@@ -40,8 +39,7 @@ function AuthProvider(props) {
     account,
     login,
     logout,
-    setKeep,
-    authedApi: api(token, logout)
+    setKeep
   };
 
   return <AuthContext.Provider value={value} {...props} />;

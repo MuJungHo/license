@@ -41,8 +41,8 @@ const getAESEncrypt = async (txt) => {
 }
 
 const User = () => {
-  const { t, openDialog, closeDialog } = useContext(GlobalContext);
-  const { role, authedApi } = useContext(AuthContext);
+  const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
+  const { role  } = useContext(AuthContext);
 
   const [accountList, setAccountList] = React.useState([])
 

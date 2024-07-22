@@ -27,8 +27,8 @@ import {
 } from "../../images/icons";
 
 const MyLicense = () => {
-  const { account, role, authedApi, accountid } = useContext(AuthContext);
-  const { t, openDialog, closeDialog } = useContext(GlobalContext);
+  const { account, role, accountid } = useContext(AuthContext);
+  const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
   const [rows, setRows] = React.useState([]);
   // console.log(role)
   React.useEffect(() => {

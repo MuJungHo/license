@@ -163,8 +163,7 @@ export default ({
   productid
 }) => {
   // const { t } = useContext(GlobalContext);
-  const { closeDialog } = useContext(GlobalContext);
-  const { authedApi } = useContext(AuthContext);
+  const { closeDialog, authedApi } = useContext(GlobalContext);
   const [product, setProduct] = React.useState([])
 
   React.useEffect(() => {

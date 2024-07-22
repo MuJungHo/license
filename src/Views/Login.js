@@ -72,8 +72,8 @@ const Login = () => {
   const [email, setEmail] = useState(ron);
   const [password, setPassword] = useState("Aa123456");
 
-  const { login, token, setKeep, keep, authedApi } = useContext(AuthContext);
-  const { t, changeLocale, locale, openSnackbar } = useContext(GlobalContext);
+  const { login, token, setKeep, keep,  } = useContext(AuthContext);
+  const { t, changeLocale, locale, openSnackbar, authedApi } = useContext(GlobalContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

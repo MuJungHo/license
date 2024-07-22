@@ -39,7 +39,7 @@ export const tokenlogin = ({ timestamp, credentials }) => Promise_(instance.get(
 
 export const resetPassword = ({ data, timestamp }) => Promise_(instance.post('/system', data, { params: { action: 'reset_password', timestamp } }))
 
-export const api = (token, logout) => {
+export const api = (token, logout, openCatchErrorSnackbar) => {
   const timestamp = Date.now();
   const sign = md5(timestamp + '#' + token);
   const promise_ = (instance_) => {
@@ -53,6 +53,10 @@ export const api = (token, logout) => {
           if (json.code === 400124) {
             logout();
           }
+          if (json.code) {
+            openCatchErrorSnackbar(json.code)
+          }
+          reject(error);
         })
     })
   }

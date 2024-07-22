@@ -25,8 +25,8 @@ import {
 const CommitList = () => {
   const md5 = require("md5");
 
-  const { t, openDialog, closeDialog } = useContext(GlobalContext);
-  const { role, authedApi, token } = useContext(AuthContext);
+  const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
+  const { role, token } = useContext(AuthContext);
 
   const [transactions, setTransactions] = React.useState([])
 

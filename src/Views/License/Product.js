@@ -121,10 +121,9 @@ const Parameter = ({ parameter, onParameterChange }) => {
 export default () => {
   const classes = useStyles();
   const history = useHistory();
-  const { t } = useContext(GlobalContext);
+  const { t, authedApi } = useContext(GlobalContext);
   const { productid } = useParams();
 
-  const { authedApi } = useContext(AuthContext);
   const [product, setProduct] = React.useState({
     name: "",
     description: "",

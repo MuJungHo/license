@@ -115,8 +115,8 @@ const Profile = () => {
 
 const Appbar = ({ open }) => {
   const classes = useStyles();
-  const { logout, authedApi } = useContext(AuthContext);
-  const { locale, changeLocale, t, changeTheme, theme, openDialog } = useContext(GlobalContext);
+  const { logout } = useContext(AuthContext);
+  const { locale, changeLocale, t, changeTheme, theme, openDialog, authedApi } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 

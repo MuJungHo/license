@@ -22,8 +22,7 @@ import {
 import moment from "moment/moment";
 
 const User = () => {
-  const { t } = useContext(GlobalContext);
-  const { authedApi } = useContext(AuthContext);
+  const { t, authedApi } = useContext(GlobalContext);
   const [loglist, setLoglist] = React.useState([])
 
   React.useEffect(() => {

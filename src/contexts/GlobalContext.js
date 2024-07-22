@@ -1,7 +1,8 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createTheme } from '@material-ui/core/styles';
 import { CustomProvider } from 'rsuite';
+import { AuthContext } from './AuthContext';
 import Alert from '@material-ui/lab/Alert';
 import {
   Snackbar,
@@ -20,6 +21,8 @@ import Close from '@material-ui/icons/Close';
 import { lighten_palette, dark_palette } from "../customTheme";
 
 import i18n from '../i18n';
+import { api } from '../utils/apis';
+
 
 import "../style/normalize.css";
 import 'rsuite/dist/rsuite.min.css';
@@ -37,6 +40,7 @@ const dark = createTheme({
 const GlobalContext = createContext();
 
 function GlobalProvider({ children, ...rest }) {
+  const { logout, token } = useContext(AuthContext);
   const [locale, setLocale] = useState(localStorage.getItem('locale') || 'zh-TW');
   const [theme, setTheme] = useState(localStorage.getItem("theme"));
   const [snackBar, setSnackBar] = useState({
@@ -85,6 +89,16 @@ function GlobalProvider({ children, ...rest }) {
     })
   }
 
+  const openCatchErrorSnackbar = (message) => {
+    setSnackBar({
+      open: true,
+
+      severity: "error",
+
+      message: i18n(locale)(message)
+    })
+  }
+
   const value = {
     locale,
     t: i18n(locale),
@@ -93,7 +107,8 @@ function GlobalProvider({ children, ...rest }) {
     openDialog,
     closeDialog,
     openSnackbar,
-    theme
+    theme,
+    authedApi: api(token, logout, openCatchErrorSnackbar)
   };
 
   return <GlobalContext.Provider
