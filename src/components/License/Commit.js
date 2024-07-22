@@ -60,7 +60,7 @@ export default ({
 }) => {
   const { closeDialog, t } = useContext(GlobalContext);
 
-  const [state, setState] = React.useState({ commercial: 0 })
+  const [state, setState] = React.useState({ commercial: 0, number: "" })
 
   return (
     <>
@@ -71,6 +71,9 @@ export default ({
         }}>
         <TextField
           type="number"
+          label={t("amount")}
+          fullWidth
+          style={{ marginBottom: 20 }}
           value={state.number}
           onChange={e => setState({ ...state, number: Number(e.target.value) })}
         />

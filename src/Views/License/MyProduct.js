@@ -46,7 +46,7 @@ const MyLicense = () => {
 
   const handleSetCommitDialog = (row) => {
     openDialog({
-      title: `Download ${row.product_name}`,
+      title: `${t("commit")} ${row.product_name}`,
       section: <Commit onConfirm={state => handleCommitLicense(state, row.productid)} />
     })
   }
@@ -59,7 +59,7 @@ const MyLicense = () => {
 
   const handleSetTransferDialog = (row) => {
     openDialog({
-      title: `Transfer ${row.product_name}`,
+      title: `${t("transfer")} ${row.product_name}`,
       section: <Transfer onConfirm={state => handleTransferLicense(state, row.productid)} />
     })
   }
@@ -72,7 +72,7 @@ const MyLicense = () => {
 
   const handleSetRequireDialog = (row) => {
     openDialog({
-      title: `Require ${row.product_name}`,
+      title: `${t("require")} ${row.product_name}`,
       section: <Require onConfirm={state => handleRequireLicense(state, row.productid)} />
     })
   }

@@ -3,22 +3,10 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
   Table, Paper,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField
 } from "../../components/common";
 
-import {
-  ConfirmationNumber,
-  GetApp
-} from '@material-ui/icons';
-
-import { CheckCircleOutline, BlockRounded } from '@material-ui/icons';
 import Generator from "../../components/License/Generator";
-import {
-  TRANSACTION_STATUS
-} from "../../utils/constant";
+
 import { Download, Verified, Link, LinkOff } from "../../images/icons"
 
 // Status : 1 (require) Status : 2 (approve) Status : 3 (reject) Status : 4 (transfer) Status : 5 (commit)
@@ -53,7 +41,6 @@ const CommitList = () => {
     let _transactions = result.map(p => ({
       ...p,
       _id: p.ltid,
-      _status: TRANSACTION_STATUS[p.status],
       _commercial: p.commercial ? <Verified /> : null
     }))
     setTransactions(_transactions)
@@ -61,7 +48,7 @@ const CommitList = () => {
   }
   const handleBindDialog = (row) => {
     openDialog({
-      title: `Bind ${row.product_name}`,
+      title: `${t("bind")} ${row.product_name}`,
       section: <Generator onConfirm={params => handleBindLicense(params, row.ltid)} productid={row.productid} />
     })
   }

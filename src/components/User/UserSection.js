@@ -1,66 +1,70 @@
 import React, { useContext } from "react";
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 
-import {
-  FormGroup,
-  RadioGroup
-} from '@material-ui/core';
+// import {
+//   FormGroup,
+//   RadioGroup
+// } from '@material-ui/core';
 
 // import { useHistory } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { AuthContext } from "../../contexts/AuthContext";
+// import { AuthContext } from "../../contexts/AuthContext";
 
 import {
-  TextField, Checkbox, Radio, Button,
+  TextField, 
+  // Checkbox, Radio, 
+  Button,
   DialogContent,
   DialogActions,
 } from "../common";
 
 import {
+  FormControl, InputLabel,
   Select,
   MenuItem
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    padding: theme.spacing(3),
-    position: 'relative'
-  },
-  paper: {
-    width: '100%',
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-  },
-  actions: {
-    position: 'absolute',
-    left: 20,
-    bottom: 20,
-    '& svg': {
-      color: theme.palette.layout.color,
-    }
-  },
-  content: {
-    width: 700,
-    backgroundColor: theme.palette.dialog.background,
-    color: theme.palette.dialog.color,
-  },
-  info: {
-    display: 'flex',
-    width: '100%',
-    alignItems: 'center',
-    height: 45,
-    '& > *:first-child': {
-      flexBasis: '25%'
-    },
-    '& > *:not(:first-child)': {
-      flexBasis: '74%'
-    },
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     width: '100%',
+//     padding: theme.spacing(3),
+//     position: 'relative'
+//   },
+//   paper: {
+//     width: '100%',
+//     marginTop: theme.spacing(2),
+//     marginBottom: theme.spacing(2),
+//   },
+//   actions: {
+//     position: 'absolute',
+//     left: 20,
+//     bottom: 20,
+//     '& svg': {
+//       color: theme.palette.layout.color,
+//     }
+//   },
+//   content: {
+//     width: 700,
+//     backgroundColor: theme.palette.dialog.background,
+//     color: theme.palette.dialog.color,
+//   },
+//   info: {
+//     display: 'flex',
+//     width: '100%',
+//     alignItems: 'center',
+//     height: 45,
+//     '& > *:first-child': {
+//       flexBasis: '25%'
+//     },
+//     '& > *:not(:first-child)': {
+//       flexBasis: '74%'
+//     },
+//   },
+// }));
+
 const UserSection = ({
   user = {
-    roleid: 3,
+    roleid: "",
     email: "",
     name: "",
     password: "",
@@ -96,60 +100,76 @@ const UserSection = ({
         style={{
           width: 500
         }}>
-        <Select
-          value={state.roleid}
-          onChange={e => setState({ ...state, roleid: e.target.value })}
-        >
-          <MenuItem value={1}>Admin</MenuItem>
-          <MenuItem value={2}>Operator</MenuItem>
-          <MenuItem value={3}>User</MenuItem>
-        </Select>
-        <Select
-          multiple
-          value={state.productsParse || []}
-          onChange={e => setState({
-            ...state, productsParse: e.target.value,
-            products: e.target.value
-          })}
-        >
-          {
-            products.map(p => <MenuItem key={p.productid} value={p.productid}>{p.name}</MenuItem>)
-          }
-        </Select>
-        <div
-          style={{ marginTop: 20 }}
-        >
-          <TextField
-            label={t("email")}
-            type="text"
-            value={state.email}
-            onChange={e => setState({ ...state, email: e.target.value })}
-          />
-          <TextField
-            label={t("account")}
-            type="text"
-            value={state.name}
-            onChange={e => setState({ ...state, name: e.target.value })}
-          />
-          <TextField
-            label={t("password")}
-            type="password"
-            value={state.password}
-            onChange={e => setState({ ...state, password: e.target.value })}
-          />
-          <TextField
-            label={t("telephone")}
-            type="text"
-            value={state.telephone}
-            onChange={e => setState({ ...state, telephone: e.target.value })}
-          />
-          <TextField
-            label={t("department")}
-            type="text"
-            value={state.department}
-            onChange={e => setState({ ...state, department: e.target.value })}
-          />
-        </div>
+        <FormControl
+          fullWidth
+          style={{ marginBottom: 20 }}>
+          <InputLabel>{t("role")}</InputLabel>
+          <Select
+            value={state.roleid}
+            onChange={e => setState({ ...state, roleid: e.target.value })}
+          >
+            <MenuItem value={1}>Admin</MenuItem>
+            <MenuItem value={2}>Operator</MenuItem>
+            <MenuItem value={3}>User</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl
+          fullWidth
+          style={{ marginBottom: 20 }}>
+          <InputLabel>{t("product")}</InputLabel>
+          <Select
+            multiple
+            value={state.productsParse || []}
+            onChange={e => setState({
+              ...state, productsParse: e.target.value,
+              products: e.target.value
+            })}
+          >
+            {
+              products.map(p => <MenuItem key={p.productid} value={p.productid}>{p.name}</MenuItem>)
+            }
+          </Select>
+        </FormControl>
+        <TextField
+          label={t("email")}
+          type="text"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={state.email}
+          onChange={e => setState({ ...state, email: e.target.value })}
+        />
+        <TextField
+          label={t("account")}
+          type="text"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={state.name}
+          onChange={e => setState({ ...state, name: e.target.value })}
+        />
+        <TextField
+          label={t("password")}
+          type="password"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={state.password}
+          onChange={e => setState({ ...state, password: e.target.value })}
+        />
+        <TextField
+          label={t("telephone")}
+          type="text"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={state.telephone}
+          onChange={e => setState({ ...state, telephone: e.target.value })}
+        />
+        <TextField
+          label={t("department")}
+          type="text"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={state.department}
+          onChange={e => setState({ ...state, department: e.target.value })}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>

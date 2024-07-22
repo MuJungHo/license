@@ -42,7 +42,7 @@ const getAESEncrypt = async (txt) => {
 
 const User = () => {
   const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
-  const { role  } = useContext(AuthContext);
+  const { role } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
     order: "desc",
@@ -62,8 +62,7 @@ const User = () => {
     const { result, total } = await authedApi.getAccountList({
       data: {
       },
-      limit: 50,
-      page: 1
+      ...filter
     })
     let _accountList = result.map(p => ({ ...p, _id: p.accountid }))
     setAccountList(_accountList)
@@ -72,14 +71,14 @@ const User = () => {
 
   const openEditUserDialog = (user) => {
     openDialog({
-      title: `Edit User`,
+      title: t("edit-thing", { thing: t("account") }),
       section: <UserSection onConfirm={handleEditUserAccount} user={user} />
     })
   }
 
   const openAddUserDialog = () => {
     openDialog({
-      title: `Add User`,
+      title: t("add-thing", { thing: t("account") }),
       section: <UserSection onConfirm={handleAddUserAccount} />
     })
   }

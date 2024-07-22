@@ -52,7 +52,7 @@ const LicenseList = () => {
     let _transactions = result.map(p => ({
       ...p,
       _id: p.ltid,
-      _status: TRANSACTION_STATUS[p.status]
+      _status: t(`_${TRANSACTION_STATUS[p.status]}`)
     }))
     setTransactions(_transactions)
     setTotal(total)
