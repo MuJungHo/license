@@ -13,15 +13,14 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-// import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import { Checkbox, Actions, TextField } from "../common";
+import { Checkbox, Actions, TextField, Button } from "../common";
 import { DateRangePicker, CustomProvider } from 'rsuite';
+import { Search, SearchOff } from "../../images/icons"
 import moment from "moment";
 
 function EnhancedTableHead(props) {
@@ -36,7 +35,7 @@ function EnhancedTableHead(props) {
     onRequestSort,
     columns,
     checkable,
-    filterable
+    filterable,
   } = props;
 
   const { t } = useContext(GlobalContext);
@@ -103,6 +102,8 @@ const useToolbarStyles = makeStyles((theme) => ({
       },
   title: {
     flex: '1 1 100%',
+    display: 'flex',
+    alignItems: 'center'
   },
 }));
 
@@ -110,9 +111,13 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { t } = useContext(GlobalContext);
   const {
+    toolbarFilters,
     numSelected,
     onDateRangeChange,
-    title, toolbarActions, onKeywordSearch, dateRangePicker, filterable } = props;
+    title, toolbarActions, onKeywordSearch, dateRangePicker, filterable,
+    onSearchClick, onClearClick
+
+  } = props;
   const nowDatStartTime = moment().startOf("date").unix() * 1000;
   const nowDateEndTime = moment().endOf("date").unix() * 1000;
   const [keyword, setKeyword] = React.useState("")
@@ -126,35 +131,52 @@ const EnhancedTableToolbar = (props) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (<Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-        {title}
-      </Typography>)}
-      {dateRangePicker && <DateRangePicker
-        format="yyyy-MM-dd HH:mm:ss"
-        locale={t("daterangepicker")}
-        cleanable={false}
-        // value={[new Date(nowDateStartTime), new Date(nowDateEndTime)]}
-        defaultValue={[new Date(nowDatStartTime), new Date(nowDateEndTime)]}
-        onChange={onDateRangeChange} />}
-
-      {numSelected === 0 && filterable && <TextField
-        type="search"
-        size="small"
-        value={keyword}
-        onChange={onKeywordChange} />}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        toolbarActions.length > 0 && <Actions actions={toolbarActions} />
-      )}
+      {
+        numSelected > 0 ? (
+          <>
+            <Tooltip title="Delete">
+              <Button aria-label="delete">
+                <DeleteIcon />
+              </Button>
+            </Tooltip>
+            <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+              {numSelected} selected
+            </Typography>
+          </>
+        ) : (
+          <>
+            <div className={classes.title} >
+              <Typography variant="h6" id="tableTitle" component="div">
+                {title}
+              </Typography>
+              {dateRangePicker && <DateRangePicker
+                style={{ marginLeft: 20 }}
+                format="yyyy-MM-dd HH:mm:ss"
+                locale={t("daterangepicker")}
+                cleanable={false}
+                // value={[new Date(nowDatStartTime), new Date(nowDateEndTime)]}
+                defaultValue={[new Date(nowDatStartTime), new Date(nowDateEndTime)]}
+                onChange={onDateRangeChange} />}
+            </div>
+            {
+              filterable && <TextField
+                type="search"
+                fullWidth
+                // size="small"
+                value={keyword}
+                onChange={onKeywordChange} />
+            }
+            {toolbarFilters}
+            {filterable && <Button onClick={onSearchClick}><Search /></Button>}
+            {filterable && <Button onClick={() => {
+              onClearClick()
+              setKeyword("")
+            }}><SearchOff /></Button>}
+            {
+              toolbarActions.length > 0 && <Actions actions={toolbarActions} />
+            }
+          </>)
+      }
     </Toolbar>
   );
 };
@@ -209,19 +231,22 @@ export default ({
   checkable = true,
   filterable = true,
   dateRangePicker = false,
-  onRowsPerPageChange = () => { },
-  onPageChange = () => { },
-  onKeywordSearch = () => { },
-  onDateRangeChange = () => { },
   rows = [],
   columns = [],
-  onSortChange = () => { },
   rowActions = [],
   toolbarActions = [],
   sort = "",
   order = "asc",
   title = "",
-  total = 0
+  total = 0,
+  toolbarFilters = <></>,
+  onPageChange = () => { },
+  onSortChange = () => { },
+  onKeywordSearch = () => { },
+  onDateRangeChange = () => { },
+  onRowsPerPageChange = () => { },
+  onSearchClick = () => { },
+  onClearClick = () => { },
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState([]);
@@ -229,7 +254,7 @@ export default ({
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { theme } = useContext(GlobalContext);
-
+  // console.log(theme)
   const handleRequestSort = (event, property) => {
     const isAsc = sort === property && order === 'asc';
     onSortChange(isAsc ? 'desc' : 'asc', property)
@@ -282,15 +307,18 @@ export default ({
 
   return (
     <div className={classes.root}>
-      <CustomProvider theme={theme ? "dark" : "light"}>
+      <CustomProvider theme={theme}>
         <EnhancedTableToolbar
           title={title}
           filterable={filterable}
           numSelected={selected.length}
           toolbarActions={toolbarActions}
+          toolbarFilters={toolbarFilters}
           onKeywordSearch={onKeywordSearch}
           dateRangePicker={dateRangePicker}
           onDateRangeChange={onDateRangeChange}
+          onSearchClick={onSearchClick}
+          onClearClick={onClearClick}
         />
         <TableContainer>
           <Table

@@ -78,6 +78,14 @@ const LicenseList = () => {
         order={filter.order}
         sort={filter.sort}
         total={total}
+        onSearchClick={getProductList}
+        onClearClick={() => setFilter({
+          order: "desc",
+          sort: "datetime",
+          keyword: "",
+          limit: 10,
+          page: 1,
+        })}
         onPageChange={(page) => setFilter({ ...filter, page })}
         onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}

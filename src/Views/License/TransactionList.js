@@ -5,23 +5,67 @@ import {
   Table, Paper,
   DialogContent,
   DialogActions,
-  Button,
-  TextField
+  IconButton,
+  Button
 } from "../../components/common";
 
-import {
-  ConfirmationNumber,
-  GetApp
-} from '@material-ui/icons';
+// import {
+//   ConfirmationNumber,
+//   GetApp
+// } from '@material-ui/icons';
 
 import { CheckCircleOutline, BlockRounded } from '@material-ui/icons';
 import Generator from "../../components/License/Generator";
 import {
   TRANSACTION_STATUS
 } from "../../utils/constant";
-import { Download, Verified, Link, LinkOff } from "../../images/icons";
+import { Download, Verified, Link, LinkOff, Filter } from "../../images/icons";
+import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import moment from "moment";
 
 // Status : 1 (require) Status : 2 (approve) Status : 3 (reject) Status : 4 (transfer) Status : 5 (commit)
+
+const DialogSection = ({
+  status = [],
+  onConfirm = () => { }
+}) => {
+  const [state, setState] = React.useState(status);
+  const { closeDialog, t } = useContext(GlobalContext);
+  return (
+    <>
+      <DialogContent
+        dividers
+        style={{
+          width: 500
+        }}>
+
+        <FormControl fullWidth>
+          <InputLabel>{t("status")}</InputLabel>
+          <Select
+            value={state}
+            multiple
+            onChange={e => setState(e.target.value)}
+          >
+            {
+              Object.keys(TRANSACTION_STATUS)
+                .map(status => <MenuItem
+                  key={status}
+                  value={Number(status)}>{t(`_${TRANSACTION_STATUS[status]}`)}
+                </MenuItem>)
+            }
+          </Select>
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog}>
+          Cancel
+        </Button>
+        <Button onClick={() => onConfirm(state)}>
+          Confirm
+        </Button>
+      </DialogActions>
+    </>)
+}
 
 const LicenseList = () => {
   const md5 = require("md5");
@@ -31,10 +75,13 @@ const LicenseList = () => {
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
     order: "desc",
-    sort: "consumer_name",
+    sort: "createtime",
     keyword: "",
     limit: 10,
     page: 1,
+    data: {
+      status: []
+    }
   });
 
   const [transactions, setTransactions] = React.useState([])
@@ -45,16 +92,17 @@ const LicenseList = () => {
 
   const getLicenseTransactionList = async () => {
     const { result, total } = await authedApi.getLicenseTransactionList({
-      data: {
-        // status: [1, 2, 3, 4]
-      },
+      // data: {
+      //   status: [1, 2, 3, 4]
+      // },
       ...filter
     })
     let _transactions = result.map(p => ({
       ...p,
       _id: p.ltid,
       _status: t(`_${TRANSACTION_STATUS[p.status]}`),
-      _commercial: p.commercial ? <Verified /> : null
+      _commercial: p.commercial ? <Verified /> : null,
+      createtime: moment(p.createtime).format("YYYY-MM-DD hh:mm:ss")
     }))
     setTransactions(_transactions)
     setTotal(total)
@@ -86,6 +134,7 @@ const LicenseList = () => {
       section: <Generator onConfirm={params => handleBindLicense(params, row.ltid)} productid={row.productid} />
     })
   }
+
   const handleBindLicense = async (params, ltid) => {
     await authedApi.postLicenseBind({ data: { ...params }, ltid })
     closeDialog()
@@ -116,12 +165,32 @@ const LicenseList = () => {
     })
   }
 
+  const handleOpenFilterDialog = () => {
+    openDialog({
+      title: t("filter"),
+      section: <DialogSection
+        status={filter.data.status}
+        onConfirm={handleChangeFilter} />
+    })
+  }
+
+  const handleChangeFilter = (status) => {
+    setFilter({
+      ...filter,
+      data: {
+        status: [...status]
+      }
+    })
+    closeDialog()
+  }
+
   return (
     <Paper>
       <Table
         title={t("thing-list", { thing: t("transaction") })}
         rows={transactions}
         columns={[
+          { key: 'createtime', label: t('createtime') },
           { key: 'consumer_name', label: t('consumer') },
           { key: 'provider_name', label: t('provider') },
           { key: 'product_name', label: t('product') },
@@ -133,6 +202,22 @@ const LicenseList = () => {
         order={filter.order}
         sort={filter.sort}
         total={total}
+        toolbarFilters={
+          <Button onClick={handleOpenFilterDialog} >
+            <Filter />
+          </Button>
+        }
+        onSearchClick={getLicenseTransactionList}
+        onClearClick={() => setFilter({
+          order: "desc",
+          sort: "createtime",
+          keyword: "",
+          limit: 10,
+          page: 1,
+          data: {
+            status: []
+          }
+        })}
         onPageChange={(page) => setFilter({ ...filter, page })}
         onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}

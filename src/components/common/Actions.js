@@ -2,7 +2,6 @@ import React from "react";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import IconButton from './IconButton';
 import Button from "./Button";
 // import Tooltip from '@material-ui/core/Tooltip';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -65,11 +64,11 @@ export default ({ actions = [], row = {} }) => {
   }
 
   if (actions.length === 1) {
-    return <IconButton
+    return <Button
       // size="small"
       disabled={actions[0].disabled} onClick={(event) => actions[0].onClick(event, row)}>
       {actions[0].icon}
-    </IconButton>
+    </Button>
   }
   return (
     <div onClick={e => e.stopPropagation()}>

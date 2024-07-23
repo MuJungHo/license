@@ -19,6 +19,7 @@
     "consumer": "Consumer",
     "cost": "Cost",
     "count": "Count",
+    "createtime": "Create Time",
     "current-location": "The current location is {{page}}.",
     "datetime": "Datetime",
     "daterangepicker": {
@@ -47,6 +48,7 @@
     "edit-thing": "Edit {{thing}}",
     "email": "EMail",
     "feedback": "Feedback",
+    "filter": "Filter",
     "home": "Home",
     "identity": "Identity",
     "input": "Input",

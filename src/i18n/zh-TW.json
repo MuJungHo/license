@@ -19,6 +19,7 @@
     "consumer": "消費者",
     "cost": "費用",
     "count": "數量",
+    "createtime": "建立時間",
     "current-location": "目前在 {{page}}",
     "datetime": "日期時間",
     "daterangepicker": {
@@ -47,6 +48,7 @@
     "edit-thing": "編輯{{thing}}",
     "email": "電子信箱",
     "feedback": "回饋",
+    "filter": "過濾器",
     "home": "首頁",
     "identity": "身份",
     "input": "輸入",

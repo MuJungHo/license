@@ -22,9 +22,9 @@ import Require from "../../components/License/Require";
 // } from '@material-ui/core';
 
 import {
-  License,
-  PostAdd,
-  Commit as CommitIcon
+  Commit as CommitIcon,
+  Exchange,
+  Request
 } from "../../images/icons";
 
 const MyLicense = () => {
@@ -104,8 +104,8 @@ const MyLicense = () => {
         ]}
         rowActions={[
           { name: t('commit'), onClick: (e, row) => handleSetCommitDialog(row), icon: <CommitIcon /> },
-          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <License />, showMenuItem: (row) => role === 1 || role === 2 },
-          { name: t('require'), onClick: (e, row) => handleSetRequireDialog(row), icon: <PostAdd />, showMenuItem: () => (role === 2 || role === 3) },
+          { name: t('transfer'), onClick: (e, row) => handleSetTransferDialog(row), icon: <Exchange />, showMenuItem: (row) => role === 1 || role === 2 },
+          { name: t('require'), onClick: (e, row) => handleSetRequireDialog(row), icon: <Request />, showMenuItem: () => (role === 2 || role === 3) },
         ]}
       // dense
       />

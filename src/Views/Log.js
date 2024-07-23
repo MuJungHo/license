@@ -19,7 +19,7 @@ import {
 // import {
 //   License
 // } from "../images/icons";
-import moment from "moment/moment";
+import moment from "moment";
 
 const User = () => {
   const { t, authedApi } = useContext(GlobalContext);
@@ -34,7 +34,7 @@ const User = () => {
     start: moment().startOf('date').valueOf(),
     end: moment().endOf('date').valueOf(),
   });
-  
+
   React.useEffect(() => {
     getLogList()
   }, [filter])
@@ -45,7 +45,11 @@ const User = () => {
       },
       ...filter
     });
-    let _logs = result.map(l => ({ ...l, _id: l.logid }))
+    let _logs = result.map(l => ({
+      ...l,
+      _id: l.logid,
+      datetime: moment(l.datetime).format("YYYY-MM-DD hh:mm:ss")
+    }))
     setLoglist(_logs)
     setTotal(total)
   }
@@ -66,6 +70,16 @@ const User = () => {
         order={filter.order}
         sort={filter.sort}
         total={total}
+        onSearchClick={getLogList}
+        onClearClick={() => setFilter({
+          order: "desc",
+          sort: "datetime",
+          keyword: "",
+          limit: 10,
+          page: 1,
+          start: moment().startOf('date').valueOf(),
+          end: moment().endOf('date').valueOf(),
+        })}
         onPageChange={(page) => setFilter({ ...filter, page })}
         onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}

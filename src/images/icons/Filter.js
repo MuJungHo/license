@@ -1,5 +1,5 @@
 import * as React from "react";
-function SvgHome(props) {
+function SvgFilter(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,8 +9,8 @@ function SvgHome(props) {
       fill="currentColor"
       {...props}
     >
-      <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160zm320-350z" />
+      <path d="M400-240v-80h160v80H400zM240-440v-80h480v80H240zM120-640v-80h720v80H120z" />
     </svg>
   );
 }
-export default SvgHome;
+export default SvgFilter;
