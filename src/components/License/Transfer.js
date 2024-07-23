@@ -121,10 +121,10 @@ export default ({
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>
-          Cancel
+          {t("cancel")}
         </Button>
-        <Button onClick={() => onConfirm(state)}>
-          Generate
+        <Button color="primary" variant="contained" onClick={() => onConfirm(state)}>
+          {t("confirm")}
         </Button>
       </DialogActions>
     </>

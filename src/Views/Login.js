@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   locale: {
   }
 }))
-const ronuser = "1234";
+const user = "user";
 const ron = "ron";
 const mmm = "mmm";
 const admin = "admin@bb.cc"

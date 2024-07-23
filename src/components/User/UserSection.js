@@ -173,10 +173,10 @@ const UserSection = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>
-          Cancel
+          {t("cancel")}
         </Button>
-        <Button onClick={() => onConfirm(state)}>
-          Confirm
+        <Button color="primary" variant="contained" onClick={() => onConfirm(state)}>
+          {t("confirm")}
         </Button>
       </DialogActions>
     </>)

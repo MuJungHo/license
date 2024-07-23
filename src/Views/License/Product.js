@@ -19,7 +19,7 @@ import {
 import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { AuthContext } from "../../contexts/AuthContext";
+// import { AuthContext } from "../../contexts/AuthContext";
 import {
   TextField, Paper, Button, IconButton, Text,
   DialogContent,
@@ -207,7 +207,7 @@ export default () => {
 
     openSnackbar({
       severity: "success",
-      message: t("success-thing", { thing: t("edit") })
+      message: t("success-thing", { thing: t("save") })
     })
   }
 

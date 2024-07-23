@@ -48,7 +48,7 @@ const User = () => {
     let _logs = result.map(l => ({
       ...l,
       _id: l.logid,
-      datetime: moment(l.datetime).format("YYYY-MM-DD hh:mm:ss")
+      datetime: moment(l.datetime).format("YYYY-MM-DD HH:mm:ss")
     }))
     setLoglist(_logs)
     setTotal(total)

@@ -16,7 +16,7 @@ function PublicRoute({
           ) : (
             <Redirect
               to={{
-                pathname: '/commit-list',
+                pathname: '/transaction-list',
                 state: { from: location }
               }}
             />

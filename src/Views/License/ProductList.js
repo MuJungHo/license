@@ -12,7 +12,7 @@ import {
 import ProductSection from "../../components/License/ProductSection";
 
 const LicenseList = () => {
-  const { t, openDialog, authedApi, openSnackbar } = useContext(GlobalContext);
+  const { t, openDialog, authedApi, openSnackbar, closeDialog } = useContext(GlobalContext);
   const { role } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
@@ -50,6 +50,7 @@ const LicenseList = () => {
   const handleAddProduct = async (product) => {
     await authedApi.postAddProduct({ data: { ...product } })
     getProductList()
+    closeDialog()
     openSnackbar({
       severity: "success",
       message: t("success-thing", { thing: t("add") })

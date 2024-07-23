@@ -29,7 +29,7 @@ import {
 
 const MyLicense = () => {
   const { account, role, accountid } = useContext(AuthContext);
-  const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog, authedApi, openSnackbar } = useContext(GlobalContext);
   const [rows, setRows] = React.useState([]);
   
   // console.log(role)
@@ -54,6 +54,10 @@ const MyLicense = () => {
     await authedApi.postLicenseCommit({ data: { ...state, productid }, })
     closeDialog()
     getMyAccount()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("commit") })
+    })
   }
 
   const handleSetTransferDialog = (row) => {
@@ -67,6 +71,10 @@ const MyLicense = () => {
     await authedApi.postLicenseTransfer({ data: { ...state, productid }, })
     closeDialog()
     getMyAccount()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("transfer") })
+    })
   }
 
   const handleSetRequireDialog = (row) => {
@@ -80,6 +88,10 @@ const MyLicense = () => {
     await authedApi.postLicenseApply({ data: { ...state, productid }, })
     closeDialog()
     getMyAccount()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("require") })
+    })
   }
 
   return (

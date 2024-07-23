@@ -163,7 +163,7 @@ export default ({
   productid
 }) => {
   // const { t } = useContext(GlobalContext);
-  const { closeDialog, authedApi } = useContext(GlobalContext);
+  const { closeDialog, authedApi, t } = useContext(GlobalContext);
   const [product, setProduct] = React.useState([])
 
   React.useEffect(() => {
@@ -197,10 +197,10 @@ export default ({
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>
-          Cancel
+          {t("cancel")}
         </Button>
-        <Button onClick={() => onConfirm(state)}>
-          Generate
+        <Button color="primary" variant="contained" onClick={() => onConfirm(state)}>
+          {t("confirm")}
         </Button>
       </DialogActions>
     </>

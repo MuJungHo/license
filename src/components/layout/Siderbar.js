@@ -22,7 +22,7 @@ import {
 
 import routes from '../../routers/routes';
 import { version } from "../../../package.json";
-import { IconButton } from "../common";
+import { IconButton, Button } from "../common";
 
 const drawerWidth = 240;
 
@@ -192,7 +192,7 @@ const SingleLevel = ({ route, open }) => {
 const Siderbar = ({ open, setOpen }) => {
   const classes = useStyles();
   const { role } = useContext(AuthContext);
-  
+
   return (
     <Drawer
       variant="permanent"
@@ -232,11 +232,12 @@ const Siderbar = ({ open, setOpen }) => {
           bottom: 20,
         }}>
         {open && <span style={{ color: "#fff" }}>v{version}</span>}
-        <IconButton
+        <Button
+          size="small"
           onClick={() => setOpen(!open)}
           style={{ margin: open ? '' : 'auto' }}>
           {open ? <ArrowBack /> : <ArrowForward />}
-        </IconButton>
+        </Button>
       </div>
     </Drawer>)
 }

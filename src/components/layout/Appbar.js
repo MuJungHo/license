@@ -161,13 +161,13 @@ const Appbar = ({ open }) => {
           {locale}
         </Button>
 
-        <IconButton onClick={() => changeTheme(theme === "dark" ? "light" : "dark")}>
+        <Button size="small" onClick={() => changeTheme(theme === "dark" ? "light" : "dark")}>
           {
             theme === "dark"
               ? <LightMode />
               : <DarkMode />
           }
-        </IconButton>
+        </Button>
         <IconButton size="small" onClick={e => setAnchorEl(e.currentTarget)}>
           <Avatar>{account?.slice(0, 3)}</Avatar>
         </IconButton>

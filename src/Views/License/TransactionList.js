@@ -102,7 +102,7 @@ const LicenseList = () => {
       _id: p.ltid,
       _status: t(`_${TRANSACTION_STATUS[p.status]}`),
       _commercial: p.commercial ? <Verified /> : null,
-      createtime: moment(p.createtime).format("YYYY-MM-DD hh:mm:ss")
+      createtime: moment(p.createtime).format("YYYY-MM-DD HH:mm:ss")
     }))
     setTransactions(_transactions)
     setTotal(total)
@@ -203,7 +203,7 @@ const LicenseList = () => {
         sort={filter.sort}
         total={total}
         toolbarFilters={
-          <Button onClick={handleOpenFilterDialog} >
+          <Button color={filter.data.status.length > 0 ? "primary" : ""} onClick={handleOpenFilterDialog} >
             <Filter />
           </Button>
         }

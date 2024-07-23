@@ -3,10 +3,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Button from "./Button";
-// import Tooltip from '@material-ui/core/Tooltip';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { makeStyles } from '@material-ui/core/styles';
 
+import { makeStyles } from '@material-ui/core/styles';
+import { MoreHoriz } from "../../images/icons";
 const useStyles = makeStyles((theme) => ({
   menu: {
     "& .MuiPaper-root": {
@@ -72,7 +71,9 @@ export default ({ actions = [], row = {} }) => {
   }
   return (
     <div onClick={e => e.stopPropagation()}>
-      <Button className={classes.button} size="small" color="default" onClick={handleActionClick} variant="outlined"><MoreHorizIcon /></Button>
+      <Button
+        className={classes.button}
+        onClick={handleActionClick}><MoreHoriz /></Button>
       <Menu
         open={Boolean(anchorEl)}
         className={classes.menu}

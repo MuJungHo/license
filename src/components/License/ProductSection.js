@@ -38,13 +38,21 @@ const UserSection = ({
           value={state.name}
           onChange={e => setState({ ...state, name: e.target.value })}
         />
+        <TextField
+          label={t("description")}
+          style={{ marginTop: 20 }}
+          type="text"
+          fullWidth
+          value={state.description}
+          onChange={e => setState({ ...state, description: e.target.value })}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>
-          Cancel
+          {t("cancel")}
         </Button>
-        <Button onClick={() => onConfirm(state)}>
-          Confirm
+        <Button color="primary" variant="contained" onClick={() => onConfirm(state)}>
+          {t("confirm")}
         </Button>
       </DialogActions>
     </>)
