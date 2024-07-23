@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 
@@ -12,13 +12,19 @@ import {
 import {
   Divider,
   Select,
-  MenuItem
+  MenuItem,
+  FormControl,
+  InputLabel
 } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
-import { TextField, Paper, Button, IconButton } from "../../components/common";
+import {
+  TextField, Paper, Button, IconButton, Text,
+  DialogContent,
+  DialogActions,
+} from "../../components/common";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,10 +50,10 @@ const useStyles = makeStyles((theme) => ({
     height: 45,
     margin: '6px 12px',
     '& > *:first-child': {
-      flexBasis: '25%'
+      minWidth: 150
     },
     '& > *:not(:first-child)': {
-      flexBasis: '74%'
+      flex: '1 1 auto'
     },
   },
   button: {
@@ -118,15 +124,57 @@ const Parameter = ({ parameter, onParameterChange }) => {
     <Divider /></React.Fragment>)
 }
 
+const DialogSection = ({
+  onConfirm = () => { }
+}) => {
+  const [state, setState] = React.useState("")
+  const { closeDialog, t } = useContext(GlobalContext);
+  return (
+    <>
+      <DialogContent
+        dividers
+        style={{
+          width: 500
+        }}>
+
+        <FormControl
+          fullWidth
+          style={{ marginBottom: 20 }}>
+          <InputLabel>{t("command-key")}</InputLabel>
+          <Select
+            value={state}
+            onChange={e => setState(e.target.value)}
+          >
+            <MenuItem value="#license_count#">License Count</MenuItem>
+            <MenuItem value="#commercial#">Commercial</MenuItem>
+            <MenuItem value="#json_path#">Json Path</MenuItem>
+            <MenuItem value="#output_path#">Output Path</MenuItem>
+          </Select>
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog}>
+          Cancel
+        </Button>
+        <Button onClick={() => onConfirm(state)}>
+          Confirm
+        </Button>
+      </DialogActions>
+    </>)
+}
+
+
 export default () => {
   const classes = useStyles();
   const history = useHistory();
-  const { t, authedApi, openSnackbar } = useContext(GlobalContext);
+  const { t, authedApi, openSnackbar, openDialog, closeDialog } = useContext(GlobalContext);
   const { productid } = useParams();
+  const inputRef = useRef();
 
   const [product, setProduct] = React.useState({
     name: "",
     description: "",
+    command: "",
     parameters: []
   })
 
@@ -169,6 +217,27 @@ export default () => {
     setProduct(_product)
   }
 
+  const handleAddCommand = () => {
+    inputRef.current.focus();
+    showAddCommandKeyModal(inputRef.current.selectionStart)
+  }
+  const showAddCommandKeyModal = (index) => {
+    openDialog({
+      title: t("add-thing", { thing: t("command-key") }),
+      section: <DialogSection onConfirm={state => handleAddCommandKey(state, index)} />
+    })
+  }
+
+  const handleAddCommandKey = (state, index) => {
+    let _value = product.command;
+    let value = _value.substr(0, index) + state + _value.substr(index);
+    setProduct({
+      ...product,
+      command: value
+    })
+    closeDialog()
+  }
+
   return (
     <div className={classes.root}>
       <Button
@@ -184,17 +253,27 @@ export default () => {
       <Paper style={{ marginBottom: 20 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', padding: 8 }}>
           <div className={classes.info}>
-            <span>{t("name")}</span>
+            <Text>{t("name")}</Text>
             <TextField value={product.name} onChange={e => setProduct({
               ...product,
               name: e.target.value
             })} />
           </div>
           <div className={classes.info}>
-            <span>{t("description")}</span>
+            <Text>{t("description")}</Text>
             <TextField value={product.description} onChange={e => setProduct({
               ...product,
               description: e.target.value
+            })} />
+          </div>
+          <div style={{ width: '100%' }} className={classes.info}>
+            <Text>{t("command")}</Text>
+            <Button onClick={handleAddCommand}>
+              <AddBox />
+            </Button>
+            <TextField inputRef={inputRef} fullWidth value={product.command} onChange={e => setProduct({
+              ...product,
+              command: e.target.value
             })} />
           </div>
         </div>
