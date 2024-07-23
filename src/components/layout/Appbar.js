@@ -115,7 +115,7 @@ const Profile = () => {
 
 const Appbar = ({ open }) => {
   const classes = useStyles();
-  const { logout } = useContext(AuthContext);
+  const { logout, account } = useContext(AuthContext);
   const { locale, changeLocale, t, changeTheme, theme, openDialog, authedApi } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -169,7 +169,7 @@ const Appbar = ({ open }) => {
           }
         </IconButton>
         <IconButton size="small" onClick={e => setAnchorEl(e.currentTarget)}>
-          <Avatar src="../avatar.png" />
+          <Avatar>{account?.slice(0, 3)}</Avatar>
         </IconButton>
         <Menu
           anchorEl={anchorEl}
@@ -179,7 +179,7 @@ const Appbar = ({ open }) => {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-          <MenuItem onClick={handleSetDialog}>{t("user-profile")}</MenuItem>
+          {/* <MenuItem onClick={handleSetDialog}>{t("user-profile")}</MenuItem> */}
           <MenuItem onClick={handleLogout}>{t('logout')}</MenuItem>
         </Menu>
         <Menu

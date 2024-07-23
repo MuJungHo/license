@@ -93,12 +93,13 @@ const MyLicense = () => {
           { key: 'number', label: t('thing-amount', { thing: t("license") }) },
         ]}
         checkable={false}
-        order="asc"
-        orderBy="name"
-        onPageChange={(event, page) => console.log(page)}
-        onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
-        onSortChange={(isAsc, property) => console.log(isAsc, property)}
-        onKeywordSearch={(event) => console.log(event.target.value)}
+        filterable={false}
+        // order="asc"
+        // orderBy="name"
+        // onPageChange={(event, page) => console.log(page)}
+        // onRowsPerPageChange={(event) => console.log(parseInt(event.target.value, 10))}
+        // onSortChange={(isAsc, property) => console.log(isAsc, property)}
+        // onKeywordSearch={(event) => console.log(event.target.value)}
         toolbarActions={[
         ]}
         rowActions={[

@@ -14,7 +14,7 @@ import { Download, Verified, Link, LinkOff } from "../../images/icons"
 const CommitList = () => {
   const md5 = require("md5");
 
-  const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog, authedApi, openSnackbar } = useContext(GlobalContext);
   const { role, token } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
@@ -56,6 +56,10 @@ const CommitList = () => {
     await authedApi.postLicenseBind({ data: { ...params }, ltid })
     closeDialog()
     getLicenseCommitList()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("bind") })
+    })
   }
 
   const handleDownloadLicense = async (ltid) => {
@@ -72,6 +76,10 @@ const CommitList = () => {
     const ltid = row.ltid;
     await authedApi.postLicenseUnBind({ ltid })
     getLicenseCommitList()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("unbind") })
+    })
   }
 
   return (

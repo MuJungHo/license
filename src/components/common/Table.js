@@ -35,7 +35,8 @@ function EnhancedTableHead(props) {
     rowActions,
     onRequestSort,
     columns,
-    checkable
+    checkable,
+    filterable
   } = props;
 
   const { t } = useContext(GlobalContext);
@@ -63,6 +64,7 @@ function EnhancedTableHead(props) {
             sortDirection={sort === column.key ? order : false}
           >
             <TableSortLabel
+              disabled={!filterable}
               active={sort === column.key}
               direction={sort === column.key ? order : 'asc'}
               onClick={createSortHandler(column.key)}
@@ -110,7 +112,7 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     onDateRangeChange,
-    title, toolbarActions, onKeywordSearch, dateRangePicker } = props;
+    title, toolbarActions, onKeywordSearch, dateRangePicker, filterable } = props;
   const nowDatStartTime = moment().startOf("date").unix() * 1000;
   const nowDateEndTime = moment().endOf("date").unix() * 1000;
   const [keyword, setKeyword] = React.useState("")
@@ -139,7 +141,7 @@ const EnhancedTableToolbar = (props) => {
         defaultValue={[new Date(nowDatStartTime), new Date(nowDateEndTime)]}
         onChange={onDateRangeChange} />}
 
-      {numSelected === 0 && <TextField
+      {numSelected === 0 && filterable && <TextField
         type="search"
         size="small"
         value={keyword}
@@ -205,6 +207,7 @@ const useStyles = makeStyles((theme) => ({
 export default ({
   dense = false,
   checkable = true,
+  filterable = true,
   dateRangePicker = false,
   onRowsPerPageChange = () => { },
   onPageChange = () => { },
@@ -282,6 +285,7 @@ export default ({
       <CustomProvider theme={theme ? "dark" : "light"}>
         <EnhancedTableToolbar
           title={title}
+          filterable={filterable}
           numSelected={selected.length}
           toolbarActions={toolbarActions}
           onKeywordSearch={onKeywordSearch}
@@ -304,6 +308,7 @@ export default ({
               rowActions={rowActions}
               columns={columns}
               checkable={checkable}
+              filterable={filterable}
             />
             <TableBody>
               {rows.map((row, index) => {
@@ -348,16 +353,18 @@ export default ({
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          className={classes.pagination}
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={total}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowPerPage}
-        />
+        {
+          filterable && <TablePagination
+            className={classes.pagination}
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={total}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowPerPage}
+          />
+        }
       </CustomProvider>
     </div>
   );

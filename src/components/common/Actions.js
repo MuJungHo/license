@@ -66,6 +66,7 @@ export default ({ actions = [], row = {} }) => {
 
   if (actions.length === 1) {
     return <IconButton
+      // size="small"
       disabled={actions[0].disabled} onClick={(event) => actions[0].onClick(event, row)}>
       {actions[0].icon}
     </IconButton>

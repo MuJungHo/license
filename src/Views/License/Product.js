@@ -121,7 +121,7 @@ const Parameter = ({ parameter, onParameterChange }) => {
 export default () => {
   const classes = useStyles();
   const history = useHistory();
-  const { t, authedApi } = useContext(GlobalContext);
+  const { t, authedApi, openSnackbar } = useContext(GlobalContext);
   const { productid } = useParams();
 
   const [product, setProduct] = React.useState({
@@ -155,6 +155,11 @@ export default () => {
       data: {
         ...product
       }
+    })
+
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("edit") })
     })
   }
 

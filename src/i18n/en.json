@@ -1,6 +1,7 @@
 {
     "account": "Account",
     "action": "Action",
+    "add": "Add",
     "add-thing": "Add {{thing}}",
     "amount": "Amount",
     "apply": "Apply",
@@ -62,6 +63,7 @@
     "require": "Require",
     "role": "Role",
     "status": "Status",
+    "success-thing": "{{thing}} Successful",
     "telephone": "Telephone",
     "thing-amount": "{{thing}} amount",
     "thing-list": "{{thing}} List",

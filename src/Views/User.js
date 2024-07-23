@@ -41,7 +41,7 @@ const getAESEncrypt = async (txt) => {
 }
 
 const User = () => {
-  const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog, authedApi, openSnackbar } = useContext(GlobalContext);
   const { role } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
@@ -96,6 +96,10 @@ const User = () => {
     })
     getAccountList()
     closeDialog()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("edit") })
+    })
   }
 
   const handleAddUserAccount = async (user) => {
@@ -111,11 +115,19 @@ const User = () => {
     })
     getAccountList()
     closeDialog()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("add") })
+    })
   }
 
   const handleDeleteAccount = async user => {
     await authedApi.deleteAccount({ accountid: user.accountid })
     getAccountList()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("delete") })
+    })
   }
 
   return (
@@ -128,7 +140,7 @@ const User = () => {
           { key: 'email', label: t('email') },
           { key: 'rolename', label: t('rolename') },
         ]}
-        checkable={role === 1}
+        checkable={false}
         order={filter.order}
         sort={filter.sort}
         total={total}

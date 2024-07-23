@@ -25,7 +25,7 @@ import {
 const LicenseList = () => {
   const md5 = require("md5");
 
-  const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
+  const { t, authedApi, openSnackbar } = useContext(GlobalContext);
   const { role, token } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
@@ -62,12 +62,20 @@ const LicenseList = () => {
     const ltid = row.ltid;
     await authedApi.postLicenseApprove({ data: {}, ltid })
     getLicenseTransactionList()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("approve") })
+    })
   }
 
   const handleRejectLicense = async (row) => {
     const ltid = row.ltid;
     await authedApi.postLicenseReject({ data: {}, ltid })
     getLicenseTransactionList()
+    openSnackbar({
+      severity: "success",
+      message: t("success-thing", { thing: t("reject") })
+    })
   }
 
   return (

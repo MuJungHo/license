@@ -1,6 +1,7 @@
 {
     "account": "帳號",
     "action": "操作",
+    "add": "新增",
     "add-thing": "新增{{thing}}",
     "amount": "數量",
     "apply": "申請",
@@ -62,6 +63,7 @@
     "require": "請求",
     "role": "角色",
     "status": "狀態",
+    "success-thing": "{{thing}}成功",
     "telephone": "電話",
     "thing-amount": "{{thing}}數量",
     "thing-list": "{{thing}}列表",
