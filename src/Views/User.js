@@ -64,7 +64,14 @@ const User = () => {
       },
       ...filter
     })
-    let _accountList = result.map(p => ({ ...p, _id: p.accountid }))
+    let _accountList = result.map(p => {
+      let _productsParse = p.products ? JSON.parse(p.products) : [];
+      _productsParse = _productsParse.map(p => p.productid);
+      return ({
+        ...p, _id: p.accountid,
+        productsParse: _productsParse
+      })
+    })
     setAccountList(_accountList)
     setTotal(total)
   }

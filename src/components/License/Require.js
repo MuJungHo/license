@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 
 // import { useHistory } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-// import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import {
   TextField, Button,
@@ -54,6 +54,7 @@ export default ({
   onConfirm = () => { },
 }) => {
   const { closeDialog, authedApi, t } = useContext(GlobalContext);
+  const { accountid } = useContext(AuthContext);
 
   const [state, setState] = React.useState({ number: "", description: "", provider_accountid: "" });
   const [accountList, setAccountList] = React.useState([]);
@@ -70,7 +71,9 @@ export default ({
       limit: 50,
       page: 1
     })
-    let _accountList = result.map(p => ({ ...p, _id: p.accountid }))
+    let _accountList = result
+      .filter(a => a.accountid !== Number(accountid))
+      .map(a => ({ ...a, _id: a.accountid }))
     setAccountList(_accountList)
   }
 
