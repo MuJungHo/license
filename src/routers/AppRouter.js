@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Switch, BrowserRouter } from 'react-router-dom'
+import { Switch, HashRouter } from 'react-router-dom'
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import routes from './routes'
@@ -11,7 +11,7 @@ const AppRouter = () => {
   const { role } = useContext(AuthContext);
   // console.log(role)
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <PublicRoute path="/login">
           <Login />
@@ -28,7 +28,7 @@ const AppRouter = () => {
           {/* <Redirect to='/' /> */}
         </Layout>
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 export default AppRouter

@@ -31,17 +31,16 @@ const MyLicense = () => {
   const { account, role, accountid } = useContext(AuthContext);
   const { t, openDialog, closeDialog, authedApi } = useContext(GlobalContext);
   const [rows, setRows] = React.useState([]);
-  const [totalDownload, setTotalDownload] = React.useState(0)
+  
   // console.log(role)
   React.useEffect(() => {
     getMyAccount()
   }, [])
 
   const getMyAccount = async () => {
-    const { products, total_sales } = await authedApi.getAccountInfo({ accountid })
+    const { products } = await authedApi.getAccountInfo({ accountid })
     let _products = products.map(p => ({ ...p, _id: p.productid }))
     setRows(_products)
-    setTotalDownload(total_sales)
   }
 
   const handleSetCommitDialog = (row) => {
@@ -86,10 +85,11 @@ const MyLicense = () => {
   return (
     <Paper>
       <Table
-        title={`Hi ${account}. 以下是您所擁有的產品, 總共交易 ${totalDownload} 筆。`}
+        title={`Hi ${account}. 以下是您所擁有的產品`}
         rows={rows}
         columns={[
           { key: 'product_name', label: t('name') },
+          { key: 'total_sales', label: t('total-sales') },
           { key: 'number', label: t('thing-amount', { thing: t("license") }) },
         ]}
         checkable={false}
