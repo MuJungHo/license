@@ -121,6 +121,7 @@ const EnhancedTableToolbar = (props) => {
   const nowDatStartTime = moment().startOf("date").unix() * 1000;
   const nowDateEndTime = moment().endOf("date").unix() * 1000;
   const [keyword, setKeyword] = React.useState("")
+  const [dateRange, setDateRange] = React.useState([new Date(nowDatStartTime), new Date(nowDateEndTime)])
   const onKeywordChange = (e) => {
     setKeyword(e.target.value)
     onKeywordSearch(e.target.value)
@@ -154,9 +155,12 @@ const EnhancedTableToolbar = (props) => {
                 format="yyyy-MM-dd HH:mm:ss"
                 locale={t("daterangepicker")}
                 cleanable={false}
-                // value={[new Date(nowDatStartTime), new Date(nowDateEndTime)]}
-                defaultValue={[new Date(nowDatStartTime), new Date(nowDateEndTime)]}
-                onChange={onDateRangeChange} />}
+                value={dateRange}
+                // defaultValue={dateRange}
+                onChange={(e) => {
+                  onDateRangeChange(e)
+                  setDateRange(e)
+                }} />}
             </div>
             {
               filterable && <TextField
@@ -171,6 +175,7 @@ const EnhancedTableToolbar = (props) => {
             {filterable && <Button onClick={() => {
               onClearClick()
               setKeyword("")
+              setDateRange([new Date(nowDatStartTime), new Date(nowDateEndTime)])
             }}><SearchOff /></Button>}
             {
               toolbarActions.length > 0 && <Actions actions={toolbarActions} />
