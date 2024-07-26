@@ -12,7 +12,7 @@ import {
 import ProductSection from "../../components/License/ProductSection";
 
 const LicenseList = () => {
-  const { t, openDialog, authedApi, openSnackbar, closeDialog } = useContext(GlobalContext);
+  const { t, openDialog, authedApi, openSnackbar, closeDialog, openWarningDialog } = useContext(GlobalContext);
   const { role } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
@@ -60,9 +60,18 @@ const LicenseList = () => {
   const handleDeleteProduct = async (product) => {
     await authedApi.deleteProduct({ productid: product.productid })
     getProductList()
+    closeDialog()
     openSnackbar({
       severity: "success",
       message: t("success-thing", { thing: t("delete") })
+    })
+  }
+
+  const handleSetWarningDialog = (product) => {
+    openWarningDialog({
+      title: t("delete-confirmation"),
+      message: t("delete-thing-confirm", { thing: product.name }),
+      onConfirm: () => handleDeleteProduct(product)
     })
   }
 
@@ -96,7 +105,7 @@ const LicenseList = () => {
         ] : []}
         rowActions={role === 1 ? [
           { name: t('edit'), onClick: (e, row) => { history.push(`/product/${row._id}`) }, icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleDeleteProduct(row), icon: <Delete /> }
+          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ] : []}
       // dense
       />

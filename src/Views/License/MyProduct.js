@@ -97,7 +97,7 @@ const MyLicense = () => {
   return (
     <Paper>
       <Table
-        title={`Hi ${account}. 以下是您所擁有的產品`}
+        title={t("ownProducts")}
         rows={rows}
         columns={[
           { key: 'product_name', label: t('name') },

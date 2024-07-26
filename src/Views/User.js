@@ -41,7 +41,7 @@ const getAESEncrypt = async (txt) => {
 }
 
 const User = () => {
-  const { t, openDialog, closeDialog, authedApi, openSnackbar } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog, authedApi, openSnackbar, openWarningDialog } = useContext(GlobalContext);
   const { role } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
@@ -131,9 +131,18 @@ const User = () => {
   const handleDeleteAccount = async user => {
     await authedApi.deleteAccount({ accountid: user.accountid })
     getAccountList()
+    closeDialog()
     openSnackbar({
       severity: "success",
       message: t("success-thing", { thing: t("delete") })
+    })
+  }
+
+  const handleSetWarningDialog = (user) => {
+    openWarningDialog({
+      title: t("delete-confirmation"),
+      message: t("delete-thing-confirm", { thing: user.name }),
+      onConfirm: () => handleDeleteAccount(user)
     })
   }
 
@@ -168,7 +177,7 @@ const User = () => {
         ] : []}
         rowActions={role === 1 ? [
           { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
-          { name: t('delete'), onClick: (e, row) => handleDeleteAccount(row), icon: <Delete /> }
+          { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ] : []}
       // dense
       />

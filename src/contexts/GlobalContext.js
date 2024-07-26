@@ -22,7 +22,7 @@ import { lighten_palette, dark_palette } from "../customTheme";
 
 import i18n from '../i18n';
 import { api } from '../utils/apis';
-
+import WarningSection from '../components/common/WarningSection';
 
 import "../style/normalize.css";
 import 'rsuite/dist/rsuite.min.css';
@@ -52,6 +52,7 @@ function GlobalProvider({ children, ...rest }) {
   const [dialog, setDialog] = useState({
     title: "",
     open: false,
+    warning: false,
     section: <></>
   })
   // console.log(typeof dialog.onConfirm === "function")
@@ -68,6 +69,19 @@ function GlobalProvider({ children, ...rest }) {
     localStorage.setItem('locale', locale)
   };
 
+  const openWarningDialog = ({
+    title = "",
+    message = "",
+    onConfirm = () => { }
+  }) => {
+    setDialog({
+      title,
+      open: true,
+      warning: true,
+      section: <WarningSection message={message} onConfirm={onConfirm} />
+    })
+  }
+
   const openDialog = (_dialog) => {
     setDialog({
       open: true,
@@ -77,8 +91,10 @@ function GlobalProvider({ children, ...rest }) {
 
   const closeDialog = () => {
     setDialog({
-      ...dialog,
+      title: "",
       open: false,
+      warning: false,
+      section: <></>
     })
   }
 
@@ -105,6 +121,7 @@ function GlobalProvider({ children, ...rest }) {
     changeLocale,
     changeTheme,
     openDialog,
+    openWarningDialog,
     closeDialog,
     openSnackbar,
     theme,

@@ -62,17 +62,17 @@ const useStyles = makeStyles(theme => ({
   locale: {
   }
 }))
-const user = "user";
-const ron = "ron";
-const mmm = "mmm";
-const admin = "admin@bb.cc"
+// const user = "user";
+// const ron = "ron";
+// const mmm = "mmm";
+// const admin = "admin@bb.cc"
 const Login = () => {
   const classes = useStyles();
   const md5 = require("md5");
-  const [email, setEmail] = useState(ron);
-  const [password, setPassword] = useState("Aa123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const { login, token, setKeep, keep,  } = useContext(AuthContext);
+  const { login, token, setKeep, keep, } = useContext(AuthContext);
   const { t, changeLocale, locale, openSnackbar, authedApi } = useContext(GlobalContext);
 
   const handleSubmit = async (event) => {
@@ -96,6 +96,16 @@ const Login = () => {
 
     // const credentials = CryptoJS.enc.Base64.stringify(word);
     const result = await tokenlogin({ credentials, timestamp })
+      .catch(error => {
+        const json = JSON.parse(error.response.statusText);
+        if (json.code) {
+
+          openSnackbar({
+            severity: "error",
+            message: t(json.code)
+          })
+        }
+      })
     const Token = result?.Token;
     const Accountid = result?.Accountid;
     const Roleid = result?.Roleid;
