@@ -6,7 +6,7 @@ function AuthProvider(props) {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [role, setRole] = useState(Number(localStorage.getItem('role')));
   const [account, setAccount] = useState(localStorage.getItem('account') || "");
-  const [accountid, setAccountId] = useState(localStorage.getItem('accountid') || "");
+  const [accountid, setAccountId] = useState(Number(localStorage.getItem('accountid')) || "");
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
 
   const login = async (jwtToken, accountid, role, account) => {

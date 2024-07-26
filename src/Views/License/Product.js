@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useCallback } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 
@@ -178,18 +178,19 @@ export default () => {
     parameters: []
   })
 
-  React.useEffect(() => {
-    getProduct()
-  }, [])
-
-  const getProduct = async () => {
+  const getProduct = useCallback(async () => {
     const _product = await authedApi.getProduct({ productid });
     _product.parameters = [];
     if (_product.fields) {
       _product.parameters = JSON.parse(_product.fields);
     }
     setProduct(_product)
-  }
+  }, [authedApi, productid])
+
+  React.useEffect(() => {
+    getProduct()
+  }, [getProduct])
+
 
   const handleAddParamter = () => {
     const _id = Date.now();

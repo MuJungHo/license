@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Table, Paper } from "../../components/common";
@@ -25,11 +25,7 @@ const LicenseList = () => {
   const history = useHistory();
   const [products, setProducts] = React.useState([])
 
-  React.useEffect(() => {
-    getProductList()
-  }, [filter])
-
-  const getProductList = async () => {
+  const getProductList = useCallback(async () => {
     const { result, total } = await authedApi.getProductList({
       data: {
       },
@@ -38,7 +34,23 @@ const LicenseList = () => {
     let _products = result.map(p => ({ ...p, _id: p.productid }))
     setProducts(_products)
     setTotal(total)
-  }
+  }, [filter, authedApi])
+
+  React.useEffect(() => {
+    getProductList()
+  }, [getProductList])
+
+
+  // const getProductList = async () => {
+  //   const { result, total } = await authedApi.getProductList({
+  //     data: {
+  //     },
+  //     ...filter
+  //   })
+  //   let _products = result.map(p => ({ ...p, _id: p.productid }))
+  //   setProducts(_products)
+  //   setTotal(total)
+  // }
 
   const openAddProductDialog = () => {
     openDialog({

@@ -1,7 +1,6 @@
 import User from '../Views/User';
 import ProductList from '../Views/License/ProductList';
 import TransactionList from '../Views/License/TransactionList';
-import CommitList from '../Views/License/CommitList';
 import Product from '../Views/License/Product';
 import MyProduct from '../Views/License/MyProduct';
 import Log from '../Views/Log';
@@ -20,7 +19,6 @@ const routes = [
     icon: LicenseIcon,
     sider: true,
     children: [
-      // { name: "_commit-list", path: "/commit-list", roles: [1, 2, 3] },
       { name: "_transaction-list", path: "/transaction-list", roles: [1, 2, 3] },
       { name: "_product-list", path: "/product-list", roles: [1] },
       { name: "_product-me", path: "/product-me", roles: [1, 2, 3] },
@@ -33,7 +31,7 @@ const routes = [
     component: User,
     icon: ManageAccount,
     sider: true,
-    roles: [1, 2]
+    roles: [1, 2, 3]
   },
   {
     path: "/log",
@@ -51,11 +49,6 @@ const routes = [
   {
     path: '/transaction-list',
     component: TransactionList,
-    roles: [1, 2]
-  },
-  {
-    path: '/commit-list',
-    component: CommitList,
     roles: [1, 2]
   },
   {

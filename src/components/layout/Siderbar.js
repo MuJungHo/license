@@ -22,7 +22,7 @@ import {
 
 import routes from '../../routers/routes';
 import { version } from "../../../package.json";
-import { IconButton, Button } from "../common";
+import { Button } from "../common";
 
 const drawerWidth = 240;
 

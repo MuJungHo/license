@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
   Table, Paper,
   DialogContent,
   DialogActions,
-  IconButton,
   Button
 } from "../../components/common";
 
@@ -84,13 +83,9 @@ const LicenseList = () => {
     }
   });
 
-  const [transactions, setTransactions] = React.useState([])
+  const [transactions, setTransactions] = React.useState([]);
 
-  React.useEffect(() => {
-    getLicenseTransactionList()
-  }, [filter])
-
-  const getLicenseTransactionList = async () => {
+  const getLicenseTransactionList = useCallback(async () => {
     const { result, total } = await authedApi.getLicenseTransactionList({
       // data: {
       //   status: [1, 2, 3, 4]
@@ -106,7 +101,11 @@ const LicenseList = () => {
     }))
     setTransactions(_transactions)
     setTotal(total)
-  }
+  }, [authedApi, filter, t])
+
+  React.useEffect(() => {
+    getLicenseTransactionList()
+  }, [getLicenseTransactionList])
 
   const handleApproveLicense = async (row) => {
     const ltid = row.ltid;

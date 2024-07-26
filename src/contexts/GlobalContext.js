@@ -22,7 +22,7 @@ import { lighten_palette, dark_palette } from "../customTheme";
 
 import i18n from '../i18n';
 import { api } from '../utils/apis';
-import WarningSection from '../components/common/WarningSection';
+import WarningSection from '../components/WarningSection';
 
 import "../style/normalize.css";
 import 'rsuite/dist/rsuite.min.css';

@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-import { AuthContext } from "../contexts/AuthContext";
+// import { AuthContext } from "../contexts/AuthContext";
 import {
   Table,
   Paper,
@@ -35,11 +35,8 @@ const User = () => {
     end: moment().endOf('date').valueOf(),
   });
 
-  React.useEffect(() => {
-    getLogList()
-  }, [filter])
 
-  const getLogList = async () => {
+  const getLogList = useCallback(async () => {
     const { result, total } = await authedApi.getLogList({
       data: {
       },
@@ -52,7 +49,11 @@ const User = () => {
     }))
     setLoglist(_logs)
     setTotal(total)
-  }
+  }, [authedApi, filter])
+
+  React.useEffect(() => {
+    getLogList()
+  }, [getLogList])
 
   return (
     <Paper>

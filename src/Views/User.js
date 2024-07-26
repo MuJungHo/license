@@ -1,14 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { AuthContext } from "../contexts/AuthContext";
 import {
   Table,
-  DialogContent,
-  DialogActions,
-  Button,
-  // Text,
   Paper,
-  TextField
 } from "../components/common";
 
 import {
@@ -42,7 +37,7 @@ const getAESEncrypt = async (txt) => {
 
 const User = () => {
   const { t, openDialog, closeDialog, authedApi, openSnackbar, openWarningDialog } = useContext(GlobalContext);
-  const { role } = useContext(AuthContext);
+  const { role, accountid } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
     order: "desc",
@@ -52,13 +47,9 @@ const User = () => {
     page: 1,
   });
 
-  const [accountList, setAccountList] = React.useState([])
+  const [accountList, setAccountList] = React.useState([]);
 
-  React.useEffect(() => {
-    getAccountList()
-  }, [filter])
-
-  const getAccountList = async () => {
+  const getAccountList = useCallback(async () => {
     const { result, total } = await authedApi.getAccountList({
       data: {
       },
@@ -74,8 +65,12 @@ const User = () => {
     })
     setAccountList(_accountList)
     setTotal(total)
-  }
+  }, [authedApi, filter])
 
+  React.useEffect(() => {
+    getAccountList()
+  }, [getAccountList])
+  
   const openEditUserDialog = (user) => {
     openDialog({
       title: t("edit-thing", { thing: t("account") }),
@@ -178,7 +173,9 @@ const User = () => {
         rowActions={role === 1 ? [
           { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
           { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
-        ] : []}
+        ] : [
+          { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp />, showMenuItem: (row) => row.accountid === accountid },
+        ]}
       // dense
       />
     </Paper>

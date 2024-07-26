@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
@@ -8,8 +8,6 @@ import {
 
 // import { useHistory } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { AuthContext } from "../../contexts/AuthContext";
-
 import {
   TextField, Checkbox, Radio, Button,
   DialogContent,
@@ -166,18 +164,19 @@ export default ({
   const { closeDialog, authedApi, t } = useContext(GlobalContext);
   const [product, setProduct] = React.useState([])
 
-  React.useEffect(() => {
-    getProduct()
-  }, [])
-
-  const getProduct = async () => {
+  const getProduct = useCallback(async () => {
     const _product = await authedApi.getProduct({ productid })
     _product.parameters = [];
     if (_product.fields) {
       _product.parameters = JSON.parse(_product.fields);
     }
     setProduct(_product)
-  }
+  }, [authedApi, productid])
+
+  React.useEffect(() => {
+    getProduct()
+  }, [getProduct])
+
 
   const [state, setState] = React.useState({})
 

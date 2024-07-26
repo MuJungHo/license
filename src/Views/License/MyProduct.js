@@ -1,5 +1,6 @@
 import React, {
-  useContext
+  useContext,
+  useCallback
 } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
@@ -28,20 +29,21 @@ import {
 } from "../../images/icons";
 
 const MyLicense = () => {
-  const { account, role, accountid } = useContext(AuthContext);
+  const { role, accountid } = useContext(AuthContext);
   const { t, openDialog, closeDialog, authedApi, openSnackbar } = useContext(GlobalContext);
   const [rows, setRows] = React.useState([]);
   
   // console.log(role)
-  React.useEffect(() => {
-    getMyAccount()
-  }, [])
-
-  const getMyAccount = async () => {
+  const getMyAccount = useCallback(async () => {
     const { products } = await authedApi.getAccountInfo({ accountid })
     let _products = products.map(p => ({ ...p, _id: p.productid }))
     setRows(_products)
-  }
+  }, [authedApi, accountid])
+
+  React.useEffect(() => {
+    getMyAccount()
+  }, [getMyAccount])
+
 
   const handleSetCommitDialog = (row) => {
     openDialog({

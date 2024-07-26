@@ -14,9 +14,6 @@ import Avatar from '@material-ui/core/Avatar';
 import { ReactComponent as Logo } from '../../images/delta.svg';
 import {
   Button,
-  DialogContent,
-  DialogActions,
-  Text
 } from "../common";
 
 import { DarkMode, LightMode } from "../../images/icons";
@@ -91,32 +88,11 @@ const useStyles = makeStyles((theme) => {
   })
 }
 );
-const Profile = () => {
-  const { closeDialog, t } = useContext(GlobalContext);
-  const { role, account } = useContext(AuthContext);
-  return (
-    <>
-      <DialogContent dividers style={{ width: 250 }}>
-        <Text>{`${t("email")}: ${account}`}</Text>
-        <Text>{`${t("role")}: ${{
-          1: "Admin",
-          2: "Operator",
-          3: "User"
-        }[role]}`}</Text>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={closeDialog}>
-          Confirm
-        </Button>
-      </DialogActions>
-    </>)
-}
-
 
 const Appbar = ({ open }) => {
   const classes = useStyles();
   const { logout, account } = useContext(AuthContext);
-  const { locale, changeLocale, t, changeTheme, theme, openDialog, authedApi } = useContext(GlobalContext);
+  const { locale, changeLocale, t, changeTheme, theme, authedApi } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -130,13 +106,13 @@ const Appbar = ({ open }) => {
     setAnchorEl(null);
   };
 
-  const handleSetDialog = () => {
-    handleClose()
-    openDialog({
-      title: t("user-profile"),
-      section: <Profile />
-    })
-  }
+  // const handleSetDialog = () => {
+  //   handleClose()
+  //   openDialog({
+  //     title: t("user-profile"),
+  //     section: <Profile />
+  //   })
+  // }
 
   const handleLogout = async () => {
     await authedApi.tokenLogout()

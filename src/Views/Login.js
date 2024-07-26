@@ -16,7 +16,7 @@ import {
 import { ReactComponent as Logo } from '../images/delta.svg';
 import { getKey, tokenlogin } from '../utils/apis';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   container: {
     height: '100vh',
     backgroundImage: 'radial-gradient(circle at 48% 33%, #0f72a4, #1d3654 96%)',
@@ -62,19 +62,19 @@ const useStyles = makeStyles(theme => ({
   locale: {
   }
 }))
-const user = "user";
-const ron = "ron";
-const mmm = "mmm";
-const admin = "admin@bb.cc"
-const _password = "Aa123456"
+// const user = "user";
+// const ron = "ron";
+// const mmm = "mmm";
+// const admin = "admin@bb.cc"
+// const _password = "Aa123456"
 const Login = () => {
   const classes = useStyles();
   const md5 = require("md5");
-  const [email, setEmail] = useState(ron);
-  const [password, setPassword] = useState(_password);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { login, token, setKeep, keep, } = useContext(AuthContext);
-  const { t, changeLocale, locale, openSnackbar, authedApi } = useContext(GlobalContext);
+  const { t, changeLocale, locale, openSnackbar } = useContext(GlobalContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

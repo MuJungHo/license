@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 // import { makeStyles } from '@material-ui/core/styles';
 
 // import {
@@ -11,7 +11,7 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 // import { AuthContext } from "../../contexts/AuthContext";
 
 import {
-  TextField, 
+  TextField,
   // Checkbox, Radio, 
   Button,
   DialogContent,
@@ -77,13 +77,9 @@ const UserSection = ({
 }) => {
   const [state, setState] = React.useState(user);
   const { closeDialog, t, authedApi } = useContext(GlobalContext);
-  const [products, setProducts] = React.useState([])
+  const [products, setProducts] = React.useState([]);
 
-  React.useEffect(() => {
-    getProductList()
-  }, [])
-
-  const getProductList = async () => {
+  const getProductList = useCallback(async () => {
     const { result } = await authedApi.getProductList({
       data: {
       },
@@ -92,7 +88,12 @@ const UserSection = ({
     })
     let _products = result.map(p => ({ ...p, _id: p.productid }))
     setProducts(_products)
-  }
+  }, [authedApi])
+
+  React.useEffect(() => {
+    getProductList()
+  }, [getProductList])
+
   return (
     <>
       <DialogContent

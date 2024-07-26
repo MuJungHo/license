@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 // import { makeStyles } from '@material-ui/core/styles';
 
 // import {
@@ -66,11 +66,7 @@ export default ({
   const [state, setState] = React.useState({ number: "", description: "", consumer_accountid: "" })
   const [accountList, setAccountList] = React.useState([]);
 
-  React.useEffect(() => {
-    getAccountList()
-  }, [])
-
-  const getAccountList = async () => {
+  const getAccountList = useCallback(async () => {
     const { result } = await authedApi.getAccountList({
       data: {
         roleid: [2, 3]
@@ -82,7 +78,11 @@ export default ({
       .filter(a => a.accountid !== Number(accountid))
       .map(a => ({ ...a, _id: a.accountid }))
     setAccountList(_accountList)
-  }
+  }, [authedApi, accountid])
+
+  React.useEffect(() => {
+    getAccountList()
+  }, [getAccountList])
 
   return (
     <>

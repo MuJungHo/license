@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 // import { makeStyles } from '@material-ui/core/styles';
 
 // import { useHistory } from "react-router-dom";
@@ -59,11 +59,7 @@ export default ({
   const [state, setState] = React.useState({ number: "", description: "", provider_accountid: "" });
   const [accountList, setAccountList] = React.useState([]);
 
-  React.useEffect(() => {
-    getAccountList()
-  }, [])
-
-  const getAccountList = async () => {
+  const getAccountList = useCallback(async () => {
     const { result } = await authedApi.getAccountList({
       data: {
         roleid: [1, 2]
@@ -75,8 +71,12 @@ export default ({
       .filter(a => a.accountid !== Number(accountid))
       .map(a => ({ ...a, _id: a.accountid }))
     setAccountList(_accountList)
-  }
+  }, [authedApi, accountid])
 
+  React.useEffect(() => {
+    getAccountList()
+  }, [getAccountList])
+  
   return (
     <>
       <DialogContent
