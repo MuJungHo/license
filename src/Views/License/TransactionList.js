@@ -70,7 +70,7 @@ const DialogSection = ({
 const LicenseList = () => {
   const md5 = require("md5");
 
-  const { t, authedApi, openSnackbar, openDialog, closeDialog } = useContext(GlobalContext);
+  const { t, authedApi, openSnackbar, openDialog, closeDialog, openWarningDialog } = useContext(GlobalContext);
   const { role, token } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
@@ -165,6 +165,14 @@ const LicenseList = () => {
     })
   }
 
+  const handleOpenUnbindLicense = row => {
+    openWarningDialog({
+      title: t("unbind-confirmation"),
+      message: t("unbind-thing-confirm", { thing: row.product_name, number: row.number }),
+      onConfirm: () => handleUnBindLicense(row)
+    })
+  }
+
   const handleOpenFilterDialog = () => {
     openDialog({
       title: t("filter"),
@@ -203,7 +211,7 @@ const LicenseList = () => {
         sort={filter.sort}
         total={total}
         toolbarFilters={
-          <Button color={filter.data.status.length > 0 ? "primary" : ""} onClick={handleOpenFilterDialog} >
+          <Button color={filter.data.status.length > 0 ? "primary" : "default"} onClick={handleOpenFilterDialog} >
             <Filter />
           </Button>
         }
@@ -226,7 +234,7 @@ const LicenseList = () => {
           { name: t('approve'), onClick: (e, row) => handleApproveLicense(row), icon: <CheckCircleOutline />, showMenuItem: (row) => row.status === 1 && (role === 1 || role === 2) },
           { name: t('reject'), onClick: (e, row) => handleRejectLicense(row), icon: <BlockRounded />, showMenuItem: (row) => row.status === 1 && (role === 1 || role === 2) },
           { name: t('bind'), onClick: (e, row) => handleBindDialog(row), icon: <Link />, showMenuItem: (row) => row.status === 5 },
-          { name: t('unbind'), onClick: (e, row) => handleUnBindLicense(row), icon: <LinkOff />, showMenuItem: (row) => row.status === 6 },
+          { name: t('unbind'), onClick: (e, row) => handleOpenUnbindLicense(row), icon: <LinkOff />, showMenuItem: (row) => row.status === 6 },
           { name: t('download'), onClick: (e, row) => handleDownloadLicense(row.ltid), icon: <Download />, showMenuItem: (row) => row.status === 6 },
         ]}
       // dense

@@ -84,6 +84,8 @@
     "transaction": "交易",
     "transfer": "轉移",
     "unbind": "解除綁定",
+    "unbind-confirmation": "確認解除綁定",
+    "unbind-thing-confirm": "您想解除綁定 {{thing}} * {{number}} 嗎?",
     "user": "使用者",
     "user-profile": "使用者資料",
     "welcome": "歡迎",

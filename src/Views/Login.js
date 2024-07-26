@@ -62,15 +62,16 @@ const useStyles = makeStyles(theme => ({
   locale: {
   }
 }))
-// const user = "user";
-// const ron = "ron";
-// const mmm = "mmm";
-// const admin = "admin@bb.cc"
+const user = "user";
+const ron = "ron";
+const mmm = "mmm";
+const admin = "admin@bb.cc"
+const _password = "Aa123456"
 const Login = () => {
   const classes = useStyles();
   const md5 = require("md5");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(ron);
+  const [password, setPassword] = useState(_password);
 
   const { login, token, setKeep, keep, } = useContext(AuthContext);
   const { t, changeLocale, locale, openSnackbar, authedApi } = useContext(GlobalContext);

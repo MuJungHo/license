@@ -84,6 +84,8 @@
     "transaction": "Transaction",
     "transfer": "Transfer",
     "unbind": "Unbind",
+    "unbind-confirmation": "Unbind Confirmation",
+    "unbind-thing-confirm": "Are you sure you want to unbind {{thing}} * {{number}}?",
     "user": "User",
     "user-profile": "User Profile",
     "welcome": "Welcome",
