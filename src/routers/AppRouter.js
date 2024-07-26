@@ -19,7 +19,7 @@ const AppRouter = () => {
         <Layout>
           {
             routes
-            .filter(route => route.roles.includes(role))
+            // .filter(route => route.roles.includes(role))
             .map(route =>
               <PrivateRoute key={route.path} path={route.path} exact={route.exact}>
                 {route.component && <route.component />}

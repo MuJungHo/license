@@ -140,7 +140,7 @@ const UserSection = ({
           onChange={e => setState({ ...state, email: e.target.value })}
         />
         <TextField
-          label={t("account")}
+          label={t("name")}
           type="text"
           fullWidth
           style={{ marginBottom: 20 }}
