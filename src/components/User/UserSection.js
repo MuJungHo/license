@@ -88,7 +88,7 @@ const UserSection = ({
     })
     let _products = result.map(p => ({ ...p, _id: p.productid }))
     setProducts(_products)
-  }, [authedApi])
+  }, [])
 
   React.useEffect(() => {
     getProductList()

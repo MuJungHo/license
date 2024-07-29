@@ -38,7 +38,7 @@ const MyLicense = () => {
     const { products } = await authedApi.getAccountInfo({ accountid })
     let _products = products.map(p => ({ ...p, _id: p.productid }))
     setRows(_products)
-  }, [authedApi, accountid])
+  }, [accountid])
 
   React.useEffect(() => {
     getMyAccount()

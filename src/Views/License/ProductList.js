@@ -34,7 +34,7 @@ const LicenseList = () => {
     let _products = result.map(p => ({ ...p, _id: p.productid }))
     setProducts(_products)
     setTotal(total)
-  }, [filter, authedApi])
+  }, [authedApi])
 
   React.useEffect(() => {
     getProductList()

@@ -65,7 +65,7 @@ const User = () => {
     })
     setAccountList(_accountList)
     setTotal(total)
-  }, [authedApi, filter])
+  }, [filter])
 
   React.useEffect(() => {
     getAccountList()

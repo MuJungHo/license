@@ -101,7 +101,7 @@ const LicenseList = () => {
     }))
     setTransactions(_transactions)
     setTotal(total)
-  }, [authedApi, filter, t])
+  }, [filter])
 
   React.useEffect(() => {
     getLicenseTransactionList()

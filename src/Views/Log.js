@@ -49,7 +49,7 @@ const User = () => {
     }))
     setLoglist(_logs)
     setTotal(total)
-  }, [authedApi, filter])
+  }, [filter])
 
   React.useEffect(() => {
     getLogList()

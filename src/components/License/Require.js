@@ -71,7 +71,7 @@ export default ({
       .filter(a => a.accountid !== Number(accountid))
       .map(a => ({ ...a, _id: a.accountid }))
     setAccountList(_accountList)
-  }, [authedApi, accountid])
+  }, [accountid])
 
   React.useEffect(() => {
     getAccountList()

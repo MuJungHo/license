@@ -185,7 +185,7 @@ export default () => {
       _product.parameters = JSON.parse(_product.fields);
     }
     setProduct(_product)
-  }, [authedApi, productid])
+  }, [productid])
 
   React.useEffect(() => {
     getProduct()
