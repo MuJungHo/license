@@ -89,8 +89,23 @@ export default ({
       <DialogContent
         style={{ width: 500 }}
         dividers>
+        <FormControl
+          fullWidth
+          required
+          style={{ marginBottom: 20 }}>
+          <InputLabel>{t("consumer")}</InputLabel>
+          <Select
+            value={state.consumer_accountid}
+            onChange={e => setState({ ...state, consumer_accountid: Number(e.target.value) })}
+          >
+            {
+              accountList.map(a => <MenuItem key={a.accountid} value={a.accountid}>{a.name}</MenuItem>)
+            }
+          </Select>
+        </FormControl>
         <TextField
           type="number"
+          required
           label={t("amount")}
           fullWidth
           style={{ marginBottom: 20 }}
@@ -105,19 +120,6 @@ export default ({
           value={state.description}
           onChange={e => setState({ ...state, description: e.target.value })}
         />
-        <FormControl
-          fullWidth
-          style={{ marginBottom: 20 }}>
-          <InputLabel>{t("consumer")}</InputLabel>
-          <Select
-            value={state.consumer_accountid}
-            onChange={e => setState({ ...state, consumer_accountid: Number(e.target.value) })}
-          >
-            {
-              accountList.map(a => <MenuItem key={a.accountid} value={a.accountid}>{a.name}</MenuItem>)
-            }
-          </Select>
-        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>

@@ -27,6 +27,7 @@ export default ({
         }}>
         <TextField
           type="number"
+          required
           label={t("amount")}
           fullWidth
           style={{ marginBottom: 20 }}

@@ -203,6 +203,7 @@ const LicenseList = () => {
           { key: 'product_name', label: t('product') },
           { key: 'number', label: t('count') },
           { key: 'description', label: t('description') },
+          { key: '_commercial', label: t('commercial') },
           { key: '_status', label: t('status') },
         ]}
         checkable={false}
