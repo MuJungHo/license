@@ -81,6 +81,7 @@
     "thing-list": "{{thing}}列表",
     "thing-management": "{{thing}}管理",
     "total-sales": "總銷售數量",
+    "total-trial": "總試用數量",
     "transaction": "交易",
     "transfer": "轉移",
     "unbind": "解除綁定",

@@ -34,6 +34,14 @@ export default ({
           value={state.number}
           onChange={e => setState({ ...state, number: Number(e.target.value) })}
         />
+        <TextField
+          type="text"
+          label={t("description")}
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={state.description}
+          onChange={e => setState({ ...state, description: e.target.value })}
+        />
         <FormControlLabel
           control={
             <Switch

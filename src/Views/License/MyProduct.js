@@ -104,6 +104,7 @@ const MyLicense = () => {
         columns={[
           { key: 'product_name', label: t('name') },
           { key: 'total_sales', label: t('total-sales') },
+          { key: 'total_trial', label: t('total-trial') },
           { key: 'number', label: t('thing-amount', { thing: t("license") }) },
         ]}
         checkable={false}
