@@ -8,7 +8,7 @@ import React, { useContext, useCallback } from "react";
 
 // import { useHistory } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-// import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 import {
   TextField,
@@ -77,6 +77,8 @@ const UserSection = ({
 }) => {
   const [state, setState] = React.useState(user);
   const { closeDialog, t, authedApi } = useContext(GlobalContext);
+  const { role } = useContext(AuthContext);
+
   const [products, setProducts] = React.useState([]);
 
   const getProductList = useCallback(async () => {
@@ -137,7 +139,9 @@ const UserSection = ({
             value={state.roleid}
             onChange={e => setState({ ...state, roleid: e.target.value })}
           >
-            <MenuItem value={1}>Admin</MenuItem>
+            {role === 1 && <>
+              <MenuItem value={1}>Admin</MenuItem>
+            </>}
             <MenuItem value={2}>Operator</MenuItem>
             <MenuItem value={3}>User</MenuItem>
           </Select>

@@ -167,7 +167,7 @@ const User = () => {
         onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
-        toolbarActions={role === 1 ? [
+        toolbarActions={role === 1 || role === 2 ? [
           { name: t('add'), onClick: openAddUserDialog, icon: <AddBox /> },
         ] : []}
         rowActions={role === 1 ? [
