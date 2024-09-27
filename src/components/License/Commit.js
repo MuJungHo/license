@@ -16,7 +16,7 @@ export default ({
 }) => {
   const { closeDialog, t } = useContext(GlobalContext);
 
-  const [state, setState] = React.useState({ commercial: 0, number: "" })
+  const [state, setState] = React.useState({ commercial: 1, number: "" })
 
   return (
     <>
@@ -31,7 +31,8 @@ export default ({
           label={t("amount")}
           fullWidth
           style={{ marginBottom: 20 }}
-          value={state.number}
+          disabled={state.commercial === 0}
+          value={state.commercial === 0 ? 16 : state.number}
           onChange={e => setState({ ...state, number: Number(e.target.value) })}
         />
         <TextField
@@ -46,7 +47,11 @@ export default ({
           control={
             <Switch
               checked={state.commercial === 1}
-              onChange={e => setState({ ...state, commercial: e.target.checked ? 1 : 0 })}
+              onChange={e => setState({
+                ...state,
+                number: e.target.checked ? state.number: 16,
+                commercial: e.target.checked ? 1 : 0
+              })}
               color="primary"
             />
           }

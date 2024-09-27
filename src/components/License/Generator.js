@@ -100,6 +100,12 @@ const Parameter = ({ parameter, state, setState }) => {
       "number": <TextField
         type="number"
         value={state[parameter.name] || ""}
+        InputProps={{
+          inputProps: {
+            min: parameter.option?.min,
+            max: parameter.option?.max,
+          }
+        }}
         onChange={e => setState({
           ...state,
           [parameter.name]: Number(e.target.value)

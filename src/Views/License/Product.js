@@ -93,6 +93,27 @@ const Parameter = ({ parameter, onParameterChange }) => {
         </Select>
         </div>
       </div>
+      {parameter.type === "number" && <div style={{ display: 'flex' }}>
+        <div className={classes.info}>
+          <span>Min:</span> <TextField
+            type="number"
+            onChange={e => onParameterChange(parameter, 'option', {
+              ...parameter.option,
+              min: e.target.value
+            })}
+            value={parameter.option?.min || ''}
+          /></div>
+        <div className={classes.info}>
+          <span>Max:</span> <TextField
+            type="number"
+            onChange={e => onParameterChange(parameter, 'option', {
+              ...parameter.option,
+              max: e.target.value
+            })}
+            value={parameter.option?.max || ''}
+          />
+        </div>
+      </div>}
       {parameter.type === "const" && <div className={classes.info}>
         <span>Const:</span> <TextField value={parameter.text} />
       </div>}
@@ -186,7 +207,7 @@ export default () => {
     }
     setProduct(_product)
   }, [productid])
-
+  console.log(product)
   React.useEffect(() => {
     getProduct()
   }, [getProduct])
@@ -194,7 +215,7 @@ export default () => {
 
   const handleAddParamter = () => {
     const _id = Date.now();
-    let _parameters = [...product.parameters, { _id, name: "", type: "text", options: [], text: "" }];
+    let _parameters = [...product.parameters, { _id, name: "", type: "text", options: [], text: "", option: {} }];
     let _product = { ...product, parameters: _parameters, fields: JSON.stringify(_parameters) }
     setProduct(_product)
   }

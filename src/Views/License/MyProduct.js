@@ -25,7 +25,8 @@ import Require from "../../components/License/Require";
 import {
   Commit as CommitIcon,
   Exchange,
-  Request
+  Request,
+  // MoneyOff
 } from "../../images/icons";
 
 const MyLicense = () => {
