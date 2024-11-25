@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext, useCallback } from 'react'
 import clsx from 'clsx';
 import { NavLink, useLocation } from "react-router-dom"
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { AuthContext } from "../../contexts/AuthContext";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Menu from '@material-ui/core/Menu';
@@ -11,6 +11,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
+
+import {
+  FormControl,
+  Select,
+  InputLabel
+} from '@material-ui/core';
 
 import {
   ArrowBack,
@@ -25,6 +31,25 @@ import { version } from "../../../package.json";
 import { Button } from "../common";
 
 const drawerWidth = 240;
+
+
+const SiderFormControl = withStyles(theme => ({
+  root: {
+    color: theme.palette.siderbar.color,
+    '& .MuiFormLabel-root': {
+      color: theme.palette.siderbar.color,
+    },
+    '& .MuiInputBase-root': {
+      color: theme.palette.siderbar.color,
+    },
+    '& .MuiInput-underline:before': {
+      borderColor: theme.palette.siderbar.color,
+    },
+    '& .MuiSelect-icon': {
+      color: theme.palette.siderbar.color,
+    }
+  }
+}))((props) => <FormControl {...props} />)
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -93,7 +118,8 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-  }
+  },
+
 }));
 
 const CloseMutiLevel = ({ route }) => {
@@ -191,7 +217,27 @@ const SingleLevel = ({ route, open }) => {
 };
 const Siderbar = ({ open, setOpen }) => {
   const classes = useStyles();
-  const { role } = useContext(AuthContext);
+  const { role, accountid, selectedDepid, setSelectedDepid } = useContext(AuthContext);
+  const { authedApi, t } = useContext(GlobalContext);
+  const [departments, setDepartments] = React.useState([]);
+
+  const getMyAccount = useCallback(async () => {
+    if (!accountid) return
+    const { departments, selected_depid } = await authedApi.getAccountInfo({ accountid })
+    let _departments = departments.map(d => ({ ...d, _id: Number(d.depid) }))
+    setDepartments(_departments)
+    setSelectedDepid(selected_depid)
+  }, [accountid])
+
+  React.useEffect(() => {
+    getMyAccount()
+  }, [getMyAccount])
+
+  const handleChagneSelectedDepid = async (e) => {
+    let depid = e.target.value;
+    await authedApi.putUpdateAccountDepid({ data: { accountid, depid } });
+    getMyAccount()
+  }
 
   return (
     <Drawer
@@ -207,6 +253,23 @@ const Siderbar = ({ open, setOpen }) => {
         }),
       }}
     >
+
+      <SiderFormControl
+        // fullWidth
+        // required
+        style={{ margin: 20 }}>
+        <InputLabel>{t("department")}</InputLabel>
+        <Select
+          value={selectedDepid || ""}
+          onChange={handleChagneSelectedDepid}
+          displayEmpty
+        >
+          {
+            departments.map(d => <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>)
+          }
+        </Select>
+      </SiderFormControl>
+
       <List style={{ height: 'calc(100vh - 175px)', overflow: 'auto' }}>
         {
           routes

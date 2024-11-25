@@ -37,6 +37,7 @@ const MyLicense = () => {
   // console.log(role)
   const getMyAccount = useCallback(async () => {
     const { products } = await authedApi.getAccountInfo({ accountid })
+    // console.log(products)
     let _products = products.map(p => ({ ...p, _id: p.productid }))
     setRows(_products)
   }, [accountid])
@@ -48,7 +49,7 @@ const MyLicense = () => {
 
   const handleSetCommitDialog = (row) => {
     openDialog({
-      title: `${t("commit")} ${row.product_name}`,
+      title: `${t("commit")} ${row.name}`,
       section: <Commit onConfirm={state => handleCommitLicense(state, row.productid)} />
     })
   }
@@ -65,7 +66,7 @@ const MyLicense = () => {
 
   const handleSetTransferDialog = (row) => {
     openDialog({
-      title: `${t("transfer")} ${row.product_name}`,
+      title: `${t("transfer")} ${row.name}`,
       section: <Transfer onConfirm={state => handleTransferLicense(state, row.productid)} />
     })
   }
@@ -82,7 +83,7 @@ const MyLicense = () => {
 
   const handleSetRequireDialog = (row) => {
     openDialog({
-      title: `${t("require")} ${row.product_name}`,
+      title: `${t("require")} ${row.name}`,
       section: <Require onConfirm={state => handleRequireLicense(state, row.productid)} />
     })
   }
@@ -103,7 +104,7 @@ const MyLicense = () => {
         title={t("ownProducts")}
         rows={rows}
         columns={[
-          { key: 'product_name', label: t('name') },
+          { key: 'name', label: t('name') },
           { key: 'total_sales', label: t('total-sales') },
           { key: 'total_trial', label: t('total-trial') },
           { key: 'number', label: t('thing-amount', { thing: t("license") }) },

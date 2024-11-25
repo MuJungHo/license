@@ -70,7 +70,7 @@ const LicenseList = () => {
   const md5 = require("md5");
 
   const { t, authedApi, openSnackbar, openDialog, closeDialog, openWarningDialog } = useContext(GlobalContext);
-  const { role, token } = useContext(AuthContext);
+  const { role, token, selectedDepid } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
     order: "desc",
@@ -101,7 +101,7 @@ const LicenseList = () => {
     }))
     setTransactions(_transactions)
     setTotal(total)
-  }, [filter])
+  }, [filter, selectedDepid])
 
   React.useEffect(() => {
     getLicenseTransactionList()

@@ -14,7 +14,7 @@ import {
   Card
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../images/delta.svg';
-import { getKey, tokenlogin } from '../utils/apis';
+import { getKey, tokenlogin, _getAccountInfo } from '../utils/apis';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -74,7 +74,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const { login, token, setKeep, keep, } = useContext(AuthContext);
-  const { t, changeLocale, locale, openSnackbar } = useContext(GlobalContext);
+  const { t, changeLocale, locale, openSnackbar, authedApi } = useContext(GlobalContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -110,7 +110,7 @@ const Login = () => {
     const Token = result?.Token;
     const Accountid = result?.Accountid;
     const Roleid = result?.Roleid;
-
+    
     if (Token && Accountid) login(Token, Accountid, Roleid, email);
   };
 

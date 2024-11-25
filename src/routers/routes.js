@@ -4,11 +4,13 @@ import TransactionList from '../Views/License/TransactionList';
 import Product from '../Views/License/Product';
 import MyProduct from '../Views/License/MyProduct';
 import Log from '../Views/Log';
+import Department from '../Views/Department';
 
 
 import {
   ManageAccount,
-  License as LicenseIcon
+  License as LicenseIcon,
+  Group
 } from "../images/icons";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 
@@ -26,7 +28,15 @@ const routes = [
     roles: [1, 2, 3]
   },
   {
-    path: "/user",
+    path: "/department",
+    name: "_department",
+    component: Department,
+    icon: Group,
+    sider: true,
+    roles: [1]
+  },
+  {
+    path: "/account",
     name: "_account",
     component: User,
     icon: ManageAccount,
@@ -39,7 +49,7 @@ const routes = [
     component: Log,
     icon: AssignmentIcon,
     sider: true,
-    roles: [1, 2]
+    roles: [1]
   },
   {
     path: '/product-list',

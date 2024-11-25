@@ -70,16 +70,17 @@ const UserSection = ({
     password: "",
     telephone: "",
     department: "",
-    products: "[]",
-    productsParse: []
+    departments: [],
+    products: [],
   },
   onConfirm = () => { },
 }) => {
   const [state, setState] = React.useState(user);
   const { closeDialog, t, authedApi } = useContext(GlobalContext);
-  const { role } = useContext(AuthContext);
-
+  // const { role } = useContext(AuthContext);
+  // console.log(user)
   const [products, setProducts] = React.useState([]);
+  const [departments, setDepartments] = React.useState([]);
 
   const getProductList = useCallback(async () => {
     const { result } = await authedApi.getProductList({
@@ -92,9 +93,21 @@ const UserSection = ({
     setProducts(_products)
   }, [])
 
+  const getDepartmentList = useCallback(async () => {
+    const { result } = await authedApi.getDepartmentList({
+      data: {
+      },
+      limit: 50,
+      page: 1
+    })
+    let _departments = result.map(p => ({ ...p, _id: p.depid }))
+    setDepartments(_departments)
+  }, [])
+
   React.useEffect(() => {
     getProductList()
-  }, [getProductList])
+    getDepartmentList()
+  }, [getProductList, getDepartmentList])
 
   return (
     <>
@@ -139,28 +152,9 @@ const UserSection = ({
             value={state.roleid}
             onChange={e => setState({ ...state, roleid: e.target.value })}
           >
-            {role === 1 && <>
-              <MenuItem value={1}>Admin</MenuItem>
-            </>}
+            <MenuItem value={1}>Admin</MenuItem>
             <MenuItem value={2}>Operator</MenuItem>
             <MenuItem value={3}>User</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl
-          fullWidth
-          style={{ marginBottom: 20 }}>
-          <InputLabel>{t("product")}</InputLabel>
-          <Select
-            multiple
-            value={state.productsParse || []}
-            onChange={e => setState({
-              ...state, productsParse: e.target.value,
-              products: e.target.value
-            })}
-          >
-            {
-              products.map(p => <MenuItem key={p.productid} value={p.productid}>{p.name}</MenuItem>)
-            }
           </Select>
         </FormControl>
         <TextField
@@ -171,14 +165,40 @@ const UserSection = ({
           value={state.telephone}
           onChange={e => setState({ ...state, telephone: e.target.value })}
         />
-        <TextField
-          label={t("department")}
-          type="text"
+        {state.roleid > 1 && <FormControl
           fullWidth
-          style={{ marginBottom: 20 }}
-          value={state.department}
-          onChange={e => setState({ ...state, department: e.target.value })}
-        />
+          style={{ marginBottom: 20 }}>
+          <InputLabel>{t("product")}</InputLabel>
+          <Select
+            multiple
+            value={state.access_productids || []}
+            onChange={e => setState({
+              ...state, access_productids: e.target.value,
+              products: e.target.value
+            })}
+          >
+            {
+              products.map(d => <MenuItem key={d.productid} value={d.productid}>{d.name}</MenuItem>)
+            }
+          </Select>
+        </FormControl>}
+        {state.roleid === 2 && <FormControl
+          fullWidth
+          style={{ marginBottom: 20 }}>
+          <InputLabel>{t("department")}</InputLabel>
+          <Select
+            multiple={state.roleid === 2}
+            value={state.access_depids || []}
+            onChange={e => setState({
+              ...state, access_depids: e.target.value,
+              departments: e.target.value
+            })}
+          >
+            {
+              departments.map(d => <MenuItem key={d.depid} value={d.depid}>{d.name}</MenuItem>)
+            }
+          </Select>
+        </FormControl>}
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>

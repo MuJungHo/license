@@ -7,6 +7,7 @@ function AuthProvider(props) {
   const [role, setRole] = useState(Number(localStorage.getItem('role')));
   const [account, setAccount] = useState(localStorage.getItem('account') || "");
   const [accountid, setAccountId] = useState(Number(localStorage.getItem('accountid')) || "");
+  const [selectedDepid, setSelectedDepid] = React.useState();
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
 
   const login = async (jwtToken, accountid, role, account) => {
@@ -39,7 +40,8 @@ function AuthProvider(props) {
     account,
     login,
     logout,
-    setKeep
+    setKeep,
+    selectedDepid, setSelectedDepid
   };
 
   return <AuthContext.Provider value={value} {...props} />;

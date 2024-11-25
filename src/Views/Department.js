@@ -18,7 +18,7 @@ import {
 // } from '@material-ui/core';
 
 import { getKey } from '../utils/apis';
-import UserSection from "../components/User/UserSection";
+import DepSection from "../components/Department/DepSection";
 const CryptoJS = require("crypto-js");
 
 const getAESEncrypt = async (txt) => {
@@ -37,7 +37,7 @@ const getAESEncrypt = async (txt) => {
 
 const User = () => {
   const { t, openDialog, closeDialog, authedApi, openSnackbar, openWarningDialog } = useContext(GlobalContext);
-  const { role, accountid, selectedDepid } = useContext(AuthContext);
+  const { role, accountid } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState({
     order: "desc",
@@ -49,61 +49,48 @@ const User = () => {
 
   const [accountList, setAccountList] = React.useState([]);
 
-  const getAccountList = useCallback(async () => {
-    const { result, total } = await authedApi.getAccountList({
+  const getDepartmentList = useCallback(async () => {
+    const { result, total } = await authedApi.getDepartmentList({
       data: {
-        depid: [selectedDepid]
       },
       ...filter
     })
     let _accountList = result.map(p => {
-      let _access_depids = p.departments.map(d => d.depid);
-      let _access_productids = p.products.map(d => d.productid);
-      let _department = p.departments.map(d => d.name).join(', ');
-
       return ({
-        ...p, _id: p.accountid,
-        access_depids: _access_depids,
-        access_productids: _access_productids,
-        departments: _access_depids,
-        products: _access_productids,
-        _department: _department
+        ...p, _id: p.depid,
+        _count: p.account.length
       })
     })
     setAccountList(_accountList)
     setTotal(total)
-  }, [filter, selectedDepid])
+  }, [filter])
 
   React.useEffect(() => {
-    if (!selectedDepid) return
-    getAccountList()
-  }, [getAccountList, selectedDepid])
+    getDepartmentList()
+  }, [getDepartmentList])
 
-  const openEditUserDialog = (user) => {
+  const openEditDepartmentDialog = (department) => {
     openDialog({
-      title: t("edit-thing", { thing: t("account") }),
-      section: <UserSection onConfirm={handleEditUserAccount} user={user} />
+      title: t("edit-thing", { thing: t("department") }),
+      section: <DepSection onConfirm={handleEditDepartment} department={department} />
     })
   }
 
   const openAddUserDialog = () => {
     openDialog({
-      title: t("add-thing", { thing: t("account") }),
-      section: <UserSection onConfirm={handleAddUserAccount} />
+      title: t("add-thing", { thing: t("department") }),
+      section: <DepSection onConfirm={handleAddDepartment} />
     })
   }
 
-  const handleEditUserAccount = async (user) => {
-    // return console.log(user)
-    const aesEncryptPassword = await getAESEncrypt(user.password)
+  const handleEditDepartment = async (department) => {
 
-    await authedApi.postEditAccount({
+    await authedApi.postEditDepartment({
       data: {
-        ...user,
-        password: user.password ? aesEncryptPassword : undefined
+        ...department,
       }
     })
-    getAccountList()
+    getDepartmentList()
     closeDialog()
     openSnackbar({
       severity: "success",
@@ -111,20 +98,14 @@ const User = () => {
     })
   }
 
-  const handleAddUserAccount = async (user) => {
+  const handleAddDepartment = async (department) => {
 
-    const aesEncryptPassword = await getAESEncrypt(user.password);
-    const departments = user.roleid === 3 ? [selectedDepid] : user.departments;
-
-    await authedApi.postAddAccount({
+    await authedApi.postAddDepartment({
       data: {
-        ...user,
-        departments,
-        password: aesEncryptPassword,
-        selected_depid: selectedDepid
+        ...department
       }
     })
-    getAccountList()
+    getDepartmentList()
     closeDialog()
     openSnackbar({
       severity: "success",
@@ -132,9 +113,9 @@ const User = () => {
     })
   }
 
-  const handleDeleteAccount = async user => {
-    await authedApi.deleteAccount({ accountid: user.accountid })
-    getAccountList()
+  const handleDeleteDepartment = async department => {
+    await authedApi.deleteAccount({ accountid: department.accountid })
+    getDepartmentList()
     closeDialog()
     openSnackbar({
       severity: "success",
@@ -142,30 +123,28 @@ const User = () => {
     })
   }
 
-  const handleSetWarningDialog = (user) => {
+  const handleSetWarningDialog = (department) => {
     openWarningDialog({
       title: t("delete-confirmation"),
-      message: t("delete-thing-confirm", { thing: user.name }),
-      onConfirm: () => handleDeleteAccount(user)
+      message: t("delete-thing-confirm", { thing: department.name }),
+      onConfirm: () => handleDeleteDepartment(department)
     })
   }
 
   return (
     <Paper>
       <Table
-        title={t("thing-management", { thing: t("account") })}
+        title={t("thing-management", { thing: t("department") })}
         rows={accountList}
         columns={[
           { key: 'name', label: t('name') },
-          { key: 'email', label: t('email') },
-          { key: '_department', label: t('department') },
-          { key: 'rolename', label: t('rolename') },
+          { key: '_count', label: t('count') },
         ]}
         checkable={false}
         order={filter.order}
         sort={filter.sort}
         total={total}
-        onSearchClick={getAccountList}
+        onSearchClick={getDepartmentList}
         onClearClick={() => setFilter({
           order: "desc",
           sort: "datetime",
@@ -181,10 +160,10 @@ const User = () => {
           { name: t('add'), onClick: openAddUserDialog, icon: <AddBox /> },
         ] : []}
         rowActions={role === 1 ? [
-          { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
+          { name: t('edit'), onClick: (e, row) => openEditDepartmentDialog(row), icon: <BorderColorSharp /> },
           { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ] : [
-          { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp />, showMenuItem: (row) => row.accountid === accountid },
+          { name: t('edit'), onClick: (e, row) => openEditDepartmentDialog(row), icon: <BorderColorSharp />, showMenuItem: (row) => row.accountid === accountid },
         ]}
       // dense
       />

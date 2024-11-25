@@ -70,6 +70,7 @@ export const api = (token, logout, openCatchErrorSnackbar) => {
     postAddAccount: ({ data, ...rest }) => promise_(instance.post('/db/account/add', { ...data }, { params: { sign, timestamp, ...rest } })),
     postEditAccount: ({ data, ...rest }) => promise_(instance.post('/db/account/edit', { ...data }, { params: { sign, timestamp, ...rest } })),
     deleteAccount: ({ ...rest }) => promise_(instance.delete('/db/account/delete', { params: { sign, timestamp, ...rest } })),
+    putUpdateAccountDepid: ({ data, ...rest }) => promise_(instance.put('/db/account/depid/update', data, { params: { sign, timestamp, ...rest } })),
 
     getProductList: ({ data, ...rest }) => promise_(instance.post('/db/product/list', { ...data }, { params: { sign, timestamp, ...rest } })),
     getProduct: ({ ...rest }) => promise_(instance.get('/db/product/get', { params: { timestamp, sign, ...rest } })),
@@ -86,6 +87,10 @@ export const api = (token, logout, openCatchErrorSnackbar) => {
     postLicenseReject: ({ data, ...rest }) => promise_(instance.post('/db/license/reject', { ...data }, { params: { sign, timestamp, ...rest } })),
 
     getLogList: ({ data, ...rest }) => promise_(instance.post('/db/log/list', { ...data }, { params: { sign, timestamp, ...rest } })),
+
+    getDepartmentList: ({ data, ...rest }) => promise_(instance.post('/db/department/list', { ...data }, { params: { sign, timestamp, ...rest } })),
+    postAddDepartment: ({ data, ...rest }) => promise_(instance.post('/db/department/add', { ...data }, { params: { sign, timestamp, ...rest } })),
+    postEditDepartment: ({ data, ...rest }) => promise_(instance.post('/db/department/edit', { ...data }, { params: { sign, timestamp, ...rest } })),
 
 
   }
