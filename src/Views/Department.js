@@ -17,25 +17,9 @@ import {
 //   MenuItem
 // } from '@material-ui/core';
 
-import { getKey } from '../utils/apis';
 import DepSection from "../components/Department/DepSection";
-const CryptoJS = require("crypto-js");
 
-const getAESEncrypt = async (txt) => {
-  const timestamp = Date.now();
-  const { secretkey } = await getKey({ timestamp });
-  const cipher = CryptoJS.AES.encrypt(
-    txt,
-    CryptoJS.enc.Utf8.parse(secretkey),
-    {
-      iv: CryptoJS.enc.Utf8.parse(""),
-      mode: CryptoJS.mode.ECB
-    }
-  )
-  return cipher.toString()
-}
-
-const User = () => {
+const Department = () => {
   const { t, openDialog, closeDialog, authedApi, openSnackbar, openWarningDialog } = useContext(GlobalContext);
   const { role, accountid } = useContext(AuthContext);
   const [total, setTotal] = React.useState(0);
@@ -47,7 +31,7 @@ const User = () => {
     page: 1,
   });
 
-  const [accountList, setAccountList] = React.useState([]);
+  const [depList, setDepList] = React.useState([]);
 
   const getDepartmentList = useCallback(async () => {
     const { result, total } = await authedApi.getDepartmentList({
@@ -61,7 +45,7 @@ const User = () => {
         _count: p.account.length
       })
     })
-    setAccountList(_accountList)
+    setDepList(_accountList)
     setTotal(total)
   }, [filter])
 
@@ -135,7 +119,7 @@ const User = () => {
     <Paper>
       <Table
         title={t("thing-management", { thing: t("department") })}
-        rows={accountList}
+        rows={depList}
         columns={[
           { key: 'name', label: t('name') },
           { key: '_count', label: t('count') },
@@ -172,4 +156,4 @@ const User = () => {
 }
 
 
-export default User;
+export default Department;
