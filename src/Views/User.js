@@ -95,14 +95,16 @@ const User = () => {
 
   const handleEditUserAccount = async (user) => {
     // return console.log(user)
-    const aesEncryptPassword = await getAESEncrypt(user.password)
+    let data = { ...user }
 
-    await authedApi.postEditAccount({
-      data: {
-        ...user,
-        password: user.password ? aesEncryptPassword : undefined
-      }
-    })
+    if (data.password) data.password = await getAESEncrypt(data.password)
+    else delete data.password;
+    delete data._id;
+    delete data.access_depids;
+    delete data.access_productids;
+    delete data._department;
+
+    await authedApi.postEditAccount({ data })
     getAccountList()
     closeDialog()
     openSnackbar({

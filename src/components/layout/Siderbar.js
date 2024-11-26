@@ -47,7 +47,15 @@ const SiderFormControl = withStyles(theme => ({
     },
     '& .MuiSelect-icon': {
       color: theme.palette.siderbar.color,
-    }
+    },
+    // "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+    //   borderColor: "rgba(190, 190, 190, 0.4)",
+    // },
+    "&:hover .MuiInput-underline:before": {
+      borderColor: theme.palette.primary.main,
+      borderWidth: 1,
+      transition: 'border-color ease-in-out 0.2s'
+    },
   }
 }))((props) => <FormControl {...props} />)
 
@@ -257,7 +265,8 @@ const Siderbar = ({ open, setOpen }) => {
       <SiderFormControl
         // fullWidth
         // required
-        style={{ margin: 20 }}>
+        // variant="outlined"
+        style={{ margin: '30px 20px 10px 20px' }}>
         <InputLabel>{t("department")}</InputLabel>
         <Select
           value={selectedDepid || ""}

@@ -64,7 +64,7 @@ import {
 
 const UserSection = ({
   user = {
-    roleid: "",
+    roleid: 3,
     email: "",
     name: "",
     password: "",
@@ -77,7 +77,7 @@ const UserSection = ({
 }) => {
   const [state, setState] = React.useState(user);
   const { closeDialog, t, authedApi } = useContext(GlobalContext);
-  // const { role } = useContext(AuthContext);
+  const { role } = useContext(AuthContext);
   // console.log(user)
   const [products, setProducts] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
@@ -152,7 +152,9 @@ const UserSection = ({
             value={state.roleid}
             onChange={e => setState({ ...state, roleid: e.target.value })}
           >
-            <MenuItem value={1}>Admin</MenuItem>
+            {
+              role === 1 && <MenuItem value={1}>Admin</MenuItem>
+            }
             <MenuItem value={2}>Operator</MenuItem>
             <MenuItem value={3}>User</MenuItem>
           </Select>
