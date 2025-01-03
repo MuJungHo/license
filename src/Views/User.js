@@ -186,7 +186,12 @@ const User = () => {
           { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
           { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ] : [
-          { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp />, showMenuItem: (row) => row.accountid === accountid },
+          {
+            name: t('edit'),
+            onClick: (e, row) => openEditUserDialog(row),
+            icon: <BorderColorSharp />, 
+            showMenuItem: (row) => row.accountid === accountid || (row.roleid === 2 || row.roleid === 3)
+          },
         ]}
       // dense
       />

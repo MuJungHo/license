@@ -164,7 +164,8 @@ const Parameter = ({ parameter, state, setState }) => {
 
 export default ({
   onConfirm = () => { },
-  productid
+  productid,
+  isCommercial = false
 }) => {
   // const { t } = useContext(GlobalContext);
   const { closeDialog, authedApi, t } = useContext(GlobalContext);
@@ -193,12 +194,15 @@ export default ({
         style={{
           width: 500
         }}>
-        {product.parameters?.map(parameter => <Parameter
-          key={parameter._id}
-          state={state}
-          setState={setState}
-          parameter={parameter}
-        />)}
+        {product.parameters
+          ?.filter(parameter => (parameter.trial === 1 && !isCommercial) || (parameter.commercial === 1 && isCommercial))
+          ?.map(parameter => <Parameter
+            key={parameter._id}
+            state={state}
+            setState={setState}
+            parameter={parameter}
+          />
+          )}
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>

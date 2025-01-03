@@ -128,9 +128,10 @@ const LicenseList = () => {
   }
 
   const handleBindDialog = (row) => {
+    // console.log(row)
     openDialog({
       title: `${t("bind")} ${row.product_name}`,
-      section: <Generator onConfirm={params => handleBindLicense(params, row.ltid)} productid={row.productid} />
+      section: <Generator isCommercial={row.commercial === 1} onConfirm={params => handleBindLicense(params, row.ltid)} productid={row.productid} />
     })
   }
 

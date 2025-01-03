@@ -24,6 +24,7 @@ import {
   TextField, Paper, Button, IconButton, Text,
   DialogContent,
   DialogActions,
+  Checkbox
 } from "../../components/common";
 
 const useStyles = makeStyles((theme) => ({
@@ -65,82 +66,101 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Parameter = ({ parameter, onParameterChange }) => {
+const Parameter = ({ parameter, onParameterChange, onParameterDelete }) => {
   const classes = useStyles();
   return (<React.Fragment>
-    <div>
-      <div style={{ display: 'flex' }}>
-        <div className={classes.info}><span>Key:</span> <TextField
-          onChange={e => onParameterChange(parameter, 'name', e.target.value)}
-          value={parameter.name} /></div>
-        <div className={classes.info}><span>Type:</span> <Select
-          onChange={e => onParameterChange(parameter, 'type', e.target.value)}
-          value={parameter.type} >
-          {
-            [
-              { label: "text", value: "text" },
-              { label: "number", value: "number" },
-              // { label: "textarea", value: "textarea" },
-              // { label: "const", value: "const" },
-              // { label: "dropdown", value: "dropdown" },
-              // { label: "checkboxes", value: "checkboxes" },
-              // { label: "checkbox", value: "checkbox" },
-              // { label: "radio", value: "radio" },
-              // { label: "date", value: "date" },
-              { label: "upload", value: "upload" },
-            ].map(option => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)
-          }
-        </Select>
-        </div>
+    <div style={{ display: 'flex' }}>
+      <div>
+        <IconButton onClick={() => onParameterDelete(parameter)} style={{ margin: '6px 12px' }}>
+          <Delete />
+        </IconButton>
       </div>
-      {parameter.type === "number" && <div style={{ display: 'flex' }}>
-        <div className={classes.info}>
-          <span>Min:</span> <TextField
-            type="number"
-            onChange={e => onParameterChange(parameter, 'option', {
-              ...parameter.option,
-              min: e.target.value
-            })}
-            value={parameter.option?.min || ''}
-          /></div>
-        <div className={classes.info}>
-          <span>Max:</span> <TextField
-            type="number"
-            onChange={e => onParameterChange(parameter, 'option', {
-              ...parameter.option,
-              max: e.target.value
-            })}
-            value={parameter.option?.max || ''}
-          />
+      <div>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <div className={classes.info}><span>Key:</span> <TextField
+            onChange={e => onParameterChange(parameter, 'name', e.target.value)}
+            value={parameter.name} /></div>
+          <div className={classes.info}><span>Type:</span> <Select
+            onChange={e => onParameterChange(parameter, 'type', e.target.value)}
+            value={parameter.type} >
+            {
+              [
+                { label: "text", value: "text" },
+                { label: "number", value: "number" },
+                // { label: "textarea", value: "textarea" },
+                { label: "const", value: "const" },
+                // { label: "dropdown", value: "dropdown" },
+                // { label: "checkboxes", value: "checkboxes" },
+                // { label: "checkbox", value: "checkbox" },
+                // { label: "radio", value: "radio" },
+                // { label: "date", value: "date" },
+                { label: "upload", value: "upload" },
+              ].map(option => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)
+            }
+          </Select>
+          </div>
+
+          <div className={classes.info}><span>Trial:</span> <div><Checkbox
+            color="primary"
+            onChange={e => onParameterChange(parameter, 'trial', e.target.checked ? 1 : 0)}
+            checked={parameter.trial === 1} /></div></div>
+
+          <div className={classes.info}><span>Commercial:</span> <div><Checkbox
+            color="primary"
+            onChange={e => onParameterChange(parameter, 'commercial', e.target.checked ? 1 : 0)}
+            checked={parameter.commercial === 1} /></div></div>
         </div>
-      </div>}
-      {parameter.type === "const" && <div className={classes.info}>
-        <span>Const:</span> <TextField value={parameter.text} />
-      </div>}
-      {parameter.type === "radio" && <div>
-        <div className={classes.info}><span style={{ flexBasis: '12.5%' }}>Options: </span><AddBox /></div>
-        {parameter.options.map(option =>
-          <div className={classes.info} key={option} >
-            <Delete /><TextField value={option} />
+        {parameter.type === "number" && <div style={{ display: 'flex' }}>
+          <div className={classes.info}>
+            <span>Min:</span> <TextField
+              type="number"
+              onChange={e => onParameterChange(parameter, 'option', {
+                ...parameter.option,
+                min: e.target.value
+              })}
+              value={parameter.option?.min || ''}
+            /></div>
+          <div className={classes.info}>
+            <span>Max:</span> <TextField
+              type="number"
+              onChange={e => onParameterChange(parameter, 'option', {
+                ...parameter.option,
+                max: e.target.value
+              })}
+              value={parameter.option?.max || ''}
+            />
           </div>
-        )}
-      </div>}
-      {parameter.type === "checkboxes" && <div>
-        <div className={classes.info}><span style={{ flexBasis: '12.5%' }}>Options: </span><AddBox /></div>
-        {parameter.options.map(option =>
-          <div className={classes.info} key={option} >
-            <Delete /><TextField value={option} />
-          </div>
-        )}
-      </div>}
-      {parameter.type === "dropdown" && <div>
-        <div className={classes.info}><span style={{ flexBasis: '12.5%' }}>Options: </span><AddBox /></div>
-        {parameter.options.map(option =>
-          <div className={classes.info} key={option} >
-            <Delete /><TextField value={option} />
-          </div>
-        )}
-      </div>}
+        </div>}
+        {parameter.type === "const" && <div className={classes.info}>
+          <span>Const:</span> <TextField value={parameter.text || ""}
+            type="text"
+            onChange={e => onParameterChange(parameter, 'text', e.target.value)} />
+        </div>}
+        {parameter.type === "radio" && <div>
+          <div className={classes.info}><span style={{ flexBasis: '12.5%' }}>Options: </span><AddBox /></div>
+          {parameter.options.map(option =>
+            <div className={classes.info} key={option} >
+              <Delete /><TextField value={option} />
+            </div>
+          )}
+        </div>}
+        {parameter.type === "checkboxes" && <div>
+          <div className={classes.info}><span style={{ flexBasis: '12.5%' }}>Options: </span><AddBox /></div>
+          {parameter.options.map(option =>
+            <div className={classes.info} key={option} >
+              <Delete /><TextField value={option} />
+            </div>
+          )}
+        </div>}
+        {parameter.type === "dropdown" && <div>
+          <div className={classes.info}><span style={{ flexBasis: '12.5%' }}>Options: </span><AddBox /></div>
+          {parameter.options.map(option =>
+            <div className={classes.info} key={option} >
+              <Delete /><TextField value={option} />
+            </div>
+          )}
+        </div>}
+      </div>
     </div>
     <Divider /></React.Fragment>)
 }
@@ -207,7 +227,7 @@ export default () => {
     }
     setProduct(_product)
   }, [productid])
-  console.log(product)
+  // console.log(product)
   React.useEffect(() => {
     getProduct()
   }, [getProduct])
@@ -215,7 +235,15 @@ export default () => {
 
   const handleAddParamter = () => {
     const _id = Date.now();
-    let _parameters = [...product.parameters, { _id, name: "", type: "text", options: [], text: "", option: {} }];
+    let _parameters = [...product.parameters, {
+      _id, name: "",
+      type: "text",
+      options: [],
+      text: "",
+      option: {},
+      commercial: 1,
+      trial: 1
+    }];
     let _product = { ...product, parameters: _parameters, fields: JSON.stringify(_parameters) }
     setProduct(_product)
   }
@@ -235,6 +263,12 @@ export default () => {
 
   const onParameterChange = (parameter, key, value) => {
     let _parameters = [...product.parameters].map(p => p._id === parameter._id ? { ...parameter, [key]: value } : p)
+    let _product = { ...product, parameters: _parameters, fields: JSON.stringify(_parameters) }
+    setProduct(_product)
+  }
+
+  const onParameterDelete = (parameter) => {
+    let _parameters = [...product.parameters].filter(p => p._id !== parameter._id)
     let _product = { ...product, parameters: _parameters, fields: JSON.stringify(_parameters) }
     setProduct(_product)
   }
@@ -305,6 +339,7 @@ export default () => {
         {product.parameters.map(parameter => <Parameter
           key={parameter._id}
           parameter={parameter}
+          onParameterDelete={onParameterDelete}
           onParameterChange={onParameterChange}
         />)}
       </Paper>
