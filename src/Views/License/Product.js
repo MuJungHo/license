@@ -316,6 +316,13 @@ export default () => {
             })} />
           </div>
           <div className={classes.info}>
+            <Text>{t("partnumber")}</Text>
+            <TextField value={product.partnumber} onChange={e => setProduct({
+              ...product,
+              partnumber: e.target.value
+            })} />
+          </div>
+          <div className={classes.info}>
             <Text>{t("description")}</Text>
             <TextField value={product.description} onChange={e => setProduct({
               ...product,

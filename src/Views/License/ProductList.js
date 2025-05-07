@@ -95,6 +95,7 @@ const LicenseList = () => {
         columns={[
           { key: 'name', label: t('name') },
           { key: 'description', label: t('description') },
+          { key: 'partnumber', label: t('partnumber') },
         ]}
         checkable={role === 1}
         order={filter.order}

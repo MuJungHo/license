@@ -20,7 +20,9 @@ const UserSection = ({
   onConfirm = () => { },
 }) => {
   const [state, setState] = React.useState({
-    name: ""
+    name: "",
+    description: "",
+    partnumber: ""
   });
   const { closeDialog, t } = useContext(GlobalContext);
 
@@ -45,6 +47,14 @@ const UserSection = ({
           fullWidth
           value={state.description}
           onChange={e => setState({ ...state, description: e.target.value })}
+        />
+        <TextField
+          label={t("partnumber")}
+          style={{ marginTop: 20 }}
+          type="text"
+          fullWidth
+          value={state.partnumber}
+          onChange={e => setState({ ...state, partnumber: e.target.value })}
         />
       </DialogContent>
       <DialogActions>
